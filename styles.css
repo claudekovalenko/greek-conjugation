@@ -1,5 +1,10 @@
 /* styles.css — one stylesheet, no framework, no build. */
 
+/* Theme tokens. Light is the base; every override below only redefines
+   tokens, never component rules. Order matters more than specificity here:
+   data-app-theme is the in-app toggle and is declared last so it beats both
+   the OS preference and any data-theme a host page has stamped on the root. */
+
 :root {
   --paper: #f7f4ee;
   --surface: #ffffff;
@@ -11,18 +16,18 @@
   --accent: #1f6f6a;
   --accent-soft: #d9ebe9;
   --accent-ink: #14504c;
+  --on-accent: #ffffff;
   --good: #2e7d4f;
   --good-soft: #dff0e4;
   --bad: #b3402f;
   --bad-soft: #fae2dd;
-  --radius: 12px;
   --shadow: 0 1px 2px rgba(35, 32, 28, .06), 0 6px 18px rgba(35, 32, 28, .05);
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #14161a;
+  --paper: #14161a;
     --surface: #1c1f24;
     --surface-2: #23262c;
     --ink: #e9e5dd;
@@ -32,6 +37,7 @@
     --accent: #67c0b8;
     --accent-soft: #1d3b39;
     --accent-ink: #9adbd4;
+    --on-accent: #10201f;
     --good: #6ec48c;
     --good-soft: #1d3626;
     --bad: #e58873;
@@ -52,12 +58,53 @@
   --accent: #67c0b8;
   --accent-soft: #1d3b39;
   --accent-ink: #9adbd4;
+  --on-accent: #10201f;
   --good: #6ec48c;
   --good-soft: #1d3626;
   --bad: #e58873;
   --bad-soft: #3b211c;
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 18px rgba(0, 0, 0, .25);
   color-scheme: dark;
+}
+
+:root[data-app-theme="dark"] {
+  --paper: #14161a;
+  --surface: #1c1f24;
+  --surface-2: #23262c;
+  --ink: #e9e5dd;
+  --ink-soft: #a7a196;
+  --ink-faint: #7d776d;
+  --line: #2e323a;
+  --accent: #67c0b8;
+  --accent-soft: #1d3b39;
+  --accent-ink: #9adbd4;
+  --on-accent: #10201f;
+  --good: #6ec48c;
+  --good-soft: #1d3626;
+  --bad: #e58873;
+  --bad-soft: #3b211c;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 18px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+
+:root[data-app-theme="light"] {
+  --paper: #f7f4ee;
+  --surface: #ffffff;
+  --surface-2: #f1ece3;
+  --ink: #23201c;
+  --ink-soft: #625c53;
+  --ink-faint: #8d8579;
+  --line: #e2dbcf;
+  --accent: #1f6f6a;
+  --accent-soft: #d9ebe9;
+  --accent-ink: #14504c;
+  --on-accent: #ffffff;
+  --good: #2e7d4f;
+  --good-soft: #dff0e4;
+  --bad: #b3402f;
+  --bad-soft: #fae2dd;
+  --shadow: 0 1px 2px rgba(35, 32, 28, .06), 0 6px 18px rgba(35, 32, 28, .05);
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -145,11 +192,9 @@ button, .btn {
 button:hover, .btn:hover { border-color: var(--ink-faint); }
 button:disabled { opacity: .45; cursor: default; }
 button.primary {
-  background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600;
+  background: var(--accent); border-color: var(--accent);
+  color: var(--on-accent); font-weight: 600;
 }
-:root[data-theme="dark"] button.primary,
-:root:not([data-theme="light"]) button.primary { color: #10201f; }
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) button.primary { color: #fff; } }
 button.primary:hover { filter: brightness(1.06); }
 button.ghost { background: none; border-color: transparent; color: var(--accent); padding: 8px 10px; }
 button.wide { width: 100%; }
@@ -195,11 +240,9 @@ button.wide { width: 100%; }
   border-color: transparent;
 }
 .chips button[aria-pressed="true"] {
-  background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600;
+  background: var(--accent); border-color: var(--accent);
+  color: var(--on-accent); font-weight: 600;
 }
-:root[data-theme="dark"] .chips button[aria-pressed="true"],
-:root:not([data-theme="light"]) .chips button[aria-pressed="true"] { color: #10201f; }
-@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .chips button[aria-pressed="true"] { color: #fff; } }
 
 input[type="text"] {
   width: 100%; font: inherit; padding: 12px 14px; border-radius: 10px;

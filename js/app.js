@@ -847,9 +847,12 @@ GK.app = (function () {
 
   /* ---------- boot ---------- */
 
+  // The in-app toggle writes data-app-theme, never data-theme: a host page may
+  // own data-theme, and "match system" has to hand control straight back to it.
   function applyTheme() {
-    if (prefs.theme === 'auto') document.documentElement.removeAttribute('data-theme');
-    else document.documentElement.setAttribute('data-theme', prefs.theme);
+    var root = document.documentElement;
+    if (prefs.theme === 'auto') root.removeAttribute('data-app-theme');
+    else root.setAttribute('data-app-theme', prefs.theme);
   }
 
   function init() {

@@ -1,0 +1,3621 @@
+<meta name="description" content="Parsing drills and daily reading for New Testament Greek — the article, the cases, the whole verb system, and a passage a day with every word parsed.">
+<meta name="theme-color" content="#f7f4ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14161a" media="(prefers-color-scheme: dark)">
+<title>Κοινή Drill</title>
+<style>
+/* styles.css — one stylesheet, no framework, no build. */
+
+/* Theme tokens. Light is the base; every override below only redefines
+   tokens, never component rules. Order matters more than specificity here:
+   data-app-theme is the in-app toggle and is declared last so it beats both
+   the OS preference and any data-theme a host page has stamped on the root. */
+
+:root {
+  --paper: #f7f4ee;
+  --surface: #ffffff;
+  --surface-2: #f1ece3;
+  --ink: #23201c;
+  --ink-soft: #625c53;
+  --ink-faint: #8d8579;
+  --line: #e2dbcf;
+  --accent: #1f6f6a;
+  --accent-soft: #d9ebe9;
+  --accent-ink: #14504c;
+  --on-accent: #ffffff;
+  --good: #2e7d4f;
+  --good-soft: #dff0e4;
+  --bad: #b3402f;
+  --bad-soft: #fae2dd;
+  --shadow: 0 1px 2px rgba(35, 32, 28, .06), 0 6px 18px rgba(35, 32, 28, .05);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+  --paper: #14161a;
+    --surface: #1c1f24;
+    --surface-2: #23262c;
+    --ink: #e9e5dd;
+    --ink-soft: #a7a196;
+    --ink-faint: #7d776d;
+    --line: #2e323a;
+    --accent: #67c0b8;
+    --accent-soft: #1d3b39;
+    --accent-ink: #9adbd4;
+    --on-accent: #10201f;
+    --good: #6ec48c;
+    --good-soft: #1d3626;
+    --bad: #e58873;
+    --bad-soft: #3b211c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 18px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #14161a;
+  --surface: #1c1f24;
+  --surface-2: #23262c;
+  --ink: #e9e5dd;
+  --ink-soft: #a7a196;
+  --ink-faint: #7d776d;
+  --line: #2e323a;
+  --accent: #67c0b8;
+  --accent-soft: #1d3b39;
+  --accent-ink: #9adbd4;
+  --on-accent: #10201f;
+  --good: #6ec48c;
+  --good-soft: #1d3626;
+  --bad: #e58873;
+  --bad-soft: #3b211c;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 18px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+
+:root[data-app-theme="dark"] {
+  --paper: #14161a;
+  --surface: #1c1f24;
+  --surface-2: #23262c;
+  --ink: #e9e5dd;
+  --ink-soft: #a7a196;
+  --ink-faint: #7d776d;
+  --line: #2e323a;
+  --accent: #67c0b8;
+  --accent-soft: #1d3b39;
+  --accent-ink: #9adbd4;
+  --on-accent: #10201f;
+  --good: #6ec48c;
+  --good-soft: #1d3626;
+  --bad: #e58873;
+  --bad-soft: #3b211c;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 18px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+
+:root[data-app-theme="light"] {
+  --paper: #f7f4ee;
+  --surface: #ffffff;
+  --surface-2: #f1ece3;
+  --ink: #23201c;
+  --ink-soft: #625c53;
+  --ink-faint: #8d8579;
+  --line: #e2dbcf;
+  --accent: #1f6f6a;
+  --accent-soft: #d9ebe9;
+  --accent-ink: #14504c;
+  --on-accent: #ffffff;
+  --good: #2e7d4f;
+  --good-soft: #dff0e4;
+  --bad: #b3402f;
+  --bad-soft: #fae2dd;
+  --shadow: 0 1px 2px rgba(35, 32, 28, .06), 0 6px 18px rgba(35, 32, 28, .05);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+}
+
+.gk {
+  font-family: "Gentium Plus", "GFS Didot", "Palatino Linotype", Palatino,
+    "Book Antiqua", "New Athena Unicode", Georgia, serif;
+}
+
+/* ---------- layout ---------- */
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 96px; }
+
+header.top {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+header.top .bar {
+  max-width: 760px; margin: 0 auto; padding: 10px 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.brand { font-weight: 650; letter-spacing: .01em; margin-right: auto; }
+.brand span.gk { color: var(--accent); }
+
+nav.tabs {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 20;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+  display: flex; padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+}
+nav.tabs button {
+  flex: 1; border: 0; background: none; color: var(--ink-faint);
+  font: inherit; font-size: 12px; padding: 6px 2px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  border-radius: 8px;
+}
+nav.tabs button .ic { font-size: 17px; line-height: 1; }
+nav.tabs button[aria-selected="true"] { color: var(--accent); font-weight: 600; }
+
+@media (min-width: 700px) {
+  nav.tabs {
+    position: static; border: 0; border-bottom: 1px solid var(--line);
+    background: none; backdrop-filter: none;
+    max-width: 760px; margin: 0 auto; padding: 0 16px;
+  }
+  nav.tabs button { flex: 0 0 auto; flex-direction: row; gap: 6px; font-size: 14px; padding: 10px 14px; }
+  nav.tabs button .ic { font-size: 15px; }
+  nav.tabs button[aria-selected="true"] { box-shadow: inset 0 -2px 0 var(--accent); border-radius: 0; }
+  .wrap { padding-bottom: 48px; }
+}
+
+/* ---------- primitives ---------- */
+
+.card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 16px; margin: 14px 0;
+  box-shadow: var(--shadow);
+}
+.card.tight { padding: 12px 14px; }
+
+h1 { font-size: 22px; margin: 20px 0 4px; letter-spacing: -.01em; }
+h2 { font-size: 17px; margin: 22px 0 8px; letter-spacing: -.005em; }
+h3 { font-size: 14px; margin: 0 0 8px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .06em; font-weight: 650; }
+p { margin: 8px 0; }
+.sub { color: var(--ink-soft); font-size: 14px; margin: 2px 0 0; }
+.faint { color: var(--ink-faint); }
+.small { font-size: 13px; }
+
+button, .btn {
+  font: inherit; cursor: pointer; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--surface);
+  color: var(--ink); padding: 10px 14px;
+}
+button:hover, .btn:hover { border-color: var(--ink-faint); }
+button:disabled { opacity: .45; cursor: default; }
+button.primary {
+  background: var(--accent); border-color: var(--accent);
+  color: var(--on-accent); font-weight: 600;
+}
+button.primary:hover { filter: brightness(1.06); }
+button.ghost { background: none; border-color: transparent; color: var(--accent); padding: 8px 10px; }
+button.wide { width: 100%; }
+
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.row.end { justify-content: flex-end; }
+.spread { display: flex; gap: 10px; align-items: baseline; justify-content: space-between; }
+
+.pill {
+  display: inline-block; padding: 2px 9px; border-radius: 999px;
+  background: var(--surface-2); color: var(--ink-soft);
+  font-size: 12px; font-weight: 600; letter-spacing: .02em;
+}
+.pill.accent { background: var(--accent-soft); color: var(--accent-ink); }
+
+/* ---------- today ---------- */
+
+.streak { display: flex; gap: 14px; flex-wrap: wrap; }
+.stat { min-width: 70px; }
+.stat b { display: block; font-size: 25px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .06em; }
+
+/* ---------- drill ---------- */
+
+.progressbar { height: 4px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin: 4px 0 16px; }
+.progressbar i { display: block; height: 100%; background: var(--accent); transition: width .2s ease; }
+
+.prompt { text-align: center; padding: 18px 8px 6px; }
+.prompt .instruction { color: var(--ink-soft); font-size: 14px; }
+.prompt .form { font-size: 42px; line-height: 1.25; margin: 6px 0; word-break: break-word; }
+.prompt .lemma { font-size: 26px; margin: 6px 0 2px; }
+.prompt .gloss { color: var(--ink-soft); font-size: 15px; }
+.prompt .src { margin-top: 6px; }
+
+.fieldgroup { margin: 14px 0; }
+.fieldgroup > label {
+  display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--ink-faint); margin-bottom: 6px; font-weight: 650;
+}
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chips button {
+  padding: 8px 12px; border-radius: 999px; font-size: 14px; background: var(--surface-2);
+  border-color: transparent;
+}
+.chips button[aria-pressed="true"] {
+  background: var(--accent); border-color: var(--accent);
+  color: var(--on-accent); font-weight: 600;
+}
+
+input[type="text"] {
+  width: 100%; font: inherit; padding: 12px 14px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--ink);
+}
+input[type="text"]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+input.answer { font-size: 24px; text-align: center; }
+
+.verdict { border-radius: var(--radius); padding: 12px 14px; margin: 14px 0; }
+.verdict.right { background: var(--good-soft); border: 1px solid color-mix(in srgb, var(--good) 40%, transparent); }
+.verdict.wrong { background: var(--bad-soft); border: 1px solid color-mix(in srgb, var(--bad) 40%, transparent); }
+.verdict .head { font-weight: 700; margin-bottom: 2px; }
+.verdict.right .head { color: var(--good); }
+.verdict.wrong .head { color: var(--bad); }
+.verdict .note { font-size: 14px; color: var(--ink-soft); margin-top: 8px; }
+
+.keypad { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+.keypad button { padding: 7px 0; width: 34px; font-size: 17px; border-radius: 8px; background: var(--surface-2); border-color: transparent; }
+.keypad button.wide2 { width: 74px; font-size: 14px; }
+
+/* ---------- reading ---------- */
+
+.passage { font-size: 26px; line-height: 1.85; margin: 10px 0; }
+.passage .w {
+  cursor: pointer; border-radius: 5px; padding: 0 2px; margin: 0 -1px;
+  border-bottom: 1px dotted transparent;
+}
+.passage .w:hover { background: var(--surface-2); border-bottom-color: var(--ink-faint); }
+.passage .w.on { background: var(--accent-soft); color: var(--accent-ink); }
+
+.passage.interlinear { line-height: 1.4; }
+.passage.interlinear .w {
+  display: inline-block; text-align: center; margin: 0 8px 12px 0; vertical-align: top;
+}
+.passage.interlinear .w em {
+  display: block; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-style: normal; font-size: 11px; color: var(--ink-faint); line-height: 1.3;
+}
+.passage.interlinear .w em.p { color: var(--accent); font-size: 10px; letter-spacing: .02em; }
+
+.worddetail { border-left: 3px solid var(--accent); padding: 8px 0 8px 12px; margin: 12px 0; }
+.worddetail .g { font-size: 26px; }
+.passagelist { display: grid; gap: 8px; }
+.passagelist button {
+  text-align: left; display: flex; gap: 10px; align-items: baseline; width: 100%;
+}
+.passagelist .ref { font-weight: 650; min-width: 120px; }
+.passagelist .ti { color: var(--ink-soft); font-size: 14px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--good); display: inline-block; flex: 0 0 auto; }
+
+/* ---------- tables ---------- */
+
+.tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 6px -4px; padding: 0 4px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { padding: 7px 10px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+thead th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint); font-weight: 650; }
+tbody th { font-weight: 600; color: var(--ink-soft); font-size: 13px; }
+td.gk { font-size: 18px; }
+table caption { caption-side: bottom; text-align: left; color: var(--ink-faint); font-size: 13px; padding-top: 8px; white-space: normal; }
+
+details { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); margin: 8px 0; }
+details > summary {
+  cursor: pointer; padding: 12px 14px; font-weight: 600; list-style: none;
+  display: flex; align-items: baseline; gap: 8px;
+}
+details > summary::-webkit-details-marker { display: none; }
+details > summary::after { content: "＋"; margin-left: auto; color: var(--ink-faint); font-weight: 400; }
+details[open] > summary::after { content: "－"; }
+details > .body { padding: 0 14px 14px; }
+
+.bar { display: flex; height: 8px; border-radius: 999px; overflow: hidden; background: var(--surface-2); }
+.bar i { display: block; height: 100%; }
+.bar i.learned { background: var(--good); }
+.bar i.seen { background: var(--accent); }
+
+label.check { display: flex; gap: 9px; align-items: flex-start; padding: 8px 0; cursor: pointer; }
+label.check input { margin-top: 3px; flex: 0 0 auto; width: 17px; height: 17px; accent-color: var(--accent); }
+label.check .t { font-weight: 600; }
+label.check .d { color: var(--ink-faint); font-size: 13px; }
+
+.hidden { display: none !important; }
+</style>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='Georgia,serif'>Κ</text></svg>">
+
+<header class="top">
+  <div class="bar">
+    <div class="brand"><span class="gk">Κοινή</span> &nbsp;drill</div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs" role="tablist" aria-label="Sections"></nav>
+
+<main class="wrap" id="view"></main>
+
+<noscript>
+  <div class="wrap"><div class="card">
+    This app runs entirely in your browser and needs JavaScript switched on.
+  </div></div>
+</noscript>
+
+<script>
+/* ===== js/util.js ===== */
+/* util.js — Greek text helpers, storage, small utilities.
+   Everything hangs off the global GK namespace so the app runs from file://
+   with no build step and no module/CORS problems. */
+var GK = window.GK || {};
+window.GK = GK;
+
+GK.util = (function () {
+  'use strict';
+
+  /* ---------- Greek text ---------- */
+
+  // Strip accents, breathings, iota subscript, diaeresis. Keeps letters only.
+  function bare(s) {
+    return String(s)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .normalize('NFC')
+      .toLowerCase()
+      .replace(/ς/g, 'σ'); // final sigma -> sigma
+  }
+
+  // Loose comparison key: bare letters, no punctuation, no movable-nu parens.
+  function key(s) {
+    return bare(s)
+      .replace(/\(ν\)/g, '')
+      .replace(/[^\u0370-\u03ff\u1f00-\u1fff]/g, '');
+  }
+
+  // Beta-code-ish transliteration so you can type Greek on a Latin keyboard.
+  var TRANSLIT = {
+    a: 'α', b: 'β', g: 'γ', d: 'δ', e: 'ε', z: 'ζ', h: 'η', q: 'θ', i: 'ι',
+    k: 'κ', l: 'λ', m: 'μ', n: 'ν', c: 'ξ', o: 'ο', p: 'π', r: 'ρ', s: 'σ',
+    t: 'τ', u: 'υ', f: 'φ', x: 'χ', y: 'ψ', w: 'ω', v: 'ϝ'
+  };
+
+  // Convert any Latin letters in the string to Greek; leaves Greek untouched.
+  function translit(s) {
+    var out = '';
+    for (var i = 0; i < s.length; i++) {
+      var c = s[i];
+      var lower = c.toLowerCase();
+      if (Object.prototype.hasOwnProperty.call(TRANSLIT, lower)) {
+        // "th" digraph is nicer than q for most people; handle it inline.
+        if (lower === 't' && (s[i + 1] || '').toLowerCase() === 'h') {
+          out += 'θ'; i++; continue;
+        }
+        if (lower === 'p' && (s[i + 1] || '').toLowerCase() === 'h') {
+          out += 'φ'; i++; continue;
+        }
+        if (lower === 'c' && (s[i + 1] || '').toLowerCase() === 'h') {
+          out += 'χ'; i++; continue;
+        }
+        if (lower === 'p' && (s[i + 1] || '').toLowerCase() === 's') {
+          out += 'ψ'; i++; continue;
+        }
+        out += TRANSLIT[lower];
+      } else {
+        out += c;
+      }
+    }
+    // Final sigma at word end reads better.
+    return out.replace(/σ(?=$|[\s.,;·:!?])/g, 'ς');
+  }
+
+  // Does the learner's typed answer match any accepted spelling?
+  // Accent-insensitive by design: Mounce doesn't drill accents, and typing
+  // them on a phone is punishment, not practice.
+  function answerMatches(typed, accepted) {
+    var t = key(translit(typed || ''));
+    if (!t) return false;
+    for (var i = 0; i < accepted.length; i++) {
+      var a = key(accepted[i]);
+      if (t === a) return true;
+      // movable nu: λύουσι / λύουσιν both fine
+      if (t.replace(/ν$/, '') === a.replace(/ν$/, '')) return true;
+    }
+    return false;
+  }
+
+  // Letters in parentheses are optional: movable nu, an optional augment.
+  // "λύουσι(ν)" -> ["λύουσι", "λύουσιν"];  "(ἐ)λελύκειν" -> both spellings.
+  function variants(form) {
+    var without = form.replace(/\([^)]*\)/g, '');
+    var with_ = form.replace(/[()]/g, '');
+    return without === with_ ? [without] : [without, with_];
+  }
+
+  /* ---------- collections ---------- */
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+
+  function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  /* ---------- storage ---------- */
+
+  var PREFIX = 'greekdrill:';
+
+  function load(name, fallback) {
+    try {
+      var raw = localStorage.getItem(PREFIX + name);
+      return raw === null ? fallback : JSON.parse(raw);
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function save(name, value) {
+    try {
+      localStorage.setItem(PREFIX + name, JSON.stringify(value));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function clearAll() {
+    try {
+      var doomed = [];
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf(PREFIX) === 0) doomed.push(k);
+      }
+      doomed.forEach(function (k) { localStorage.removeItem(k); });
+    } catch (e) { /* nothing we can do */ }
+  }
+
+  /* ---------- dates ---------- */
+
+  function today() {
+    var d = new Date();
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+
+  function daysBetween(isoA, isoB) {
+    var a = new Date(isoA + 'T00:00:00');
+    var b = new Date(isoB + 'T00:00:00');
+    return Math.round((b - a) / 86400000);
+  }
+
+  /* ---------- dom ---------- */
+
+  function el(tag, attrs, children) {
+    var node = document.createElement(tag);
+    if (attrs) {
+      Object.keys(attrs).forEach(function (k) {
+        if (k === 'class') node.className = attrs[k];
+        else if (k === 'text') node.textContent = attrs[k];
+        else if (k === 'html') node.innerHTML = attrs[k];
+        else if (k.indexOf('on') === 0) node.addEventListener(k.slice(2), attrs[k]);
+        else if (attrs[k] !== null && attrs[k] !== undefined) node.setAttribute(k, attrs[k]);
+      });
+    }
+    (children || []).forEach(function (c) {
+      if (c === null || c === undefined) return;
+      node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+    });
+    return node;
+  }
+
+  return {
+    bare: bare, key: key, translit: translit, answerMatches: answerMatches,
+    variants: variants,
+    shuffle: shuffle, pick: pick,
+    load: load, save: save, clearAll: clearAll,
+    today: today, daysBetween: daysBetween,
+    el: el
+  };
+})();
+
+/* ===== js/data-nominals.js ===== */
+/* data-nominals.js — article, noun, adjective and pronoun paradigms.
+   forms[gender][number] = [nom, gen, dat, acc, voc]  (voc may be null) */
+var GK = window.GK || {}; window.GK = GK;
+
+GK.CASES = ['nom', 'gen', 'dat', 'acc', 'voc'];
+GK.CASE_LABEL = {
+  nom: 'nominative', gen: 'genitive', dat: 'dative',
+  acc: 'accusative', voc: 'vocative'
+};
+GK.NUMBERS = ['sg', 'pl'];
+GK.NUMBER_LABEL = { sg: 'singular', pl: 'plural' };
+GK.GENDERS = ['m', 'f', 'n'];
+GK.GENDER_LABEL = { m: 'masculine', f: 'feminine', n: 'neuter' };
+
+GK.nominals = [
+  {
+    id: 'article',
+    name: 'The article',
+    lemma: 'ὁ, ἡ, τό',
+    gloss: 'the',
+    kind: 'article',
+    decl: '2-1-2',
+    chapter: 'BBG 6',
+    note: 'Learn this cold. Every ending you meet later echoes it.',
+    forms: {
+      m: { sg: ['ὁ', 'τοῦ', 'τῷ', 'τόν', null], pl: ['οἱ', 'τῶν', 'τοῖς', 'τούς', null] },
+      f: { sg: ['ἡ', 'τῆς', 'τῇ', 'τήν', null], pl: ['αἱ', 'τῶν', 'ταῖς', 'τάς', null] },
+      n: { sg: ['τό', 'τοῦ', 'τῷ', 'τό', null], pl: ['τά', 'τῶν', 'τοῖς', 'τά', null] }
+    }
+  },
+  {
+    id: 'logos',
+    name: 'λόγος — 2nd declension masculine',
+    lemma: 'λόγος, -ου, ὁ',
+    gloss: 'word, statement',
+    kind: 'noun',
+    decl: '2nd',
+    chapter: 'BBG 7',
+    forms: {
+      m: { sg: ['λόγος', 'λόγου', 'λόγῳ', 'λόγον', 'λόγε'], pl: ['λόγοι', 'λόγων', 'λόγοις', 'λόγους', 'λόγοι'] }
+    }
+  },
+  {
+    id: 'ergon',
+    name: 'ἔργον — 2nd declension neuter',
+    lemma: 'ἔργον, -ου, τό',
+    gloss: 'work, deed',
+    kind: 'noun',
+    decl: '2nd',
+    chapter: 'BBG 7',
+    note: 'Neuter nominative and accusative are always identical — context decides.',
+    forms: {
+      n: { sg: ['ἔργον', 'ἔργου', 'ἔργῳ', 'ἔργον', 'ἔργον'], pl: ['ἔργα', 'ἔργων', 'ἔργοις', 'ἔργα', 'ἔργα'] }
+    }
+  },
+  {
+    id: 'hora',
+    name: 'ὥρα — 1st declension, alpha stem',
+    lemma: 'ὥρα, -ας, ἡ',
+    gloss: 'hour, time',
+    kind: 'noun',
+    decl: '1st',
+    chapter: 'BBG 8',
+    note: 'Stem ends in ε, ι or ρ, so alpha runs all the way through the singular.',
+    forms: {
+      f: { sg: ['ὥρα', 'ὥρας', 'ὥρᾳ', 'ὥραν', 'ὥρα'], pl: ['ὧραι', 'ὡρῶν', 'ὥραις', 'ὥρας', 'ὧραι'] }
+    }
+  },
+  {
+    id: 'graphe',
+    name: 'γραφή — 1st declension, eta stem',
+    lemma: 'γραφή, -ῆς, ἡ',
+    gloss: 'writing, Scripture',
+    kind: 'noun',
+    decl: '1st',
+    chapter: 'BBG 8',
+    forms: {
+      f: { sg: ['γραφή', 'γραφῆς', 'γραφῇ', 'γραφήν', 'γραφή'], pl: ['γραφαί', 'γραφῶν', 'γραφαῖς', 'γραφάς', 'γραφαί'] }
+    }
+  },
+  {
+    id: 'doxa',
+    name: 'δόξα — 1st declension, alpha-to-eta',
+    lemma: 'δόξα, -ης, ἡ',
+    gloss: 'glory',
+    kind: 'noun',
+    decl: '1st',
+    chapter: 'BBG 8',
+    note: 'Stem ends in a sibilant, so the singular flips to eta in gen/dat.',
+    forms: {
+      f: { sg: ['δόξα', 'δόξης', 'δόξῃ', 'δόξαν', 'δόξα'], pl: ['δόξαι', 'δοξῶν', 'δόξαις', 'δόξας', 'δόξαι'] }
+    }
+  },
+  {
+    id: 'prophetes',
+    name: 'προφήτης — 1st declension masculine',
+    lemma: 'προφήτης, -ου, ὁ',
+    gloss: 'prophet',
+    kind: 'noun',
+    decl: '1st',
+    chapter: 'BBG 8',
+    note: 'A masculine noun with first declension endings — the article gives it away.',
+    forms: {
+      m: { sg: ['προφήτης', 'προφήτου', 'προφήτῃ', 'προφήτην', 'προφῆτα'], pl: ['προφῆται', 'προφητῶν', 'προφήταις', 'προφήτας', 'προφῆται'] }
+    }
+  },
+  {
+    id: 'sarx',
+    name: 'σάρξ — 3rd declension, velar stem',
+    lemma: 'σάρξ, σαρκός, ἡ',
+    gloss: 'flesh',
+    kind: 'noun',
+    decl: '3rd',
+    chapter: 'BBG 10',
+    note: 'Find the stem from the genitive singular (σαρκ-), not the nominative.',
+    forms: {
+      f: { sg: ['σάρξ', 'σαρκός', 'σαρκί', 'σάρκα', 'σάρξ'], pl: ['σάρκες', 'σαρκῶν', 'σαρξί(ν)', 'σάρκας', 'σάρκες'] }
+    }
+  },
+  {
+    id: 'onoma',
+    name: 'ὄνομα — 3rd declension neuter',
+    lemma: 'ὄνομα, -ατος, τό',
+    gloss: 'name',
+    kind: 'noun',
+    decl: '3rd',
+    chapter: 'BBG 10',
+    forms: {
+      n: { sg: ['ὄνομα', 'ὀνόματος', 'ὀνόματι', 'ὄνομα', 'ὄνομα'], pl: ['ὀνόματα', 'ὀνομάτων', 'ὀνόμασι(ν)', 'ὀνόματα', 'ὀνόματα'] }
+    }
+  },
+  {
+    id: 'pistis',
+    name: 'πίστις — 3rd declension, iota stem',
+    lemma: 'πίστις, -εως, ἡ',
+    gloss: 'faith, faithfulness',
+    kind: 'noun',
+    decl: '3rd',
+    chapter: 'BBG 11',
+    note: 'Watch the genitive singular -εως; it is not the -ος you expect.',
+    forms: {
+      f: { sg: ['πίστις', 'πίστεως', 'πίστει', 'πίστιν', 'πίστι'], pl: ['πίστεις', 'πίστεων', 'πίστεσι(ν)', 'πίστεις', 'πίστεις'] }
+    }
+  },
+  {
+    id: 'pater',
+    name: 'πατήρ — 3rd declension, syncopated',
+    lemma: 'πατήρ, πατρός, ὁ',
+    gloss: 'father',
+    kind: 'noun',
+    decl: '3rd',
+    chapter: 'BBG 11',
+    forms: {
+      m: { sg: ['πατήρ', 'πατρός', 'πατρί', 'πατέρα', 'πάτερ'], pl: ['πατέρες', 'πατέρων', 'πατράσι(ν)', 'πατέρας', 'πατέρες'] }
+    }
+  },
+  {
+    id: 'basileus',
+    name: 'βασιλεύς — 3rd declension, upsilon stem',
+    lemma: 'βασιλεύς, -έως, ὁ',
+    gloss: 'king',
+    kind: 'noun',
+    decl: '3rd',
+    chapter: 'BBG 11',
+    forms: {
+      m: { sg: ['βασιλεύς', 'βασιλέως', 'βασιλεῖ', 'βασιλέα', 'βασιλεῦ'], pl: ['βασιλεῖς', 'βασιλέων', 'βασιλεῦσι(ν)', 'βασιλεῖς', 'βασιλεῖς'] }
+    }
+  },
+  {
+    id: 'agathos',
+    name: 'ἀγαθός — 2-1-2 adjective',
+    lemma: 'ἀγαθός, -ή, -όν',
+    gloss: 'good',
+    kind: 'adj',
+    decl: '2-1-2',
+    chapter: 'BBG 9',
+    forms: {
+      m: { sg: ['ἀγαθός', 'ἀγαθοῦ', 'ἀγαθῷ', 'ἀγαθόν', 'ἀγαθέ'], pl: ['ἀγαθοί', 'ἀγαθῶν', 'ἀγαθοῖς', 'ἀγαθούς', 'ἀγαθοί'] },
+      f: { sg: ['ἀγαθή', 'ἀγαθῆς', 'ἀγαθῇ', 'ἀγαθήν', 'ἀγαθή'], pl: ['ἀγαθαί', 'ἀγαθῶν', 'ἀγαθαῖς', 'ἀγαθάς', 'ἀγαθαί'] },
+      n: { sg: ['ἀγαθόν', 'ἀγαθοῦ', 'ἀγαθῷ', 'ἀγαθόν', 'ἀγαθόν'], pl: ['ἀγαθά', 'ἀγαθῶν', 'ἀγαθοῖς', 'ἀγαθά', 'ἀγαθά'] }
+    }
+  },
+  {
+    id: 'pas',
+    name: 'πᾶς — 3-1-3 adjective',
+    lemma: 'πᾶς, πᾶσα, πᾶν',
+    gloss: 'each, every; all',
+    kind: 'adj',
+    decl: '3-1-3',
+    chapter: 'BBG 13',
+    note: 'Third declension in the masculine and neuter, first declension in the feminine.',
+    forms: {
+      m: { sg: ['πᾶς', 'παντός', 'παντί', 'πάντα', null], pl: ['πάντες', 'πάντων', 'πᾶσι(ν)', 'πάντας', null] },
+      f: { sg: ['πᾶσα', 'πάσης', 'πάσῃ', 'πᾶσαν', null], pl: ['πᾶσαι', 'πασῶν', 'πάσαις', 'πάσας', null] },
+      n: { sg: ['πᾶν', 'παντός', 'παντί', 'πᾶν', null], pl: ['πάντα', 'πάντων', 'πᾶσι(ν)', 'πάντα', null] }
+    }
+  },
+  {
+    id: 'autos',
+    name: 'αὐτός — third person pronoun',
+    lemma: 'αὐτός, -ή, -ό',
+    gloss: 'he, she, it; him-/her-/itself; same',
+    kind: 'pronoun',
+    decl: '2-1-2',
+    chapter: 'BBG 12',
+    note: 'Identical to ἀγαθός except the neuter nom/acc singular drops the final ν.',
+    forms: {
+      m: { sg: ['αὐτός', 'αὐτοῦ', 'αὐτῷ', 'αὐτόν', null], pl: ['αὐτοί', 'αὐτῶν', 'αὐτοῖς', 'αὐτούς', null] },
+      f: { sg: ['αὐτή', 'αὐτῆς', 'αὐτῇ', 'αὐτήν', null], pl: ['αὐταί', 'αὐτῶν', 'αὐταῖς', 'αὐτάς', null] },
+      n: { sg: ['αὐτό', 'αὐτοῦ', 'αὐτῷ', 'αὐτό', null], pl: ['αὐτά', 'αὐτῶν', 'αὐτοῖς', 'αὐτά', null] }
+    }
+  },
+  {
+    id: 'houtos',
+    name: 'οὗτος — near demonstrative',
+    lemma: 'οὗτος, αὕτη, τοῦτο',
+    gloss: 'this; these',
+    kind: 'pronoun',
+    decl: '2-1-2',
+    chapter: 'BBG 13',
+    note: 'If the ending has an ο or ω sound, the stem is τουτ-; otherwise ταυτ-.',
+    forms: {
+      m: { sg: ['οὗτος', 'τούτου', 'τούτῳ', 'τοῦτον', null], pl: ['οὗτοι', 'τούτων', 'τούτοις', 'τούτους', null] },
+      f: { sg: ['αὕτη', 'ταύτης', 'ταύτῃ', 'ταύτην', null], pl: ['αὗται', 'τούτων', 'ταύταις', 'ταύτας', null] },
+      n: { sg: ['τοῦτο', 'τούτου', 'τούτῳ', 'τοῦτο', null], pl: ['ταῦτα', 'τούτων', 'τούτοις', 'ταῦτα', null] }
+    }
+  },
+  {
+    id: 'ekeinos',
+    name: 'ἐκεῖνος — far demonstrative',
+    lemma: 'ἐκεῖνος, -η, -ο',
+    gloss: 'that; those',
+    kind: 'pronoun',
+    decl: '2-1-2',
+    chapter: 'BBG 13',
+    forms: {
+      m: { sg: ['ἐκεῖνος', 'ἐκείνου', 'ἐκείνῳ', 'ἐκεῖνον', null], pl: ['ἐκεῖνοι', 'ἐκείνων', 'ἐκείνοις', 'ἐκείνους', null] },
+      f: { sg: ['ἐκείνη', 'ἐκείνης', 'ἐκείνῃ', 'ἐκείνην', null], pl: ['ἐκεῖναι', 'ἐκείνων', 'ἐκείναις', 'ἐκείνας', null] },
+      n: { sg: ['ἐκεῖνο', 'ἐκείνου', 'ἐκείνῳ', 'ἐκεῖνο', null], pl: ['ἐκεῖνα', 'ἐκείνων', 'ἐκείνοις', 'ἐκεῖνα', null] }
+    }
+  },
+  {
+    id: 'hos',
+    name: 'ὅς — relative pronoun',
+    lemma: 'ὅς, ἥ, ὅ',
+    gloss: 'who, which, that',
+    kind: 'pronoun',
+    decl: '2-1-2',
+    chapter: 'BBG 14',
+    note: 'Rough breathing plus accent. Do not confuse ὅ (relative) with ὁ (article).',
+    forms: {
+      m: { sg: ['ὅς', 'οὗ', 'ᾧ', 'ὅν', null], pl: ['οἵ', 'ὧν', 'οἷς', 'οὕς', null] },
+      f: { sg: ['ἥ', 'ἧς', 'ᾗ', 'ἥν', null], pl: ['αἵ', 'ὧν', 'αἷς', 'ἅς', null] },
+      n: { sg: ['ὅ', 'οὗ', 'ᾧ', 'ὅ', null], pl: ['ἅ', 'ὧν', 'οἷς', 'ἅ', null] }
+    }
+  },
+  {
+    id: 'ego',
+    name: 'ἐγώ — first person pronoun',
+    lemma: 'ἐγώ',
+    gloss: 'I; we',
+    kind: 'pronoun',
+    decl: 'personal',
+    chapter: 'BBG 11',
+    note: 'The short forms (μου, μοι, με) are unemphatic; the long forms carry stress.',
+    genderless: true,
+    forms: {
+      m: { sg: ['ἐγώ', 'ἐμοῦ', 'ἐμοί', 'ἐμέ', null], pl: ['ἡμεῖς', 'ἡμῶν', 'ἡμῖν', 'ἡμᾶς', null] }
+    }
+  },
+  {
+    id: 'su',
+    name: 'σύ — second person pronoun',
+    lemma: 'σύ',
+    gloss: 'you (sg); you (pl)',
+    kind: 'pronoun',
+    decl: 'personal',
+    chapter: 'BBG 11',
+    genderless: true,
+    forms: {
+      m: { sg: ['σύ', 'σοῦ', 'σοί', 'σέ', null], pl: ['ὑμεῖς', 'ὑμῶν', 'ὑμῖν', 'ὑμᾶς', null] }
+    }
+  },
+  {
+    id: 'tis',
+    name: 'τίς — interrogative pronoun',
+    lemma: 'τίς, τί',
+    gloss: 'who? what? why?',
+    kind: 'pronoun',
+    decl: '3rd',
+    chapter: 'BBG 14',
+    note: 'Always an acute on the first syllable. Unaccented τις / τι means "someone, something".',
+    forms: {
+      m: { sg: ['τίς', 'τίνος', 'τίνι', 'τίνα', null], pl: ['τίνες', 'τίνων', 'τίσι(ν)', 'τίνας', null] },
+      n: { sg: ['τί', 'τίνος', 'τίνι', 'τί', null], pl: ['τίνα', 'τίνων', 'τίσι(ν)', 'τίνα', null] }
+    }
+  }
+];
+
+/* Case-ending charts — the thing worth actually memorising, per Mounce. */
+GK.endingCharts = [
+  {
+    id: 'endings-2-1-2',
+    name: 'First and second declension endings',
+    chapter: 'BBG 9',
+    rows: [
+      ['', '2 masc', '1 fem', '2 neut'],
+      ['nom sg', 'ς', '—', 'ν'],
+      ['gen sg', 'υ', 'ς', 'υ'],
+      ['dat sg', 'ι', 'ι', 'ι'],
+      ['acc sg', 'ν', 'ν', 'ν'],
+      ['nom pl', 'ι', 'ι', 'α'],
+      ['gen pl', 'ων', 'ων', 'ων'],
+      ['dat pl', 'ις', 'ις', 'ις'],
+      ['acc pl', 'υς', 'ς', 'α']
+    ]
+  },
+  {
+    id: 'endings-3',
+    name: 'Third declension endings',
+    chapter: 'BBG 10',
+    rows: [
+      ['', 'masc / fem', 'neuter'],
+      ['nom sg', 'ς or —', '—'],
+      ['gen sg', 'ος', 'ος'],
+      ['dat sg', 'ι', 'ι'],
+      ['acc sg', 'α or ν', '—'],
+      ['nom pl', 'ες', 'α'],
+      ['gen pl', 'ων', 'ων'],
+      ['dat pl', 'σι(ν)', 'σι(ν)'],
+      ['acc pl', 'ας', 'α']
+    ]
+  }
+];
+
+/* ===== js/data-verbs.js ===== */
+/* data-verbs.js — verbal paradigms, principal parts, and the master charts.
+   forms keys: 1s 2s 3s 1p 2p 3p (imperatives use 2s 3s 2p 3p only). */
+var GK = window.GK || {}; window.GK = GK;
+
+GK.PERSONS = ['1', '2', '3'];
+GK.PERSON_LABEL = { '1': '1st person', '2': '2nd person', '3': '3rd person' };
+GK.TENSES = ['present', 'imperfect', 'future', 'aorist', 'perfect', 'pluperfect'];
+GK.TENSE_LABEL = {
+  present: 'present', imperfect: 'imperfect', future: 'future',
+  aorist: 'aorist', perfect: 'perfect', pluperfect: 'pluperfect'
+};
+GK.VOICES = ['active', 'middle', 'passive', 'mp'];
+GK.VOICE_LABEL = {
+  active: 'active', middle: 'middle', passive: 'passive', mp: 'middle/passive'
+};
+GK.MOODS = ['indicative', 'subjunctive', 'imperative'];
+GK.MOOD_LABEL = {
+  indicative: 'indicative', subjunctive: 'subjunctive', imperative: 'imperative'
+};
+
+GK.verbs = [
+  {
+    id: 'luo',
+    lemma: 'λύω',
+    gloss: 'I loose, untie, destroy',
+    klass: 'regular ω-verb',
+    chapter: 'BBG 16',
+    note: 'The model verb. Every ending you learn here transfers everywhere else.',
+    principalParts: ['λύω', 'λύσω', 'ἔλυσα', 'λέλυκα', 'λέλυμαι', 'ἐλύθην'],
+    paradigms: [
+      { tense: 'present', voice: 'active', mood: 'indicative', chapter: 'BBG 16',
+        forms: { '1s': 'λύω', '2s': 'λύεις', '3s': 'λύει', '1p': 'λύομεν', '2p': 'λύετε', '3p': 'λύουσι(ν)' } },
+      { tense: 'present', voice: 'mp', mood: 'indicative', chapter: 'BBG 18',
+        forms: { '1s': 'λύομαι', '2s': 'λύῃ', '3s': 'λύεται', '1p': 'λυόμεθα', '2p': 'λύεσθε', '3p': 'λύονται' } },
+      { tense: 'imperfect', voice: 'active', mood: 'indicative', chapter: 'BBG 21',
+        forms: { '1s': 'ἔλυον', '2s': 'ἔλυες', '3s': 'ἔλυε(ν)', '1p': 'ἐλύομεν', '2p': 'ἐλύετε', '3p': 'ἔλυον' } },
+      { tense: 'imperfect', voice: 'mp', mood: 'indicative', chapter: 'BBG 21',
+        forms: { '1s': 'ἐλυόμην', '2s': 'ἐλύου', '3s': 'ἐλύετο', '1p': 'ἐλυόμεθα', '2p': 'ἐλύεσθε', '3p': 'ἐλύοντο' } },
+      { tense: 'future', voice: 'active', mood: 'indicative', chapter: 'BBG 19',
+        forms: { '1s': 'λύσω', '2s': 'λύσεις', '3s': 'λύσει', '1p': 'λύσομεν', '2p': 'λύσετε', '3p': 'λύσουσι(ν)' } },
+      { tense: 'future', voice: 'middle', mood: 'indicative', chapter: 'BBG 19',
+        forms: { '1s': 'λύσομαι', '2s': 'λύσῃ', '3s': 'λύσεται', '1p': 'λυσόμεθα', '2p': 'λύσεσθε', '3p': 'λύσονται' } },
+      { tense: 'future', voice: 'passive', mood: 'indicative', chapter: 'BBG 24',
+        forms: { '1s': 'λυθήσομαι', '2s': 'λυθήσῃ', '3s': 'λυθήσεται', '1p': 'λυθησόμεθα', '2p': 'λυθήσεσθε', '3p': 'λυθήσονται' } },
+      { tense: 'aorist', voice: 'active', mood: 'indicative', chapter: 'BBG 22',
+        note: 'First aorist: augment + stem + σα.',
+        forms: { '1s': 'ἔλυσα', '2s': 'ἔλυσας', '3s': 'ἔλυσε(ν)', '1p': 'ἐλύσαμεν', '2p': 'ἐλύσατε', '3p': 'ἔλυσαν' } },
+      { tense: 'aorist', voice: 'middle', mood: 'indicative', chapter: 'BBG 22',
+        forms: { '1s': 'ἐλυσάμην', '2s': 'ἐλύσω', '3s': 'ἐλύσατο', '1p': 'ἐλυσάμεθα', '2p': 'ἐλύσασθε', '3p': 'ἐλύσαντο' } },
+      { tense: 'aorist', voice: 'passive', mood: 'indicative', chapter: 'BBG 24',
+        note: 'Augment + stem + θη + secondary active endings.',
+        forms: { '1s': 'ἐλύθην', '2s': 'ἐλύθης', '3s': 'ἐλύθη', '1p': 'ἐλύθημεν', '2p': 'ἐλύθητε', '3p': 'ἐλύθησαν' } },
+      { tense: 'perfect', voice: 'active', mood: 'indicative', chapter: 'BBG 25',
+        note: 'Reduplication + stem + κα.',
+        forms: { '1s': 'λέλυκα', '2s': 'λέλυκας', '3s': 'λέλυκε(ν)', '1p': 'λελύκαμεν', '2p': 'λελύκατε', '3p': 'λελύκασι(ν)' } },
+      { tense: 'perfect', voice: 'mp', mood: 'indicative', chapter: 'BBG 25',
+        note: 'Reduplication + stem + primary middle/passive endings, no connecting vowel.',
+        forms: { '1s': 'λέλυμαι', '2s': 'λέλυσαι', '3s': 'λέλυται', '1p': 'λελύμεθα', '2p': 'λέλυσθε', '3p': 'λέλυνται' } },
+      { tense: 'pluperfect', voice: 'active', mood: 'indicative', chapter: 'BBG 25',
+        forms: { '1s': '(ἐ)λελύκειν', '2s': '(ἐ)λελύκεις', '3s': '(ἐ)λελύκει', '1p': '(ἐ)λελύκειμεν', '2p': '(ἐ)λελύκειτε', '3p': '(ἐ)λελύκεισαν' } },
+      { tense: 'present', voice: 'active', mood: 'subjunctive', chapter: 'BBG 31',
+        note: 'Lengthened connecting vowel: ω/η throughout. That is the whole trick.',
+        forms: { '1s': 'λύω', '2s': 'λύῃς', '3s': 'λύῃ', '1p': 'λύωμεν', '2p': 'λύητε', '3p': 'λύωσι(ν)' } },
+      { tense: 'present', voice: 'mp', mood: 'subjunctive', chapter: 'BBG 31',
+        forms: { '1s': 'λύωμαι', '2s': 'λύῃ', '3s': 'λύηται', '1p': 'λυώμεθα', '2p': 'λύησθε', '3p': 'λύωνται' } },
+      { tense: 'aorist', voice: 'active', mood: 'subjunctive', chapter: 'BBG 31',
+        note: 'No augment outside the indicative.',
+        forms: { '1s': 'λύσω', '2s': 'λύσῃς', '3s': 'λύσῃ', '1p': 'λύσωμεν', '2p': 'λύσητε', '3p': 'λύσωσι(ν)' } },
+      { tense: 'aorist', voice: 'middle', mood: 'subjunctive', chapter: 'BBG 31',
+        forms: { '1s': 'λύσωμαι', '2s': 'λύσῃ', '3s': 'λύσηται', '1p': 'λυσώμεθα', '2p': 'λύσησθε', '3p': 'λύσωνται' } },
+      { tense: 'aorist', voice: 'passive', mood: 'subjunctive', chapter: 'BBG 31',
+        forms: { '1s': 'λυθῶ', '2s': 'λυθῇς', '3s': 'λυθῇ', '1p': 'λυθῶμεν', '2p': 'λυθῆτε', '3p': 'λυθῶσι(ν)' } },
+      { tense: 'present', voice: 'active', mood: 'imperative', chapter: 'BBG 33',
+        forms: { '2s': 'λῦε', '3s': 'λυέτω', '2p': 'λύετε', '3p': 'λυέτωσαν' } },
+      { tense: 'present', voice: 'mp', mood: 'imperative', chapter: 'BBG 33',
+        forms: { '2s': 'λύου', '3s': 'λυέσθω', '2p': 'λύεσθε', '3p': 'λυέσθωσαν' } },
+      { tense: 'aorist', voice: 'active', mood: 'imperative', chapter: 'BBG 33',
+        forms: { '2s': 'λῦσον', '3s': 'λυσάτω', '2p': 'λύσατε', '3p': 'λυσάτωσαν' } },
+      { tense: 'aorist', voice: 'middle', mood: 'imperative', chapter: 'BBG 33',
+        forms: { '2s': 'λῦσαι', '3s': 'λυσάσθω', '2p': 'λύσασθε', '3p': 'λυσάσθωσαν' } },
+      { tense: 'aorist', voice: 'passive', mood: 'imperative', chapter: 'BBG 33',
+        forms: { '2s': 'λύθητι', '3s': 'λυθήτω', '2p': 'λύθητε', '3p': 'λυθήτωσαν' } }
+    ],
+    infinitives: [
+      { tense: 'present', voice: 'active', form: 'λύειν' },
+      { tense: 'present', voice: 'mp', form: 'λύεσθαι' },
+      { tense: 'future', voice: 'active', form: 'λύσειν' },
+      { tense: 'aorist', voice: 'active', form: 'λῦσαι' },
+      { tense: 'aorist', voice: 'middle', form: 'λύσασθαι' },
+      { tense: 'aorist', voice: 'passive', form: 'λυθῆναι' },
+      { tense: 'perfect', voice: 'active', form: 'λελυκέναι' },
+      { tense: 'perfect', voice: 'mp', form: 'λελύσθαι' }
+    ],
+    participles: [
+      { tense: 'present', voice: 'active', forms: ['λύων', 'λύουσα', 'λῦον'], gen: 'λύοντος, λυούσης, λύοντος' },
+      { tense: 'present', voice: 'mp', forms: ['λυόμενος', 'λυομένη', 'λυόμενον'], gen: 'λυομένου, λυομένης, λυομένου' },
+      { tense: 'aorist', voice: 'active', forms: ['λύσας', 'λύσασα', 'λῦσαν'], gen: 'λύσαντος, λυσάσης, λύσαντος' },
+      { tense: 'aorist', voice: 'middle', forms: ['λυσάμενος', 'λυσαμένη', 'λυσάμενον'], gen: 'λυσαμένου, λυσαμένης, λυσαμένου' },
+      { tense: 'aorist', voice: 'passive', forms: ['λυθείς', 'λυθεῖσα', 'λυθέν'], gen: 'λυθέντος, λυθείσης, λυθέντος' },
+      { tense: 'perfect', voice: 'active', forms: ['λελυκώς', 'λελυκυῖα', 'λελυκός'], gen: 'λελυκότος, λελυκυίας, λελυκότος' },
+      { tense: 'perfect', voice: 'mp', forms: ['λελυμένος', 'λελυμένη', 'λελυμένον'], gen: 'λελυμένου, λελυμένης, λελυμένου' }
+    ]
+  },
+
+  {
+    id: 'eimi',
+    lemma: 'εἰμί',
+    gloss: 'I am',
+    klass: 'irregular',
+    chapter: 'BBG 8',
+    note: 'The most common verb in the New Testament, and it obeys nothing. Just know it.',
+    principalParts: ['εἰμί', 'ἔσομαι', '—', '—', '—', '—'],
+    paradigms: [
+      { tense: 'present', voice: 'active', mood: 'indicative', chapter: 'BBG 8',
+        forms: { '1s': 'εἰμί', '2s': 'εἶ', '3s': 'ἐστί(ν)', '1p': 'ἐσμέν', '2p': 'ἐστέ', '3p': 'εἰσί(ν)' } },
+      { tense: 'imperfect', voice: 'active', mood: 'indicative', chapter: 'BBG 21',
+        forms: { '1s': 'ἤμην', '2s': 'ἦς', '3s': 'ἦν', '1p': 'ἦμεν', '2p': 'ἦτε', '3p': 'ἦσαν' } },
+      { tense: 'future', voice: 'middle', mood: 'indicative', chapter: 'BBG 19',
+        forms: { '1s': 'ἔσομαι', '2s': 'ἔσῃ', '3s': 'ἔσται', '1p': 'ἐσόμεθα', '2p': 'ἔσεσθε', '3p': 'ἔσονται' } },
+      { tense: 'present', voice: 'active', mood: 'subjunctive', chapter: 'BBG 31',
+        forms: { '1s': 'ὦ', '2s': 'ᾖς', '3s': 'ᾖ', '1p': 'ὦμεν', '2p': 'ἦτε', '3p': 'ὦσι(ν)' } },
+      { tense: 'present', voice: 'active', mood: 'imperative', chapter: 'BBG 33',
+        forms: { '2s': 'ἴσθι', '3s': 'ἔστω', '2p': 'ἔστε', '3p': 'ἔστωσαν' } }
+    ],
+    infinitives: [{ tense: 'present', voice: 'active', form: 'εἶναι' }],
+    participles: [
+      { tense: 'present', voice: 'active', forms: ['ὤν', 'οὖσα', 'ὄν'], gen: 'ὄντος, οὔσης, ὄντος' }
+    ]
+  },
+
+  {
+    id: 'agapao',
+    lemma: 'ἀγαπάω',
+    gloss: 'I love',
+    klass: 'alpha contract',
+    chapter: 'BBG 17',
+    note: 'α + ο/ω → ω;  α + ε/η → α (long).  The contraction hides the connecting vowel.',
+    principalParts: ['ἀγαπάω', 'ἀγαπήσω', 'ἠγάπησα', 'ἠγάπηκα', 'ἠγάπημαι', 'ἠγαπήθην'],
+    paradigms: [
+      { tense: 'present', voice: 'active', mood: 'indicative', chapter: 'BBG 17',
+        forms: { '1s': 'ἀγαπῶ', '2s': 'ἀγαπᾷς', '3s': 'ἀγαπᾷ', '1p': 'ἀγαπῶμεν', '2p': 'ἀγαπᾶτε', '3p': 'ἀγαπῶσι(ν)' } },
+      { tense: 'present', voice: 'mp', mood: 'indicative', chapter: 'BBG 18',
+        forms: { '1s': 'ἀγαπῶμαι', '2s': 'ἀγαπᾷ', '3s': 'ἀγαπᾶται', '1p': 'ἀγαπώμεθα', '2p': 'ἀγαπᾶσθε', '3p': 'ἀγαπῶνται' } },
+      { tense: 'imperfect', voice: 'active', mood: 'indicative', chapter: 'BBG 21',
+        forms: { '1s': 'ἠγάπων', '2s': 'ἠγάπας', '3s': 'ἠγάπα', '1p': 'ἠγαπῶμεν', '2p': 'ἠγαπᾶτε', '3p': 'ἠγάπων' } },
+      { tense: 'future', voice: 'active', mood: 'indicative', chapter: 'BBG 19',
+        note: 'Contract verbs lengthen the stem vowel before the σ — no contraction left to see.',
+        forms: { '1s': 'ἀγαπήσω', '2s': 'ἀγαπήσεις', '3s': 'ἀγαπήσει', '1p': 'ἀγαπήσομεν', '2p': 'ἀγαπήσετε', '3p': 'ἀγαπήσουσι(ν)' } },
+      { tense: 'aorist', voice: 'active', mood: 'indicative', chapter: 'BBG 22',
+        forms: { '1s': 'ἠγάπησα', '2s': 'ἠγάπησας', '3s': 'ἠγάπησε(ν)', '1p': 'ἠγαπήσαμεν', '2p': 'ἠγαπήσατε', '3p': 'ἠγάπησαν' } }
+    ],
+    infinitives: [
+      { tense: 'present', voice: 'active', form: 'ἀγαπᾶν' },
+      { tense: 'aorist', voice: 'active', form: 'ἀγαπῆσαι' }
+    ],
+    participles: [
+      { tense: 'present', voice: 'active', forms: ['ἀγαπῶν', 'ἀγαπῶσα', 'ἀγαπῶν'], gen: 'ἀγαπῶντος, ἀγαπώσης, ἀγαπῶντος' }
+    ]
+  },
+
+  {
+    id: 'poieo',
+    lemma: 'ποιέω',
+    gloss: 'I do, make',
+    klass: 'epsilon contract',
+    chapter: 'BBG 17',
+    note: 'ε + ε → ει;  ε + ο → ου;  ε disappears before a long vowel.',
+    principalParts: ['ποιέω', 'ποιήσω', 'ἐποίησα', 'πεποίηκα', 'πεποίημαι', 'ἐποιήθην'],
+    paradigms: [
+      { tense: 'present', voice: 'active', mood: 'indicative', chapter: 'BBG 17',
+        forms: { '1s': 'ποιῶ', '2s': 'ποιεῖς', '3s': 'ποιεῖ', '1p': 'ποιοῦμεν', '2p': 'ποιεῖτε', '3p': 'ποιοῦσι(ν)' } },
+      { tense: 'present', voice: 'mp', mood: 'indicative', chapter: 'BBG 18',
+        forms: { '1s': 'ποιοῦμαι', '2s': 'ποιῇ', '3s': 'ποιεῖται', '1p': 'ποιούμεθα', '2p': 'ποιεῖσθε', '3p': 'ποιοῦνται' } },
+      { tense: 'imperfect', voice: 'active', mood: 'indicative', chapter: 'BBG 21',
+        forms: { '1s': 'ἐποίουν', '2s': 'ἐποίεις', '3s': 'ἐποίει', '1p': 'ἐποιοῦμεν', '2p': 'ἐποιεῖτε', '3p': 'ἐποίουν' } },
+      { tense: 'aorist', voice: 'active', mood: 'indicative', chapter: 'BBG 22',
+        forms: { '1s': 'ἐποίησα', '2s': 'ἐποίησας', '3s': 'ἐποίησε(ν)', '1p': 'ἐποιήσαμεν', '2p': 'ἐποιήσατε', '3p': 'ἐποίησαν' } }
+    ],
+    infinitives: [
+      { tense: 'present', voice: 'active', form: 'ποιεῖν' },
+      { tense: 'aorist', voice: 'active', form: 'ποιῆσαι' }
+    ],
+    participles: [
+      { tense: 'present', voice: 'active', forms: ['ποιῶν', 'ποιοῦσα', 'ποιοῦν'], gen: 'ποιοῦντος, ποιούσης, ποιοῦντος' }
+    ]
+  },
+
+  {
+    id: 'pleroo',
+    lemma: 'πληρόω',
+    gloss: 'I fill, fulfil',
+    klass: 'omicron contract',
+    chapter: 'BBG 17',
+    note: 'ο + long vowel → ω;  ο + ε/ο → ου;  ο + ει/ῃ/οι → οι.',
+    principalParts: ['πληρόω', 'πληρώσω', 'ἐπλήρωσα', 'πεπλήρωκα', 'πεπλήρωμαι', 'ἐπληρώθην'],
+    paradigms: [
+      { tense: 'present', voice: 'active', mood: 'indicative', chapter: 'BBG 17',
+        forms: { '1s': 'πληρῶ', '2s': 'πληροῖς', '3s': 'πληροῖ', '1p': 'πληροῦμεν', '2p': 'πληροῦτε', '3p': 'πληροῦσι(ν)' } },
+      { tense: 'present', voice: 'mp', mood: 'indicative', chapter: 'BBG 18',
+        forms: { '1s': 'πληροῦμαι', '2s': 'πληροῖ', '3s': 'πληροῦται', '1p': 'πληρούμεθα', '2p': 'πληροῦσθε', '3p': 'πληροῦνται' } }
+    ],
+    infinitives: [{ tense: 'present', voice: 'active', form: 'πληροῦν' }],
+    participles: [
+      { tense: 'present', voice: 'active', forms: ['πληρῶν', 'πληροῦσα', 'πληροῦν'], gen: 'πληροῦντος, πληρούσης, πληροῦντος' }
+    ]
+  },
+
+  {
+    id: 'ballo',
+    lemma: 'βάλλω',
+    gloss: 'I throw, put',
+    klass: 'second aorist',
+    chapter: 'BBG 23',
+    note: 'Second aorist: augment + a changed stem + the imperfect (secondary) endings. If the stem differs from the present, it is aorist.',
+    principalParts: ['βάλλω', 'βαλῶ', 'ἔβαλον', 'βέβληκα', 'βέβλημαι', 'ἐβλήθην'],
+    paradigms: [
+      { tense: 'present', voice: 'active', mood: 'indicative', chapter: 'BBG 16',
+        forms: { '1s': 'βάλλω', '2s': 'βάλλεις', '3s': 'βάλλει', '1p': 'βάλλομεν', '2p': 'βάλλετε', '3p': 'βάλλουσι(ν)' } },
+      { tense: 'aorist', voice: 'active', mood: 'indicative', chapter: 'BBG 23',
+        forms: { '1s': 'ἔβαλον', '2s': 'ἔβαλες', '3s': 'ἔβαλε(ν)', '1p': 'ἐβάλομεν', '2p': 'ἐβάλετε', '3p': 'ἔβαλον' } },
+      { tense: 'aorist', voice: 'middle', mood: 'indicative', chapter: 'BBG 23',
+        forms: { '1s': 'ἐβαλόμην', '2s': 'ἐβάλου', '3s': 'ἐβάλετο', '1p': 'ἐβαλόμεθα', '2p': 'ἐβάλεσθε', '3p': 'ἐβάλοντο' } },
+      { tense: 'aorist', voice: 'active', mood: 'subjunctive', chapter: 'BBG 31',
+        forms: { '1s': 'βάλω', '2s': 'βάλῃς', '3s': 'βάλῃ', '1p': 'βάλωμεν', '2p': 'βάλητε', '3p': 'βάλωσι(ν)' } }
+    ],
+    infinitives: [
+      { tense: 'present', voice: 'active', form: 'βάλλειν' },
+      { tense: 'aorist', voice: 'active', form: 'βαλεῖν' }
+    ],
+    participles: [
+      { tense: 'aorist', voice: 'active', forms: ['βαλών', 'βαλοῦσα', 'βαλόν'], gen: 'βαλόντος, βαλούσης, βαλόντος' }
+    ]
+  },
+
+  {
+    id: 'erchomai',
+    lemma: 'ἔρχομαι',
+    gloss: 'I come, go',
+    klass: 'deponent / second aorist',
+    chapter: 'BBG 18',
+    note: 'Middle in form, active in meaning. Never translate it passively.',
+    principalParts: ['ἔρχομαι', 'ἐλεύσομαι', 'ἦλθον', 'ἐλήλυθα', '—', '—'],
+    paradigms: [
+      { tense: 'present', voice: 'mp', mood: 'indicative', chapter: 'BBG 18',
+        forms: { '1s': 'ἔρχομαι', '2s': 'ἔρχῃ', '3s': 'ἔρχεται', '1p': 'ἐρχόμεθα', '2p': 'ἔρχεσθε', '3p': 'ἔρχονται' } },
+      { tense: 'imperfect', voice: 'mp', mood: 'indicative', chapter: 'BBG 21',
+        forms: { '1s': 'ἠρχόμην', '2s': 'ἤρχου', '3s': 'ἤρχετο', '1p': 'ἠρχόμεθα', '2p': 'ἤρχεσθε', '3p': 'ἤρχοντο' } },
+      { tense: 'aorist', voice: 'active', mood: 'indicative', chapter: 'BBG 23',
+        forms: { '1s': 'ἦλθον', '2s': 'ἦλθες', '3s': 'ἦλθε(ν)', '1p': 'ἤλθομεν', '2p': 'ἤλθετε', '3p': 'ἦλθον' } },
+      { tense: 'future', voice: 'middle', mood: 'indicative', chapter: 'BBG 19',
+        forms: { '1s': 'ἐλεύσομαι', '2s': 'ἐλεύσῃ', '3s': 'ἐλεύσεται', '1p': 'ἐλευσόμεθα', '2p': 'ἐλεύσεσθε', '3p': 'ἐλεύσονται' } }
+    ],
+    infinitives: [
+      { tense: 'present', voice: 'mp', form: 'ἔρχεσθαι' },
+      { tense: 'aorist', voice: 'active', form: 'ἐλθεῖν' }
+    ],
+    participles: [
+      { tense: 'aorist', voice: 'active', forms: ['ἐλθών', 'ἐλθοῦσα', 'ἐλθόν'], gen: 'ἐλθόντος, ἐλθούσης, ἐλθόντος' }
+    ]
+  },
+
+  {
+    id: 'ginomai',
+    lemma: 'γίνομαι',
+    gloss: 'I become, am, happen',
+    klass: 'deponent / second aorist',
+    chapter: 'BBG 18',
+    principalParts: ['γίνομαι', 'γενήσομαι', 'ἐγενόμην', 'γέγονα', 'γεγένημαι', 'ἐγενήθην'],
+    paradigms: [
+      { tense: 'present', voice: 'mp', mood: 'indicative', chapter: 'BBG 18',
+        forms: { '1s': 'γίνομαι', '2s': 'γίνῃ', '3s': 'γίνεται', '1p': 'γινόμεθα', '2p': 'γίνεσθε', '3p': 'γίνονται' } },
+      { tense: 'aorist', voice: 'middle', mood: 'indicative', chapter: 'BBG 23',
+        forms: { '1s': 'ἐγενόμην', '2s': 'ἐγένου', '3s': 'ἐγένετο', '1p': 'ἐγενόμεθα', '2p': 'ἐγένεσθε', '3p': 'ἐγένοντο' } },
+      { tense: 'perfect', voice: 'active', mood: 'indicative', chapter: 'BBG 25',
+        forms: { '1s': 'γέγονα', '2s': 'γέγονας', '3s': 'γέγονε(ν)', '1p': 'γεγόναμεν', '2p': 'γεγόνατε', '3p': 'γεγόνασι(ν)' } }
+    ],
+    infinitives: [{ tense: 'aorist', voice: 'middle', form: 'γενέσθαι' }],
+    participles: [
+      { tense: 'aorist', voice: 'middle', forms: ['γενόμενος', 'γενομένη', 'γενόμενον'], gen: 'γενομένου, γενομένης, γενομένου' }
+    ]
+  },
+
+  {
+    id: 'didomi',
+    lemma: 'δίδωμι',
+    gloss: 'I give',
+    klass: 'μι-verb',
+    chapter: 'BBG 34',
+    note: 'μι-verbs reduplicate with iota and use their own endings. Learn δίδωμι and the rest fall in line.',
+    principalParts: ['δίδωμι', 'δώσω', 'ἔδωκα', 'δέδωκα', 'δέδομαι', 'ἐδόθην'],
+    paradigms: [
+      { tense: 'present', voice: 'active', mood: 'indicative', chapter: 'BBG 34',
+        forms: { '1s': 'δίδωμι', '2s': 'δίδως', '3s': 'δίδωσι(ν)', '1p': 'δίδομεν', '2p': 'δίδοτε', '3p': 'διδόασι(ν)' } },
+      { tense: 'imperfect', voice: 'active', mood: 'indicative', chapter: 'BBG 34',
+        forms: { '1s': 'ἐδίδουν', '2s': 'ἐδίδους', '3s': 'ἐδίδου', '1p': 'ἐδίδομεν', '2p': 'ἐδίδοτε', '3p': 'ἐδίδοσαν' } },
+      { tense: 'aorist', voice: 'active', mood: 'indicative', chapter: 'BBG 34',
+        forms: { '1s': 'ἔδωκα', '2s': 'ἔδωκας', '3s': 'ἔδωκε(ν)', '1p': 'ἐδώκαμεν', '2p': 'ἐδώκατε', '3p': 'ἔδωκαν' } }
+    ],
+    infinitives: [
+      { tense: 'present', voice: 'active', form: 'διδόναι' },
+      { tense: 'aorist', voice: 'active', form: 'δοῦναι' }
+    ],
+    participles: [
+      { tense: 'aorist', voice: 'active', forms: ['δούς', 'δοῦσα', 'δόν'], gen: 'δόντος, δούσης, δόντος' }
+    ]
+  }
+];
+
+/* Principal parts worth having by heart. */
+GK.principalParts = [
+  { lemma: 'ἀγαπάω', gloss: 'I love', parts: ['ἀγαπάω', 'ἀγαπήσω', 'ἠγάπησα', 'ἠγάπηκα', 'ἠγάπημαι', 'ἠγαπήθην'] },
+  { lemma: 'ἀκούω', gloss: 'I hear', parts: ['ἀκούω', 'ἀκούσω', 'ἤκουσα', 'ἀκήκοα', '—', 'ἠκούσθην'] },
+  { lemma: 'αἴρω', gloss: 'I take up, take away', parts: ['αἴρω', 'ἀρῶ', 'ἦρα', 'ἦρκα', 'ἦρμαι', 'ἤρθην'] },
+  { lemma: 'ἀποθνῄσκω', gloss: 'I die', parts: ['ἀποθνῄσκω', 'ἀποθανοῦμαι', 'ἀπέθανον', '—', '—', '—'] },
+  { lemma: 'ἀποκρίνομαι', gloss: 'I answer', parts: ['ἀποκρίνομαι', '—', 'ἀπεκρινάμην', '—', '—', 'ἀπεκρίθην'] },
+  { lemma: 'ἀποστέλλω', gloss: 'I send', parts: ['ἀποστέλλω', 'ἀποστελῶ', 'ἀπέστειλα', 'ἀπέσταλκα', 'ἀπέσταλμαι', 'ἀπεστάλην'] },
+  { lemma: 'βάλλω', gloss: 'I throw, put', parts: ['βάλλω', 'βαλῶ', 'ἔβαλον', 'βέβληκα', 'βέβλημαι', 'ἐβλήθην'] },
+  { lemma: 'βαπτίζω', gloss: 'I baptise', parts: ['βαπτίζω', 'βαπτίσω', 'ἐβάπτισα', '—', 'βεβάπτισμαι', 'ἐβαπτίσθην'] },
+  { lemma: 'βλέπω', gloss: 'I see', parts: ['βλέπω', 'βλέψω', 'ἔβλεψα', '—', '—', '—'] },
+  { lemma: 'γίνομαι', gloss: 'I become, happen', parts: ['γίνομαι', 'γενήσομαι', 'ἐγενόμην', 'γέγονα', 'γεγένημαι', 'ἐγενήθην'] },
+  { lemma: 'γινώσκω', gloss: 'I know', parts: ['γινώσκω', 'γνώσομαι', 'ἔγνων', 'ἔγνωκα', 'ἔγνωσμαι', 'ἐγνώσθην'] },
+  { lemma: 'γράφω', gloss: 'I write', parts: ['γράφω', 'γράψω', 'ἔγραψα', 'γέγραφα', 'γέγραμμαι', 'ἐγράφην'] },
+  { lemma: 'διδάσκω', gloss: 'I teach', parts: ['διδάσκω', 'διδάξω', 'ἐδίδαξα', '—', '—', 'ἐδιδάχθην'] },
+  { lemma: 'δίδωμι', gloss: 'I give', parts: ['δίδωμι', 'δώσω', 'ἔδωκα', 'δέδωκα', 'δέδομαι', 'ἐδόθην'] },
+  { lemma: 'ἐγείρω', gloss: 'I raise up', parts: ['ἐγείρω', 'ἐγερῶ', 'ἤγειρα', '—', 'ἐγήγερμαι', 'ἠγέρθην'] },
+  { lemma: 'ἔρχομαι', gloss: 'I come, go', parts: ['ἔρχομαι', 'ἐλεύσομαι', 'ἦλθον', 'ἐλήλυθα', '—', '—'] },
+  { lemma: 'ἐσθίω', gloss: 'I eat', parts: ['ἐσθίω', 'φάγομαι', 'ἔφαγον', '—', '—', '—'] },
+  { lemma: 'ἔχω', gloss: 'I have', parts: ['ἔχω', 'ἕξω', 'ἔσχον', 'ἔσχηκα', '—', '—'] },
+  { lemma: 'θέλω', gloss: 'I wish, will', parts: ['θέλω', 'θελήσω', 'ἠθέλησα', '—', '—', '—'] },
+  { lemma: 'καλέω', gloss: 'I call', parts: ['καλέω', 'καλέσω', 'ἐκάλεσα', 'κέκληκα', 'κέκλημαι', 'ἐκλήθην'] },
+  { lemma: 'λαμβάνω', gloss: 'I take, receive', parts: ['λαμβάνω', 'λήμψομαι', 'ἔλαβον', 'εἴληφα', 'εἴλημμαι', 'ἐλήμφθην'] },
+  { lemma: 'λέγω', gloss: 'I say', parts: ['λέγω', 'ἐρῶ', 'εἶπον', 'εἴρηκα', 'εἴρημαι', 'ἐρρέθην'] },
+  { lemma: 'λύω', gloss: 'I loose', parts: ['λύω', 'λύσω', 'ἔλυσα', 'λέλυκα', 'λέλυμαι', 'ἐλύθην'] },
+  { lemma: 'μένω', gloss: 'I remain', parts: ['μένω', 'μενῶ', 'ἔμεινα', 'μεμένηκα', '—', '—'] },
+  { lemma: 'ὁράω', gloss: 'I see', parts: ['ὁράω', 'ὄψομαι', 'εἶδον', 'ἑώρακα', '—', 'ὤφθην'] },
+  { lemma: 'πιστεύω', gloss: 'I believe', parts: ['πιστεύω', 'πιστεύσω', 'ἐπίστευσα', 'πεπίστευκα', 'πεπίστευμαι', 'ἐπιστεύθην'] },
+  { lemma: 'ποιέω', gloss: 'I do, make', parts: ['ποιέω', 'ποιήσω', 'ἐποίησα', 'πεποίηκα', 'πεποίημαι', 'ἐποιήθην'] },
+  { lemma: 'σῴζω', gloss: 'I save', parts: ['σῴζω', 'σώσω', 'ἔσωσα', 'σέσωκα', 'σέσῳσμαι', 'ἐσώθην'] }
+];
+
+GK.PP_LABELS = [
+  'present active', 'future active', 'aorist active',
+  'perfect active', 'perfect mid/pass', 'aorist passive'
+];
+
+/* The charts Mounce tells you to memorise rather than derive. */
+GK.verbCharts = [
+  {
+    id: 'endings-primary-active',
+    name: 'Primary active endings',
+    caption: 'Used in the present, future and perfect. The parenthesised letters are what the connecting vowel swallows.',
+    rows: [
+      ['', 'singular', 'plural'],
+      ['1st', 'ω  (from ο + —)', 'μεν'],
+      ['2nd', 'ς  (→ εις)', 'τε'],
+      ['3rd', 'ι  (→ ει)', 'νσι  (→ ουσι(ν))']
+    ]
+  },
+  {
+    id: 'endings-secondary-active',
+    name: 'Secondary active endings',
+    caption: 'Used in the imperfect, aorist and pluperfect — the augmented tenses.',
+    rows: [
+      ['', 'singular', 'plural'],
+      ['1st', 'ν', 'μεν'],
+      ['2nd', 'ς', 'τε'],
+      ['3rd', '—  (or ν movable)', 'ν  (→ ον / σαν)']
+    ]
+  },
+  {
+    id: 'endings-primary-mp',
+    name: 'Primary middle/passive endings',
+    caption: 'Present, future and perfect middle or passive.',
+    rows: [
+      ['', 'singular', 'plural'],
+      ['1st', 'μαι', 'μεθα'],
+      ['2nd', 'σαι  (→ ῃ)', 'σθε'],
+      ['3rd', 'ται', 'νται']
+    ]
+  },
+  {
+    id: 'endings-secondary-mp',
+    name: 'Secondary middle/passive endings',
+    caption: 'Imperfect and aorist middle or passive.',
+    rows: [
+      ['', 'singular', 'plural'],
+      ['1st', 'μην', 'μεθα'],
+      ['2nd', 'σο  (→ ου)', 'σθε'],
+      ['3rd', 'το', 'ντο']
+    ]
+  },
+  {
+    id: 'master-chart',
+    name: 'Tense formatives — the master chart',
+    caption: 'Augment or reduplication + stem + tense formative + connecting vowel + ending. Spot the formative and the tense names itself.',
+    rows: [
+      ['tense / voice', 'augment or redup.', 'formative', 'endings'],
+      ['present act', '—', '—', 'primary active'],
+      ['present mid/pass', '—', '—', 'primary mid/pass'],
+      ['imperfect act', 'ἐ', '—', 'secondary active'],
+      ['imperfect mid/pass', 'ἐ', '—', 'secondary mid/pass'],
+      ['future act', '—', 'σ', 'primary active'],
+      ['future mid', '—', 'σ', 'primary mid/pass'],
+      ['future pass', '—', 'θησ', 'primary mid/pass'],
+      ['1st aorist act', 'ἐ', 'σα', 'secondary active'],
+      ['1st aorist mid', 'ἐ', 'σα', 'secondary mid/pass'],
+      ['2nd aorist act', 'ἐ', 'changed stem', 'secondary active'],
+      ['aorist pass', 'ἐ', 'θη', 'secondary active'],
+      ['perfect act', 'redup. + ε', 'κα', 'primary active'],
+      ['perfect mid/pass', 'redup. + ε', '—', 'primary mid/pass']
+    ]
+  },
+  {
+    id: 'participle-morphemes',
+    name: 'Participle morphemes',
+    caption: 'Tense stem + participle morpheme + case ending. Adverbial participles are usually translated with "-ing" (present) or "having ..." (aorist).',
+    rows: [
+      ['tense / voice', 'masc / neut', 'feminine', 'example'],
+      ['present act', 'οντ', 'ουσα', 'λύων, λύουσα, λῦον'],
+      ['present mid/pass', 'ομεν', 'ομεν', 'λυόμενος, -η, -ον'],
+      ['1st aorist act', 'σαντ', 'σασα', 'λύσας, λύσασα, λῦσαν'],
+      ['2nd aorist act', 'οντ', 'ουσα', 'βαλών, βαλοῦσα, βαλόν'],
+      ['aorist mid', 'σαμεν', 'σαμεν', 'λυσάμενος, -η, -ον'],
+      ['aorist pass', 'θεντ', 'θεισα', 'λυθείς, λυθεῖσα, λυθέν'],
+      ['perfect act', 'κοτ', 'κυια', 'λελυκώς, λελυκυῖα, λελυκός'],
+      ['perfect mid/pass', 'μεν', 'μεν', 'λελυμένος, -η, -ον']
+    ]
+  }
+];
+
+/* ===== js/data-vocab.js ===== */
+/* data-vocab.js — high-frequency New Testament vocabulary.
+   freq = approximate number of occurrences in the Greek NT; it is there to
+   order your effort, not to be quoted as a statistic. */
+var GK = window.GK || {}; window.GK = GK;
+
+GK.vocab = [
+  { g: 'ὁ, ἡ, τό', e: 'the', pos: 'article', freq: 19870 },
+  { g: 'καί', e: 'and, even, also', pos: 'conjunction', freq: 9161 },
+  { g: 'αὐτός, -ή, -ό', e: 'he, she, it; himself; same', pos: 'pronoun', freq: 5595 },
+  { g: 'σύ', e: 'you', pos: 'pronoun', freq: 2905 },
+  { g: 'δέ', e: 'but, and', pos: 'conjunction', freq: 2792 },
+  { g: 'ἐν', e: 'in, on, among (+ dat)', pos: 'preposition', freq: 2752 },
+  { g: 'ἐγώ', e: 'I', pos: 'pronoun', freq: 2666 },
+  { g: 'εἰμί', e: 'I am, exist', pos: 'verb', freq: 2460 },
+  { g: 'λέγω', e: 'I say, speak', pos: 'verb', freq: 2354 },
+  { g: 'εἰς', e: 'into, toward (+ acc)', pos: 'preposition', freq: 1767 },
+  { g: 'οὐ, οὐκ, οὐχ', e: 'not', pos: 'adverb', freq: 1606 },
+  { g: 'οὗτος, αὕτη, τοῦτο', e: 'this; he, she, it', pos: 'pronoun', freq: 1388 },
+  { g: 'ὅς, ἥ, ὅ', e: 'who, which, that', pos: 'pronoun', freq: 1365 },
+  { g: 'θεός, -οῦ, ὁ', e: 'God, god', pos: 'noun', freq: 1317 },
+  { g: 'ὅτι', e: 'that, because', pos: 'conjunction', freq: 1296 },
+  { g: 'πᾶς, πᾶσα, πᾶν', e: 'each, every; all', pos: 'adjective', freq: 1243 },
+  { g: 'μή', e: 'not, lest', pos: 'particle', freq: 1042 },
+  { g: 'γάρ', e: 'for, then', pos: 'conjunction', freq: 1041 },
+  { g: 'Ἰησοῦς, -οῦ, ὁ', e: 'Jesus, Joshua', pos: 'noun', freq: 917 },
+  { g: 'ἐκ, ἐξ', e: 'from, out of (+ gen)', pos: 'preposition', freq: 914 },
+  { g: 'ἐπί', e: 'on, over, when (+ gen, dat, acc)', pos: 'preposition', freq: 890 },
+  { g: 'κύριος, -ου, ὁ', e: 'Lord, lord, master, sir', pos: 'noun', freq: 717 },
+  { g: 'ἔχω', e: 'I have, hold', pos: 'verb', freq: 708 },
+  { g: 'πρός', e: 'to, toward, with (+ acc)', pos: 'preposition', freq: 700 },
+  { g: 'γίνομαι', e: 'I become, am, happen', pos: 'verb', freq: 669 },
+  { g: 'διά', e: 'through (+ gen); on account of (+ acc)', pos: 'preposition', freq: 667 },
+  { g: 'ἵνα', e: 'in order that, that', pos: 'conjunction', freq: 663 },
+  { g: 'ἀπό', e: 'from (+ gen)', pos: 'preposition', freq: 646 },
+  { g: 'ἀλλά', e: 'but, yet, rather', pos: 'conjunction', freq: 638 },
+  { g: 'ἔρχομαι', e: 'I come, go', pos: 'verb', freq: 634 },
+  { g: 'ποιέω', e: 'I do, make', pos: 'verb', freq: 568 },
+  { g: 'τίς, τί', e: 'who? what? why?', pos: 'pronoun', freq: 555 },
+  { g: 'ἄνθρωπος, -ου, ὁ', e: 'man, person, humankind', pos: 'noun', freq: 550 },
+  { g: 'Χριστός, -οῦ, ὁ', e: 'Christ, Messiah, Anointed One', pos: 'noun', freq: 529 },
+  { g: 'τις, τι', e: 'someone, something, a certain', pos: 'pronoun', freq: 525 },
+  { g: 'ὡς', e: 'as, like, when, about', pos: 'conjunction', freq: 504 },
+  { g: 'εἰ', e: 'if', pos: 'conjunction', freq: 502 },
+  { g: 'οὖν', e: 'therefore, then', pos: 'conjunction', freq: 498 },
+  { g: 'κατά', e: 'down from (+ gen); according to (+ acc)', pos: 'preposition', freq: 473 },
+  { g: 'μετά', e: 'with (+ gen); after (+ acc)', pos: 'preposition', freq: 469 },
+  { g: 'ὁράω', e: 'I see, notice', pos: 'verb', freq: 454 },
+  { g: 'ἀκούω', e: 'I hear, obey', pos: 'verb', freq: 428 },
+  { g: 'πολύς, πολλή, πολύ', e: 'much, many; often', pos: 'adjective', freq: 416 },
+  { g: 'δίδωμι', e: 'I give, grant', pos: 'verb', freq: 415 },
+  { g: 'πατήρ, πατρός, ὁ', e: 'father', pos: 'noun', freq: 413 },
+  { g: 'ἡμέρα, -ας, ἡ', e: 'day', pos: 'noun', freq: 389 },
+  { g: 'πνεῦμα, -ατος, τό', e: 'spirit, Spirit, wind, breath', pos: 'noun', freq: 379 },
+  { g: 'υἱός, -οῦ, ὁ', e: 'son, descendant', pos: 'noun', freq: 377 },
+  { g: 'εἷς, μία, ἕν', e: 'one', pos: 'adjective', freq: 345 },
+  { g: 'ἀδελφός, -οῦ, ὁ', e: 'brother', pos: 'noun', freq: 343 },
+  { g: 'ἤ', e: 'or, than', pos: 'conjunction', freq: 343 },
+  { g: 'περί', e: 'concerning (+ gen); around (+ acc)', pos: 'preposition', freq: 333 },
+  { g: 'λόγος, -ου, ὁ', e: 'word, statement, message', pos: 'noun', freq: 330 },
+  { g: 'ἑαυτοῦ, -ῆς, -οῦ', e: 'himself, herself, itself', pos: 'pronoun', freq: 319 },
+  { g: 'οἶδα', e: 'I know, understand', pos: 'verb', freq: 318 },
+  { g: 'λαλέω', e: 'I speak, say', pos: 'verb', freq: 296 },
+  { g: 'οὐρανός, -οῦ, ὁ', e: 'heaven, sky', pos: 'noun', freq: 273 },
+  { g: 'ἐκεῖνος, -η, -ο', e: 'that; he, she, it', pos: 'pronoun', freq: 265 },
+  { g: 'μαθητής, -οῦ, ὁ', e: 'disciple', pos: 'noun', freq: 261 },
+  { g: 'λαμβάνω', e: 'I take, receive', pos: 'verb', freq: 258 },
+  { g: 'γῆ, γῆς, ἡ', e: 'earth, land, region', pos: 'noun', freq: 250 },
+  { g: 'μέγας, μεγάλη, μέγα', e: 'large, great', pos: 'adjective', freq: 243 },
+  { g: 'πίστις, -εως, ἡ', e: 'faith, faithfulness', pos: 'noun', freq: 243 },
+  { g: 'πιστεύω', e: 'I believe, have faith in', pos: 'verb', freq: 241 },
+  { g: 'οὐδέ', e: 'and not, neither, nor', pos: 'conjunction', freq: 143 },
+  { g: 'ἅγιος, -ία, -ον', e: 'holy; (pl) saints', pos: 'adjective', freq: 233 },
+  { g: 'ἀποκρίνομαι', e: 'I answer', pos: 'verb', freq: 231 },
+  { g: 'ὄνομα, -ατος, τό', e: 'name, reputation', pos: 'noun', freq: 231 },
+  { g: 'γινώσκω', e: 'I know, come to know', pos: 'verb', freq: 222 },
+  { g: 'ὑπό', e: 'by (+ gen); under (+ acc)', pos: 'preposition', freq: 220 },
+  { g: 'ἐξέρχομαι', e: 'I go out', pos: 'verb', freq: 218 },
+  { g: 'ἀνήρ, ἀνδρός, ὁ', e: 'man, husband', pos: 'noun', freq: 216 },
+  { g: 'γυνή, γυναικός, ἡ', e: 'woman, wife', pos: 'noun', freq: 215 },
+  { g: 'τε', e: 'and (so), so', pos: 'conjunction', freq: 215 },
+  { g: 'δύναμαι', e: 'I am able, can', pos: 'verb', freq: 210 },
+  { g: 'θέλω', e: 'I wish, will, desire', pos: 'verb', freq: 208 },
+  { g: 'οὕτως', e: 'thus, so, in this manner', pos: 'adverb', freq: 208 },
+  { g: 'ἰδού', e: 'behold! look!', pos: 'particle', freq: 200 },
+  { g: 'Ἰουδαῖος, -αία, -αῖον', e: 'Jewish; a Jew', pos: 'adjective', freq: 195 },
+  { g: 'εἰσέρχομαι', e: 'I go in, enter', pos: 'verb', freq: 194 },
+  { g: 'νόμος, -ου, ὁ', e: 'law, principle', pos: 'noun', freq: 194 },
+  { g: 'παρά', e: 'from (+ gen); beside (+ dat); alongside (+ acc)', pos: 'preposition', freq: 194 },
+  { g: 'γράφω', e: 'I write', pos: 'verb', freq: 191 },
+  { g: 'κόσμος, -ου, ὁ', e: 'world, universe, humankind', pos: 'noun', freq: 186 },
+  { g: 'καθώς', e: 'as, even as', pos: 'conjunction', freq: 182 },
+  { g: 'μέν', e: 'on the one hand, indeed', pos: 'particle', freq: 179 },
+  { g: 'χείρ, χειρός, ἡ', e: 'hand, arm, finger', pos: 'noun', freq: 177 },
+  { g: 'εὑρίσκω', e: 'I find', pos: 'verb', freq: 176 },
+  { g: 'ἄγγελος, -ου, ὁ', e: 'angel, messenger', pos: 'noun', freq: 175 },
+  { g: 'ὄχλος, -ου, ὁ', e: 'crowd, multitude', pos: 'noun', freq: 175 },
+  { g: 'ἁμαρτία, -ας, ἡ', e: 'sin', pos: 'noun', freq: 173 },
+  { g: 'ἔργον, -ου, τό', e: 'work, deed, action', pos: 'noun', freq: 169 },
+  { g: 'ἄν', e: '(untranslatable particle of contingency)', pos: 'particle', freq: 166 },
+  { g: 'δόξα, -ης, ἡ', e: 'glory, majesty, fame', pos: 'noun', freq: 166 },
+  { g: 'βασιλεία, -ας, ἡ', e: 'kingdom, reign', pos: 'noun', freq: 162 },
+  { g: 'ἔθνος, -ους, τό', e: 'nation; (pl) Gentiles', pos: 'noun', freq: 162 },
+  { g: 'πόλις, -εως, ἡ', e: 'city', pos: 'noun', freq: 162 },
+  { g: 'τότε', e: 'then, thereafter', pos: 'adverb', freq: 160 },
+  { g: 'ἐσθίω', e: 'I eat', pos: 'verb', freq: 158 },
+  { g: 'Παῦλος, -ου, ὁ', e: 'Paul', pos: 'noun', freq: 158 },
+  { g: 'καρδία, -ας, ἡ', e: 'heart, inner self', pos: 'noun', freq: 156 },
+  { g: 'Πέτρος, -ου, ὁ', e: 'Peter', pos: 'noun', freq: 156 },
+  { g: 'ἄλλος, -η, -ο', e: 'other, another', pos: 'adjective', freq: 155 },
+  { g: 'πρῶτος, -η, -ον', e: 'first, earlier', pos: 'adjective', freq: 155 },
+  { g: 'ἵστημι', e: 'I stand, set', pos: 'verb', freq: 154 },
+  { g: 'πορεύομαι', e: 'I go, proceed, live', pos: 'verb', freq: 153 },
+  { g: 'ὑπέρ', e: 'on behalf of (+ gen); above (+ acc)', pos: 'preposition', freq: 150 },
+  { g: 'καλέω', e: 'I call, name, invite', pos: 'verb', freq: 148 },
+  { g: 'νῦν', e: 'now, the present', pos: 'adverb', freq: 147 },
+  { g: 'σάρξ, σαρκός, ἡ', e: 'flesh, body', pos: 'noun', freq: 147 },
+  { g: 'ἕως', e: 'until, as far as', pos: 'conjunction', freq: 146 },
+  { g: 'ἐγείρω', e: 'I raise up, wake', pos: 'verb', freq: 144 },
+  { g: 'ἀγαπάω', e: 'I love, cherish', pos: 'verb', freq: 143 },
+  { g: 'προφήτης, -ου, ὁ', e: 'prophet', pos: 'noun', freq: 144 },
+  { g: 'ἀγάπη, -ης, ἡ', e: 'love', pos: 'noun', freq: 116 },
+  { g: 'ἀποθνῄσκω', e: 'I die, am about to die', pos: 'verb', freq: 111 },
+  { g: 'ζωή, -ῆς, ἡ', e: 'life', pos: 'noun', freq: 135 },
+  { g: 'ἀποστέλλω', e: 'I send (with a commission)', pos: 'verb', freq: 132 },
+  { g: 'βλέπω', e: 'I see, look at', pos: 'verb', freq: 133 },
+  { g: 'μένω', e: 'I remain, abide', pos: 'verb', freq: 118 },
+  { g: 'σῴζω', e: 'I save, deliver, heal', pos: 'verb', freq: 106 },
+  { g: 'ζάω', e: 'I live', pos: 'verb', freq: 140 },
+  { g: 'βάλλω', e: 'I throw, put', pos: 'verb', freq: 122 },
+  { g: 'διδάσκω', e: 'I teach', pos: 'verb', freq: 97 },
+  { g: 'ὥρα, -ας, ἡ', e: 'hour, occasion, moment', pos: 'noun', freq: 106 },
+  { g: 'γραφή, -ῆς, ἡ', e: 'writing, Scripture', pos: 'noun', freq: 50 },
+  { g: 'εἰρήνη, -ης, ἡ', e: 'peace', pos: 'noun', freq: 92 },
+  { g: 'χάρις, -ιτος, ἡ', e: 'grace, favour, kindness', pos: 'noun', freq: 155 },
+  { g: 'ἀλήθεια, -ας, ἡ', e: 'truth', pos: 'noun', freq: 109 },
+  { g: 'βασιλεύς, -έως, ὁ', e: 'king', pos: 'noun', freq: 115 },
+  { g: 'αἰώνιος, -ον', e: 'eternal', pos: 'adjective', freq: 71 },
+  { g: 'δικαιοσύνη, -ης, ἡ', e: 'righteousness, justice', pos: 'noun', freq: 92 },
+  { g: 'κρίνω', e: 'I judge, decide', pos: 'verb', freq: 114 },
+  { g: 'φῶς, φωτός, τό', e: 'light', pos: 'noun', freq: 73 },
+  { g: 'θάνατος, -ου, ὁ', e: 'death', pos: 'noun', freq: 120 },
+  { g: 'πληρόω', e: 'I fill, fulfil, complete', pos: 'verb', freq: 86 },
+  { g: 'αἴρω', e: 'I take up, take away', pos: 'verb', freq: 101 },
+  { g: 'δοῦλος, -ου, ὁ', e: 'slave, servant', pos: 'noun', freq: 124 },
+  { g: 'ἀγαθός, -ή, -όν', e: 'good, useful', pos: 'adjective', freq: 102 },
+  { g: 'βαπτίζω', e: 'I baptise, immerse', pos: 'verb', freq: 77 },
+  { g: 'χαρά, -ᾶς, ἡ', e: 'joy, delight', pos: 'noun', freq: 59 },
+  { g: 'ἐλπίς, -ίδος, ἡ', e: 'hope, expectation', pos: 'noun', freq: 53 },
+  { g: 'σῶμα, -ατος, τό', e: 'body', pos: 'noun', freq: 142 },
+  { g: 'ὁδός, -οῦ, ἡ', e: 'way, road, journey', pos: 'noun', freq: 101 },
+  { g: 'καιρός, -οῦ, ὁ', e: 'time, appointed season', pos: 'noun', freq: 85 },
+  { g: 'εὐαγγέλιον, -ου, τό', e: 'good news, gospel', pos: 'noun', freq: 76 }
+];
+
+/* ===== js/data-reading.js ===== */
+/* data-reading.js — daily reading passages, parsed word by word.
+   Each word: [surface, gloss, parse, lexical form]
+   Greek text follows public-domain critical editions of the Greek NT and LXX.
+   English renderings are deliberately wooden — they show you the Greek, not
+   good English. */
+var GK = window.GK || {}; window.GK = GK;
+
+GK.passages = [
+  {
+    id: 'jn1-1', ref: 'John 1:1', level: 1, title: 'In the beginning was the Word',
+    en: 'In the beginning was the Word, and the Word was with God, and the Word was God.',
+    words: [
+      ['Ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['ἀρχῇ', 'beginning', 'dat sg fem', 'ἀρχή, -ῆς, ἡ'],
+      ['ἦν', 'was', 'impf act ind 3sg', 'εἰμί'],
+      ['ὁ', 'the', 'nom sg masc', 'ὁ'],
+      ['λόγος,', 'word', 'nom sg masc', 'λόγος, -ου, ὁ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ὁ', 'the', 'nom sg masc', 'ὁ'],
+      ['λόγος', 'word', 'nom sg masc', 'λόγος, -ου, ὁ'],
+      ['ἦν', 'was', 'impf act ind 3sg', 'εἰμί'],
+      ['πρὸς', 'with, toward', 'prep +acc', 'πρός'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['θεόν,', 'God', 'acc sg masc', 'θεός, -οῦ, ὁ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['θεὸς', 'God', 'nom sg masc', 'θεός, -οῦ, ὁ'],
+      ['ἦν', 'was', 'impf act ind 3sg', 'εἰμί'],
+      ['ὁ', 'the', 'nom sg masc', 'ὁ'],
+      ['λόγος.', 'word', 'nom sg masc', 'λόγος, -ου, ὁ']
+    ],
+    note: 'θεὸς has no article and stands first for emphasis — the Word shares the nature of God, without being identified as the same person as ὁ θεόν just named.'
+  },
+  {
+    id: 'jn1-2', ref: 'John 1:2–3', level: 2, title: 'All things through him',
+    en: 'This one was in the beginning with God. All things came into being through him, and apart from him not one thing came into being that has come into being.',
+    words: [
+      ['οὗτος', 'this one', 'nom sg masc', 'οὗτος'],
+      ['ἦν', 'was', 'impf act ind 3sg', 'εἰμί'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['ἀρχῇ', 'beginning', 'dat sg fem', 'ἀρχή, -ῆς, ἡ'],
+      ['πρὸς', 'with', 'prep +acc', 'πρός'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['θεόν.', 'God', 'acc sg masc', 'θεός, -οῦ, ὁ'],
+      ['πάντα', 'all things', 'nom pl neut', 'πᾶς, πᾶσα, πᾶν'],
+      ["δι'", 'through', 'prep +gen', 'διά'],
+      ['αὐτοῦ', 'him', 'gen sg masc', 'αὐτός'],
+      ['ἐγένετο,', 'came into being', 'aor mid ind 3sg', 'γίνομαι'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['χωρὶς', 'apart from', 'prep +gen', 'χωρίς'],
+      ['αὐτοῦ', 'him', 'gen sg masc', 'αὐτός'],
+      ['ἐγένετο', 'came into being', 'aor mid ind 3sg', 'γίνομαι'],
+      ['οὐδὲ', 'not even', 'conj', 'οὐδέ'],
+      ['ἕν', 'one thing', 'nom sg neut', 'εἷς, μία, ἕν'],
+      ['ὃ', 'which', 'nom sg neut', 'ὅς, ἥ, ὅ'],
+      ['γέγονεν.', 'has come into being', 'perf act ind 3sg', 'γίνομαι']
+    ],
+    note: 'ἐγένετο is aorist (a completed act); γέγονεν is perfect (a past act with standing results). The tense change is the whole point of the sentence.'
+  },
+  {
+    id: 'jn1-4', ref: 'John 1:4–5', level: 2, title: 'The light shines in the darkness',
+    en: 'In him was life, and the life was the light of men; and the light shines in the darkness, and the darkness did not overcome it.',
+    words: [
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['αὐτῷ', 'him', 'dat sg masc', 'αὐτός'],
+      ['ζωὴ', 'life', 'nom sg fem', 'ζωή, -ῆς, ἡ'],
+      ['ἦν,', 'was', 'impf act ind 3sg', 'εἰμί'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἡ', 'the', 'nom sg fem', 'ὁ'],
+      ['ζωὴ', 'life', 'nom sg fem', 'ζωή, -ῆς, ἡ'],
+      ['ἦν', 'was', 'impf act ind 3sg', 'εἰμί'],
+      ['τὸ', 'the', 'nom sg neut', 'ὁ'],
+      ['φῶς', 'light', 'nom sg neut', 'φῶς, φωτός, τό'],
+      ['τῶν', 'of the', 'gen pl masc', 'ὁ'],
+      ['ἀνθρώπων·', 'of men', 'gen pl masc', 'ἄνθρωπος, -ου, ὁ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['τὸ', 'the', 'nom sg neut', 'ὁ'],
+      ['φῶς', 'light', 'nom sg neut', 'φῶς, φωτός, τό'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['τῇ', 'the', 'dat sg fem', 'ὁ'],
+      ['σκοτίᾳ', 'darkness', 'dat sg fem', 'σκοτία, -ας, ἡ'],
+      ['φαίνει,', 'shines', 'pres act ind 3sg', 'φαίνω'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἡ', 'the', 'nom sg fem', 'ὁ'],
+      ['σκοτία', 'darkness', 'nom sg fem', 'σκοτία, -ας, ἡ'],
+      ['αὐτὸ', 'it', 'acc sg neut', 'αὐτός'],
+      ['οὐ', 'not', 'adv', 'οὐ'],
+      ['κατέλαβεν.', 'overcame, grasped', 'aor act ind 3sg', 'καταλαμβάνω']
+    ],
+    note: 'αὐτὸ is neuter because it points back to τὸ φῶς. Greek pronouns agree in gender with what they refer to, not with English sense.'
+  },
+  {
+    id: 'jn1-14', ref: 'John 1:14', level: 3, title: 'The Word became flesh',
+    en: 'And the Word became flesh and dwelt among us, and we beheld his glory, glory as of an only son from a father, full of grace and truth.',
+    words: [
+      ['Καὶ', 'and', 'conj', 'καί'],
+      ['ὁ', 'the', 'nom sg masc', 'ὁ'],
+      ['λόγος', 'word', 'nom sg masc', 'λόγος, -ου, ὁ'],
+      ['σὰρξ', 'flesh', 'nom sg fem', 'σάρξ, σαρκός, ἡ'],
+      ['ἐγένετο', 'became', 'aor mid ind 3sg', 'γίνομαι'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἐσκήνωσεν', 'dwelt, pitched his tent', 'aor act ind 3sg', 'σκηνόω'],
+      ['ἐν', 'among', 'prep +dat', 'ἐν'],
+      ['ἡμῖν,', 'us', 'dat pl', 'ἐγώ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἐθεασάμεθα', 'we beheld', 'aor mid ind 1pl', 'θεάομαι'],
+      ['τὴν', 'the', 'acc sg fem', 'ὁ'],
+      ['δόξαν', 'glory', 'acc sg fem', 'δόξα, -ης, ἡ'],
+      ['αὐτοῦ,', 'of him', 'gen sg masc', 'αὐτός'],
+      ['δόξαν', 'glory', 'acc sg fem', 'δόξα, -ης, ἡ'],
+      ['ὡς', 'as', 'conj', 'ὡς'],
+      ['μονογενοῦς', 'of an only one', 'gen sg masc', 'μονογενής, -ές'],
+      ['παρὰ', 'from', 'prep +gen', 'παρά'],
+      ['πατρός,', 'a father', 'gen sg masc', 'πατήρ, πατρός, ὁ'],
+      ['πλήρης', 'full', 'nom sg masc', 'πλήρης, -ες'],
+      ['χάριτος', 'of grace', 'gen sg fem', 'χάρις, -ιτος, ἡ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἀληθείας.', 'of truth', 'gen sg fem', 'ἀλήθεια, -ας, ἡ']
+    ],
+    note: 'χάριτος and ἀληθείας are genitive because πλήρης ("full") takes a genitive of content — full *of* something.'
+  },
+  {
+    id: 'jn3-16', ref: 'John 3:16', level: 2, title: 'For God so loved',
+    en: 'For in this way God loved the world, so that he gave the only Son, in order that everyone believing in him might not perish but have eternal life.',
+    words: [
+      ['Οὕτως', 'in this way', 'adv', 'οὕτως'],
+      ['γὰρ', 'for', 'conj', 'γάρ'],
+      ['ἠγάπησεν', 'loved', 'aor act ind 3sg', 'ἀγαπάω'],
+      ['ὁ', 'the', 'nom sg masc', 'ὁ'],
+      ['θεὸς', 'God', 'nom sg masc', 'θεός, -οῦ, ὁ'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['κόσμον,', 'world', 'acc sg masc', 'κόσμος, -ου, ὁ'],
+      ['ὥστε', 'so that', 'conj', 'ὥστε'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['υἱὸν', 'son', 'acc sg masc', 'υἱός, -οῦ, ὁ'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['μονογενῆ', 'only, one of a kind', 'acc sg masc', 'μονογενής, -ές'],
+      ['ἔδωκεν,', 'he gave', 'aor act ind 3sg', 'δίδωμι'],
+      ['ἵνα', 'in order that', 'conj', 'ἵνα'],
+      ['πᾶς', 'everyone', 'nom sg masc', 'πᾶς, πᾶσα, πᾶν'],
+      ['ὁ', 'the one', 'nom sg masc', 'ὁ'],
+      ['πιστεύων', 'believing', 'pres act ptc nom sg masc', 'πιστεύω'],
+      ['εἰς', 'in, into', 'prep +acc', 'εἰς'],
+      ['αὐτὸν', 'him', 'acc sg masc', 'αὐτός'],
+      ['μὴ', 'not', 'particle', 'μή'],
+      ['ἀπόληται', 'should perish', 'aor mid subj 3sg', 'ἀπόλλυμι'],
+      ["ἀλλ'", 'but', 'conj', 'ἀλλά'],
+      ['ἔχῃ', 'should have', 'pres act subj 3sg', 'ἔχω'],
+      ['ζωὴν', 'life', 'acc sg fem', 'ζωή, -ῆς, ἡ'],
+      ['αἰώνιον.', 'eternal', 'acc sg fem', 'αἰώνιος, -ον']
+    ],
+    note: 'Οὕτως is "in this way", not "so much". And ἵνα pulls both verbs into the subjunctive — that is why they are ἀπόληται and ἔχῃ rather than ἀπώλετο and ἔχει.'
+  },
+  {
+    id: 'mk1-1', ref: 'Mark 1:1', level: 1, title: 'The beginning of the gospel',
+    en: 'The beginning of the gospel of Jesus Christ, Son of God.',
+    words: [
+      ['Ἀρχὴ', 'beginning', 'nom sg fem', 'ἀρχή, -ῆς, ἡ'],
+      ['τοῦ', 'of the', 'gen sg neut', 'ὁ'],
+      ['εὐαγγελίου', 'gospel', 'gen sg neut', 'εὐαγγέλιον, -ου, τό'],
+      ['Ἰησοῦ', 'of Jesus', 'gen sg masc', 'Ἰησοῦς, -οῦ, ὁ'],
+      ['Χριστοῦ', 'of Christ', 'gen sg masc', 'Χριστός, -οῦ, ὁ'],
+      ['υἱοῦ', 'son', 'gen sg masc', 'υἱός, -οῦ, ὁ'],
+      ['θεοῦ.', 'of God', 'gen sg masc', 'θεός, -οῦ, ὁ']
+    ],
+    note: 'Five genitives in a row, and no verb anywhere. A good place to practise asking what each genitive is doing.'
+  },
+  {
+    id: 'mt5-3', ref: 'Matthew 5:3–4', level: 2, title: 'Blessed are the poor',
+    en: 'Blessed are the poor in spirit, because theirs is the kingdom of the heavens. Blessed are those who mourn, because they will be comforted.',
+    words: [
+      ['Μακάριοι', 'blessed', 'nom pl masc', 'μακάριος, -ία, -ον'],
+      ['οἱ', 'the', 'nom pl masc', 'ὁ'],
+      ['πτωχοὶ', 'poor', 'nom pl masc', 'πτωχός, -ή, -όν'],
+      ['τῷ', 'in the', 'dat sg neut', 'ὁ'],
+      ['πνεύματι,', 'spirit', 'dat sg neut', 'πνεῦμα, -ατος, τό'],
+      ['ὅτι', 'because', 'conj', 'ὅτι'],
+      ['αὐτῶν', 'of them', 'gen pl masc', 'αὐτός'],
+      ['ἐστιν', 'is', 'pres act ind 3sg', 'εἰμί'],
+      ['ἡ', 'the', 'nom sg fem', 'ὁ'],
+      ['βασιλεία', 'kingdom', 'nom sg fem', 'βασιλεία, -ας, ἡ'],
+      ['τῶν', 'of the', 'gen pl masc', 'ὁ'],
+      ['οὐρανῶν.', 'heavens', 'gen pl masc', 'οὐρανός, -οῦ, ὁ'],
+      ['μακάριοι', 'blessed', 'nom pl masc', 'μακάριος, -ία, -ον'],
+      ['οἱ', 'the ones', 'nom pl masc', 'ὁ'],
+      ['πενθοῦντες,', 'mourning', 'pres act ptc nom pl masc', 'πενθέω'],
+      ['ὅτι', 'because', 'conj', 'ὅτι'],
+      ['αὐτοὶ', 'they themselves', 'nom pl masc', 'αὐτός'],
+      ['παρακληθήσονται.', 'will be comforted', 'fut pass ind 3pl', 'παρακαλέω']
+    ],
+    note: 'Μακάριοι is a predicate adjective with εἰμί left unwritten — Greek is happy to omit "are".'
+  },
+  {
+    id: 'mt6-9', ref: 'Matthew 6:9–10', level: 2, title: 'Our Father',
+    en: 'Our Father who is in the heavens, let your name be treated as holy; let your kingdom come; let your will be done, as in heaven so also on earth.',
+    words: [
+      ['Πάτερ', 'Father', 'voc sg masc', 'πατήρ, πατρός, ὁ'],
+      ['ἡμῶν', 'our', 'gen pl', 'ἐγώ'],
+      ['ὁ', 'the one', 'nom sg masc', 'ὁ'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['τοῖς', 'the', 'dat pl masc', 'ὁ'],
+      ['οὐρανοῖς·', 'heavens', 'dat pl masc', 'οὐρανός, -οῦ, ὁ'],
+      ['ἁγιασθήτω', 'let it be made holy', 'aor pass impv 3sg', 'ἁγιάζω'],
+      ['τὸ', 'the', 'nom sg neut', 'ὁ'],
+      ['ὄνομά', 'name', 'nom sg neut', 'ὄνομα, -ατος, τό'],
+      ['σου·', 'your', 'gen sg', 'σύ'],
+      ['ἐλθέτω', 'let it come', 'aor act impv 3sg', 'ἔρχομαι'],
+      ['ἡ', 'the', 'nom sg fem', 'ὁ'],
+      ['βασιλεία', 'kingdom', 'nom sg fem', 'βασιλεία, -ας, ἡ'],
+      ['σου·', 'your', 'gen sg', 'σύ'],
+      ['γενηθήτω', 'let it come to pass', 'aor pass impv 3sg', 'γίνομαι'],
+      ['τὸ', 'the', 'nom sg neut', 'ὁ'],
+      ['θέλημά', 'will', 'nom sg neut', 'θέλημα, -ατος, τό'],
+      ['σου,', 'your', 'gen sg', 'σύ'],
+      ['ὡς', 'as', 'conj', 'ὡς'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['οὐρανῷ', 'heaven', 'dat sg masc', 'οὐρανός, -οῦ, ὁ'],
+      ['καὶ', 'also', 'conj', 'καί'],
+      ['ἐπὶ', 'on', 'prep +gen', 'ἐπί'],
+      ['γῆς.', 'earth', 'gen sg fem', 'γῆ, γῆς, ἡ']
+    ],
+    note: 'Three third-person imperatives in a row. English has no clean equivalent, so we reach for "let ...".'
+  },
+  {
+    id: 'mt6-11', ref: 'Matthew 6:11–13', level: 3, title: 'Give us today',
+    en: 'Give us today our daily bread; and forgive us our debts, as we also have forgiven our debtors; and do not bring us into testing, but rescue us from the evil one.',
+    words: [
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['ἄρτον', 'bread', 'acc sg masc', 'ἄρτος, -ου, ὁ'],
+      ['ἡμῶν', 'our', 'gen pl', 'ἐγώ'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['ἐπιούσιον', 'daily, for the coming day', 'acc sg masc', 'ἐπιούσιος, -ον'],
+      ['δὸς', 'give', 'aor act impv 2sg', 'δίδωμι'],
+      ['ἡμῖν', 'to us', 'dat pl', 'ἐγώ'],
+      ['σήμερον·', 'today', 'adv', 'σήμερον'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἄφες', 'forgive', 'aor act impv 2sg', 'ἀφίημι'],
+      ['ἡμῖν', 'us', 'dat pl', 'ἐγώ'],
+      ['τὰ', 'the', 'acc pl neut', 'ὁ'],
+      ['ὀφειλήματα', 'debts', 'acc pl neut', 'ὀφείλημα, -ατος, τό'],
+      ['ἡμῶν,', 'our', 'gen pl', 'ἐγώ'],
+      ['ὡς', 'as', 'conj', 'ὡς'],
+      ['καὶ', 'also', 'conj', 'καί'],
+      ['ἡμεῖς', 'we', 'nom pl', 'ἐγώ'],
+      ['ἀφήκαμεν', 'have forgiven', 'aor act ind 1pl', 'ἀφίημι'],
+      ['τοῖς', 'the', 'dat pl masc', 'ὁ'],
+      ['ὀφειλέταις', 'debtors', 'dat pl masc', 'ὀφειλέτης, -ου, ὁ'],
+      ['ἡμῶν·', 'our', 'gen pl', 'ἐγώ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['μὴ', 'not', 'particle', 'μή'],
+      ['εἰσενέγκῃς', 'bring in', 'aor act subj 2sg', 'εἰσφέρω'],
+      ['ἡμᾶς', 'us', 'acc pl', 'ἐγώ'],
+      ['εἰς', 'into', 'prep +acc', 'εἰς'],
+      ['πειρασμόν,', 'testing, temptation', 'acc sg masc', 'πειρασμός, -οῦ, ὁ'],
+      ['ἀλλὰ', 'but', 'conj', 'ἀλλά'],
+      ['ῥῦσαι', 'rescue', 'aor mid impv 2sg', 'ῥύομαι'],
+      ['ἡμᾶς', 'us', 'acc pl', 'ἐγώ'],
+      ['ἀπὸ', 'from', 'prep +gen', 'ἀπό'],
+      ['τοῦ', 'the', 'gen sg masc', 'ὁ'],
+      ['πονηροῦ.', 'evil one', 'gen sg masc', 'πονηρός, -ά, -όν']
+    ],
+    note: 'μὴ + aorist subjunctive is how Greek forbids something outright ("do not ever ..."), where μή + present imperative would mean "stop doing it".'
+  },
+  {
+    id: 'mt28-19', ref: 'Matthew 28:19–20', level: 3, title: 'Make disciples',
+    en: 'Therefore, having gone, make disciples of all the nations, baptising them into the name of the Father and of the Son and of the Holy Spirit, teaching them to keep all that I commanded you; and behold, I am with you all the days until the completion of the age.',
+    words: [
+      ['πορευθέντες', 'having gone', 'aor pass ptc nom pl masc', 'πορεύομαι'],
+      ['οὖν', 'therefore', 'conj', 'οὖν'],
+      ['μαθητεύσατε', 'make disciples of', 'aor act impv 2pl', 'μαθητεύω'],
+      ['πάντα', 'all', 'acc pl neut', 'πᾶς, πᾶσα, πᾶν'],
+      ['τὰ', 'the', 'acc pl neut', 'ὁ'],
+      ['ἔθνη,', 'nations', 'acc pl neut', 'ἔθνος, -ους, τό'],
+      ['βαπτίζοντες', 'baptising', 'pres act ptc nom pl masc', 'βαπτίζω'],
+      ['αὐτοὺς', 'them', 'acc pl masc', 'αὐτός'],
+      ['εἰς', 'into', 'prep +acc', 'εἰς'],
+      ['τὸ', 'the', 'acc sg neut', 'ὁ'],
+      ['ὄνομα', 'name', 'acc sg neut', 'ὄνομα, -ατος, τό'],
+      ['τοῦ', 'of the', 'gen sg masc', 'ὁ'],
+      ['πατρὸς', 'Father', 'gen sg masc', 'πατήρ, πατρός, ὁ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['τοῦ', 'of the', 'gen sg masc', 'ὁ'],
+      ['υἱοῦ', 'Son', 'gen sg masc', 'υἱός, -οῦ, ὁ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['τοῦ', 'of the', 'gen sg neut', 'ὁ'],
+      ['ἁγίου', 'Holy', 'gen sg neut', 'ἅγιος, -ία, -ον'],
+      ['πνεύματος,', 'Spirit', 'gen sg neut', 'πνεῦμα, -ατος, τό'],
+      ['διδάσκοντες', 'teaching', 'pres act ptc nom pl masc', 'διδάσκω'],
+      ['αὐτοὺς', 'them', 'acc pl masc', 'αὐτός'],
+      ['τηρεῖν', 'to keep', 'pres act inf', 'τηρέω'],
+      ['πάντα', 'all things', 'acc pl neut', 'πᾶς, πᾶσα, πᾶν'],
+      ['ὅσα', 'as many as', 'acc pl neut', 'ὅσος, -η, -ον'],
+      ['ἐνετειλάμην', 'I commanded', 'aor mid ind 1sg', 'ἐντέλλομαι'],
+      ['ὑμῖν·', 'you', 'dat pl', 'σύ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἰδοὺ', 'behold', 'particle', 'ἰδού'],
+      ['ἐγὼ', 'I', 'nom sg', 'ἐγώ'],
+      ["μεθ'", 'with', 'prep +gen', 'μετά'],
+      ['ὑμῶν', 'you', 'gen pl', 'σύ'],
+      ['εἰμι', 'am', 'pres act ind 1sg', 'εἰμί'],
+      ['πάσας', 'all', 'acc pl fem', 'πᾶς, πᾶσα, πᾶν'],
+      ['τὰς', 'the', 'acc pl fem', 'ὁ'],
+      ['ἡμέρας', 'days', 'acc pl fem', 'ἡμέρα, -ας, ἡ'],
+      ['ἕως', 'until', 'prep +gen', 'ἕως'],
+      ['τῆς', 'the', 'gen sg fem', 'ὁ'],
+      ['συντελείας', 'completion', 'gen sg fem', 'συντέλεια, -ας, ἡ'],
+      ['τοῦ', 'of the', 'gen sg masc', 'ὁ'],
+      ['αἰῶνος.', 'age', 'gen sg masc', 'αἰών, -ῶνος, ὁ']
+    ],
+    note: 'Only μαθητεύσατε is an imperative. The three participles hang off it, so the command is "make disciples" — the rest tells you how.'
+  },
+  {
+    id: 'rom3-23', ref: 'Romans 3:23', level: 1, title: 'All have sinned',
+    en: 'For all sinned and fall short of the glory of God.',
+    words: [
+      ['πάντες', 'all', 'nom pl masc', 'πᾶς, πᾶσα, πᾶν'],
+      ['γὰρ', 'for', 'conj', 'γάρ'],
+      ['ἥμαρτον', 'sinned', 'aor act ind 3pl', 'ἁμαρτάνω'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ὑστεροῦνται', 'fall short of', 'pres mid ind 3pl', 'ὑστερέω'],
+      ['τῆς', 'the', 'gen sg fem', 'ὁ'],
+      ['δόξης', 'glory', 'gen sg fem', 'δόξα, -ης, ἡ'],
+      ['τοῦ', 'of the', 'gen sg masc', 'ὁ'],
+      ['θεοῦ', 'God', 'gen sg masc', 'θεός, -οῦ, ὁ']
+    ],
+    note: 'ὑστερέω takes a genitive of what is lacked. That is why "glory" is δόξης and not δόξαν.'
+  },
+  {
+    id: 'rom5-8', ref: 'Romans 5:8', level: 3, title: 'While we were still sinners',
+    en: 'But God demonstrates his own love toward us, in that while we were still sinners Christ died on our behalf.',
+    words: [
+      ['συνίστησιν', 'demonstrates', 'pres act ind 3sg', 'συνίστημι'],
+      ['δὲ', 'but', 'conj', 'δέ'],
+      ['τὴν', 'the', 'acc sg fem', 'ὁ'],
+      ['ἑαυτοῦ', 'his own', 'gen sg masc', 'ἑαυτοῦ, -ῆς, -οῦ'],
+      ['ἀγάπην', 'love', 'acc sg fem', 'ἀγάπη, -ης, ἡ'],
+      ['εἰς', 'toward', 'prep +acc', 'εἰς'],
+      ['ἡμᾶς', 'us', 'acc pl', 'ἐγώ'],
+      ['ὁ', 'the', 'nom sg masc', 'ὁ'],
+      ['θεὸς', 'God', 'nom sg masc', 'θεός, -οῦ, ὁ'],
+      ['ὅτι', 'in that', 'conj', 'ὅτι'],
+      ['ἔτι', 'still', 'adv', 'ἔτι'],
+      ['ἁμαρτωλῶν', 'sinners', 'gen pl masc', 'ἁμαρτωλός, -όν'],
+      ['ὄντων', 'being', 'pres act ptc gen pl masc', 'εἰμί'],
+      ['ἡμῶν', 'we', 'gen pl', 'ἐγώ'],
+      ['Χριστὸς', 'Christ', 'nom sg masc', 'Χριστός, -οῦ, ὁ'],
+      ['ὑπὲρ', 'on behalf of', 'prep +gen', 'ὑπέρ'],
+      ['ἡμῶν', 'us', 'gen pl', 'ἐγώ'],
+      ['ἀπέθανεν.', 'died', 'aor act ind 3sg', 'ἀποθνῄσκω']
+    ],
+    note: 'ἁμαρτωλῶν ὄντων ἡμῶν is a genitive absolute: a noun and participle in the genitive, grammatically detached from the main clause. Translate it "while we were ...".'
+  },
+  {
+    id: 'rom6-23', ref: 'Romans 6:23', level: 1, title: 'The wages of sin',
+    en: 'For the wages of sin is death, but the free gift of God is eternal life in Christ Jesus our Lord.',
+    words: [
+      ['τὰ', 'the', 'nom pl neut', 'ὁ'],
+      ['γὰρ', 'for', 'conj', 'γάρ'],
+      ['ὀψώνια', 'wages', 'nom pl neut', 'ὀψώνιον, -ου, τό'],
+      ['τῆς', 'of the', 'gen sg fem', 'ὁ'],
+      ['ἁμαρτίας', 'sin', 'gen sg fem', 'ἁμαρτία, -ας, ἡ'],
+      ['θάνατος,', 'death', 'nom sg masc', 'θάνατος, -ου, ὁ'],
+      ['τὸ', 'the', 'nom sg neut', 'ὁ'],
+      ['δὲ', 'but', 'conj', 'δέ'],
+      ['χάρισμα', 'free gift', 'nom sg neut', 'χάρισμα, -ατος, τό'],
+      ['τοῦ', 'of the', 'gen sg masc', 'ὁ'],
+      ['θεοῦ', 'God', 'gen sg masc', 'θεός, -οῦ, ὁ'],
+      ['ζωὴ', 'life', 'nom sg fem', 'ζωή, -ῆς, ἡ'],
+      ['αἰώνιος', 'eternal', 'nom sg fem', 'αἰώνιος, -ον'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['Χριστῷ', 'Christ', 'dat sg masc', 'Χριστός, -οῦ, ὁ'],
+      ['Ἰησοῦ', 'Jesus', 'dat sg masc', 'Ἰησοῦς, -οῦ, ὁ'],
+      ['τῷ', 'the', 'dat sg masc', 'ὁ'],
+      ['κυρίῳ', 'Lord', 'dat sg masc', 'κύριος, -ου, ὁ'],
+      ['ἡμῶν.', 'our', 'gen pl', 'ἐγώ']
+    ],
+    note: 'αἰώνιος is a two-termination adjective: one set of endings covers masculine and feminine, so a feminine ζωή takes the form that looks masculine.'
+  },
+  {
+    id: 'rom8-28', ref: 'Romans 8:28', level: 3, title: 'All things work together',
+    en: 'And we know that for those who love God all things work together for good, for those who are called according to purpose.',
+    words: [
+      ['οἴδαμεν', 'we know', 'perf act ind 1pl', 'οἶδα'],
+      ['δὲ', 'and', 'conj', 'δέ'],
+      ['ὅτι', 'that', 'conj', 'ὅτι'],
+      ['τοῖς', 'for those', 'dat pl masc', 'ὁ'],
+      ['ἀγαπῶσιν', 'loving', 'pres act ptc dat pl masc', 'ἀγαπάω'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['θεὸν', 'God', 'acc sg masc', 'θεός, -οῦ, ὁ'],
+      ['πάντα', 'all things', 'nom pl neut', 'πᾶς, πᾶσα, πᾶν'],
+      ['συνεργεῖ', 'works together', 'pres act ind 3sg', 'συνεργέω'],
+      ['εἰς', 'for', 'prep +acc', 'εἰς'],
+      ['ἀγαθόν,', 'good', 'acc sg neut', 'ἀγαθός, -ή, -όν'],
+      ['τοῖς', 'for those', 'dat pl masc', 'ὁ'],
+      ['κατὰ', 'according to', 'prep +acc', 'κατά'],
+      ['πρόθεσιν', 'purpose', 'acc sg fem', 'πρόθεσις, -εως, ἡ'],
+      ['κλητοῖς', 'called', 'dat pl masc', 'κλητός, -ή, -όν'],
+      ['οὖσιν.', 'being', 'pres act ptc dat pl masc', 'εἰμί']
+    ],
+    note: 'πάντα is neuter plural and the verb συνεργεῖ is singular. Greek routinely puts a neuter plural subject with a singular verb — it is not a mistake.'
+  },
+  {
+    id: 'rom10-9', ref: 'Romans 10:9', level: 3, title: 'If you confess',
+    en: 'That if you confess with your mouth "Jesus is Lord" and believe in your heart that God raised him from the dead, you will be saved.',
+    words: [
+      ['ὅτι', 'that', 'conj', 'ὅτι'],
+      ['ἐὰν', 'if', 'conj', 'ἐάν'],
+      ['ὁμολογήσῃς', 'you confess', 'aor act subj 2sg', 'ὁμολογέω'],
+      ['ἐν', 'with', 'prep +dat', 'ἐν'],
+      ['τῷ', 'the', 'dat sg neut', 'ὁ'],
+      ['στόματί', 'mouth', 'dat sg neut', 'στόμα, -ατος, τό'],
+      ['σου', 'your', 'gen sg', 'σύ'],
+      ['κύριον', 'Lord', 'acc sg masc', 'κύριος, -ου, ὁ'],
+      ['Ἰησοῦν', 'Jesus', 'acc sg masc', 'Ἰησοῦς, -οῦ, ὁ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['πιστεύσῃς', 'you believe', 'aor act subj 2sg', 'πιστεύω'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['τῇ', 'the', 'dat sg fem', 'ὁ'],
+      ['καρδίᾳ', 'heart', 'dat sg fem', 'καρδία, -ας, ἡ'],
+      ['σου', 'your', 'gen sg', 'σύ'],
+      ['ὅτι', 'that', 'conj', 'ὅτι'],
+      ['ὁ', 'the', 'nom sg masc', 'ὁ'],
+      ['θεὸς', 'God', 'nom sg masc', 'θεός, -οῦ, ὁ'],
+      ['αὐτὸν', 'him', 'acc sg masc', 'αὐτός'],
+      ['ἤγειρεν', 'raised', 'aor act ind 3sg', 'ἐγείρω'],
+      ['ἐκ', 'from', 'prep +gen', 'ἐκ'],
+      ['νεκρῶν,', 'the dead', 'gen pl masc', 'νεκρός, -ά, -όν'],
+      ['σωθήσῃ.', 'you will be saved', 'fut pass ind 2sg', 'σῴζω']
+    ],
+    note: 'ἐάν always drags the subjunctive along with it — that is why both verbs in the "if" clause are subjunctive.'
+  },
+  {
+    id: '1cor13-13', ref: '1 Corinthians 13:13', level: 1, title: 'Faith, hope, love',
+    en: 'And now there remain faith, hope, love — these three; but the greatest of these is love.',
+    words: [
+      ['νυνὶ', 'now', 'adv', 'νυνί'],
+      ['δὲ', 'and', 'conj', 'δέ'],
+      ['μένει', 'remains', 'pres act ind 3sg', 'μένω'],
+      ['πίστις,', 'faith', 'nom sg fem', 'πίστις, -εως, ἡ'],
+      ['ἐλπίς,', 'hope', 'nom sg fem', 'ἐλπίς, -ίδος, ἡ'],
+      ['ἀγάπη,', 'love', 'nom sg fem', 'ἀγάπη, -ης, ἡ'],
+      ['τὰ', 'the', 'nom pl neut', 'ὁ'],
+      ['τρία', 'three', 'nom pl neut', 'τρεῖς, τρία'],
+      ['ταῦτα·', 'these', 'nom pl neut', 'οὗτος'],
+      ['μείζων', 'greater', 'nom sg fem', 'μείζων, -ον'],
+      ['δὲ', 'but', 'conj', 'δέ'],
+      ['τούτων', 'of these', 'gen pl neut', 'οὗτος'],
+      ['ἡ', 'the', 'nom sg fem', 'ὁ'],
+      ['ἀγάπη.', 'love', 'nom sg fem', 'ἀγάπη, -ης, ἡ']
+    ],
+    note: 'τούτων is a genitive of comparison: "greater than these". Greek can use the genitive where English needs "than".'
+  },
+  {
+    id: 'gal2-20', ref: 'Galatians 2:20', level: 3, title: 'No longer I who live',
+    en: 'And it is no longer I who live, but Christ lives in me; and what I now live in the flesh, I live by faith in the Son of God, who loved me and gave himself up for me.',
+    words: [
+      ['ζῶ', 'I live', 'pres act ind 1sg', 'ζάω'],
+      ['δὲ', 'and', 'conj', 'δέ'],
+      ['οὐκέτι', 'no longer', 'adv', 'οὐκέτι'],
+      ['ἐγώ,', 'I', 'nom sg', 'ἐγώ'],
+      ['ζῇ', 'lives', 'pres act ind 3sg', 'ζάω'],
+      ['δὲ', 'but', 'conj', 'δέ'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['ἐμοὶ', 'me', 'dat sg', 'ἐγώ'],
+      ['Χριστός·', 'Christ', 'nom sg masc', 'Χριστός, -οῦ, ὁ'],
+      ['ὃ', 'what', 'acc sg neut', 'ὅς, ἥ, ὅ'],
+      ['δὲ', 'and', 'conj', 'δέ'],
+      ['νῦν', 'now', 'adv', 'νῦν'],
+      ['ζῶ', 'I live', 'pres act ind 1sg', 'ζάω'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['σαρκί,', 'flesh', 'dat sg fem', 'σάρξ, σαρκός, ἡ'],
+      ['ἐν', 'by', 'prep +dat', 'ἐν'],
+      ['πίστει', 'faith', 'dat sg fem', 'πίστις, -εως, ἡ'],
+      ['ζῶ', 'I live', 'pres act ind 1sg', 'ζάω'],
+      ['τῇ', 'the', 'dat sg fem', 'ὁ'],
+      ['τοῦ', 'of the', 'gen sg masc', 'ὁ'],
+      ['υἱοῦ', 'Son', 'gen sg masc', 'υἱός, -οῦ, ὁ'],
+      ['τοῦ', 'of', 'gen sg masc', 'ὁ'],
+      ['θεοῦ', 'God', 'gen sg masc', 'θεός, -οῦ, ὁ'],
+      ['τοῦ', 'the one', 'gen sg masc', 'ὁ'],
+      ['ἀγαπήσαντός', 'having loved', 'aor act ptc gen sg masc', 'ἀγαπάω'],
+      ['με', 'me', 'acc sg', 'ἐγώ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['παραδόντος', 'having handed over', 'aor act ptc gen sg masc', 'παραδίδωμι'],
+      ['ἑαυτὸν', 'himself', 'acc sg masc', 'ἑαυτοῦ, -ῆς, -οῦ'],
+      ['ὑπὲρ', 'for', 'prep +gen', 'ὑπέρ'],
+      ['ἐμοῦ.', 'me', 'gen sg', 'ἐγώ']
+    ],
+    note: 'τῇ ... τοῦ υἱοῦ τοῦ θεοῦ: the article τῇ agrees with πίστει far to its left, and everything between is stuffed inside. Greek does this constantly — follow the article, not the word order.'
+  },
+  {
+    id: 'gal5-22', ref: 'Galatians 5:22–23', level: 2, title: 'The fruit of the Spirit',
+    en: 'But the fruit of the Spirit is love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control; against such things there is no law.',
+    words: [
+      ['ὁ', 'the', 'nom sg masc', 'ὁ'],
+      ['δὲ', 'but', 'conj', 'δέ'],
+      ['καρπὸς', 'fruit', 'nom sg masc', 'καρπός, -οῦ, ὁ'],
+      ['τοῦ', 'of the', 'gen sg neut', 'ὁ'],
+      ['πνεύματός', 'Spirit', 'gen sg neut', 'πνεῦμα, -ατος, τό'],
+      ['ἐστιν', 'is', 'pres act ind 3sg', 'εἰμί'],
+      ['ἀγάπη,', 'love', 'nom sg fem', 'ἀγάπη, -ης, ἡ'],
+      ['χαρά,', 'joy', 'nom sg fem', 'χαρά, -ᾶς, ἡ'],
+      ['εἰρήνη,', 'peace', 'nom sg fem', 'εἰρήνη, -ης, ἡ'],
+      ['μακροθυμία,', 'patience', 'nom sg fem', 'μακροθυμία, -ας, ἡ'],
+      ['χρηστότης,', 'kindness', 'nom sg fem', 'χρηστότης, -ητος, ἡ'],
+      ['ἀγαθωσύνη,', 'goodness', 'nom sg fem', 'ἀγαθωσύνη, -ης, ἡ'],
+      ['πίστις,', 'faithfulness', 'nom sg fem', 'πίστις, -εως, ἡ'],
+      ['πραΰτης,', 'gentleness', 'nom sg fem', 'πραΰτης, -ητος, ἡ'],
+      ['ἐγκράτεια·', 'self-control', 'nom sg fem', 'ἐγκράτεια, -ας, ἡ'],
+      ['κατὰ', 'against', 'prep +gen', 'κατά'],
+      ['τῶν', 'the', 'gen pl neut', 'ὁ'],
+      ['τοιούτων', 'such things', 'gen pl neut', 'τοιοῦτος, -αύτη, -οῦτο'],
+      ['οὐκ', 'not', 'adv', 'οὐ'],
+      ['ἔστιν', 'is', 'pres act ind 3sg', 'εἰμί'],
+      ['νόμος.', 'law', 'nom sg masc', 'νόμος, -ου, ὁ']
+    ],
+    note: 'καρπὸς is singular although nine things follow. One fruit, nine facets.'
+  },
+  {
+    id: 'eph2-8', ref: 'Ephesians 2:8–9', level: 3, title: 'By grace you have been saved',
+    en: 'For by grace you have been saved through faith; and this is not from you, it is the gift of God — not from works, so that no one may boast.',
+    words: [
+      ['Τῇ', 'by the', 'dat sg fem', 'ὁ'],
+      ['γὰρ', 'for', 'conj', 'γάρ'],
+      ['χάριτί', 'grace', 'dat sg fem', 'χάρις, -ιτος, ἡ'],
+      ['ἐστε', 'you are', 'pres act ind 2pl', 'εἰμί'],
+      ['σεσῳσμένοι', 'having been saved', 'perf pass ptc nom pl masc', 'σῴζω'],
+      ['διὰ', 'through', 'prep +gen', 'διά'],
+      ['πίστεως·', 'faith', 'gen sg fem', 'πίστις, -εως, ἡ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['τοῦτο', 'this', 'nom sg neut', 'οὗτος'],
+      ['οὐκ', 'not', 'adv', 'οὐ'],
+      ['ἐξ', 'from', 'prep +gen', 'ἐκ'],
+      ['ὑμῶν,', 'you', 'gen pl', 'σύ'],
+      ['θεοῦ', 'of God', 'gen sg masc', 'θεός, -οῦ, ὁ'],
+      ['τὸ', 'the', 'nom sg neut', 'ὁ'],
+      ['δῶρον·', 'gift', 'nom sg neut', 'δῶρον, -ου, τό'],
+      ['οὐκ', 'not', 'adv', 'οὐ'],
+      ['ἐξ', 'from', 'prep +gen', 'ἐκ'],
+      ['ἔργων,', 'works', 'gen pl neut', 'ἔργον, -ου, τό'],
+      ['ἵνα', 'so that', 'conj', 'ἵνα'],
+      ['μή', 'not', 'particle', 'μή'],
+      ['τις', 'anyone', 'nom sg masc', 'τις, τι'],
+      ['καυχήσηται.', 'may boast', 'aor mid subj 3sg', 'καυχάομαι']
+    ],
+    note: 'ἐστε σεσῳσμένοι is a periphrastic perfect: εἰμί plus a perfect participle, doing the work of one perfect verb. The state, not the event, is in view.'
+  },
+  {
+    id: 'php4-13', ref: 'Philippians 4:13', level: 1, title: 'I am strong for all things',
+    en: 'I am strong for all things in the one who strengthens me.',
+    words: [
+      ['πάντα', 'all things', 'acc pl neut', 'πᾶς, πᾶσα, πᾶν'],
+      ['ἰσχύω', 'I am strong, I can do', 'pres act ind 1sg', 'ἰσχύω'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['τῷ', 'the one', 'dat sg masc', 'ὁ'],
+      ['ἐνδυναμοῦντί', 'strengthening', 'pres act ptc dat sg masc', 'ἐνδυναμόω'],
+      ['με', 'me', 'acc sg', 'ἐγώ']
+    ],
+    note: 'Six words. Note τῷ ἐνδυναμοῦντί — an article plus participle makes a noun: "the one who strengthens".'
+  },
+  {
+    id: 'php4-6', ref: 'Philippians 4:6', level: 3, title: 'Be anxious for nothing',
+    en: 'Be anxious about nothing, but in everything, by prayer and petition with thanksgiving, let your requests be made known to God.',
+    words: [
+      ['μηδὲν', 'nothing', 'acc sg neut', 'μηδείς, μηδεμία, μηδέν'],
+      ['μεριμνᾶτε,', 'be anxious', 'pres act impv 2pl', 'μεριμνάω'],
+      ["ἀλλ'", 'but', 'conj', 'ἀλλά'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['παντὶ', 'everything', 'dat sg neut', 'πᾶς, πᾶσα, πᾶν'],
+      ['τῇ', 'by the', 'dat sg fem', 'ὁ'],
+      ['προσευχῇ', 'prayer', 'dat sg fem', 'προσευχή, -ῆς, ἡ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['τῇ', 'the', 'dat sg fem', 'ὁ'],
+      ['δεήσει', 'petition', 'dat sg fem', 'δέησις, -εως, ἡ'],
+      ['μετὰ', 'with', 'prep +gen', 'μετά'],
+      ['εὐχαριστίας', 'thanksgiving', 'gen sg fem', 'εὐχαριστία, -ας, ἡ'],
+      ['τὰ', 'the', 'nom pl neut', 'ὁ'],
+      ['αἰτήματα', 'requests', 'nom pl neut', 'αἴτημα, -ατος, τό'],
+      ['ὑμῶν', 'your', 'gen pl', 'σύ'],
+      ['γνωριζέσθω', 'let be made known', 'pres pass impv 3sg', 'γνωρίζω'],
+      ['πρὸς', 'to', 'prep +acc', 'πρός'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['θεόν.', 'God', 'acc sg masc', 'θεός, -οῦ, ὁ']
+    ],
+    note: 'μηδὲν μεριμνᾶτε is μή + present imperative: stop an activity already under way, or refuse it as a habit.'
+  },
+  {
+    id: '1jn1-9', ref: '1 John 1:9', level: 2, title: 'If we confess our sins',
+    en: 'If we confess our sins, he is faithful and righteous, so that he forgives us the sins and cleanses us from all unrighteousness.',
+    words: [
+      ['ἐὰν', 'if', 'conj', 'ἐάν'],
+      ['ὁμολογῶμεν', 'we confess', 'pres act subj 1pl', 'ὁμολογέω'],
+      ['τὰς', 'the', 'acc pl fem', 'ὁ'],
+      ['ἁμαρτίας', 'sins', 'acc pl fem', 'ἁμαρτία, -ας, ἡ'],
+      ['ἡμῶν,', 'our', 'gen pl', 'ἐγώ'],
+      ['πιστός', 'faithful', 'nom sg masc', 'πιστός, -ή, -όν'],
+      ['ἐστιν', 'he is', 'pres act ind 3sg', 'εἰμί'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['δίκαιος', 'righteous', 'nom sg masc', 'δίκαιος, -αία, -ον'],
+      ['ἵνα', 'so that', 'conj', 'ἵνα'],
+      ['ἀφῇ', 'he may forgive', 'aor act subj 3sg', 'ἀφίημι'],
+      ['ἡμῖν', 'us', 'dat pl', 'ἐγώ'],
+      ['τὰς', 'the', 'acc pl fem', 'ὁ'],
+      ['ἁμαρτίας', 'sins', 'acc pl fem', 'ἁμαρτία, -ας, ἡ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['καθαρίσῃ', 'he may cleanse', 'aor act subj 3sg', 'καθαρίζω'],
+      ['ἡμᾶς', 'us', 'acc pl', 'ἐγώ'],
+      ['ἀπὸ', 'from', 'prep +gen', 'ἀπό'],
+      ['πάσης', 'all', 'gen sg fem', 'πᾶς, πᾶσα, πᾶν'],
+      ['ἀδικίας.', 'unrighteousness', 'gen sg fem', 'ἀδικία, -ας, ἡ']
+    ]
+  },
+  {
+    id: '1jn4-7', ref: '1 John 4:7–8', level: 2, title: 'Love is from God',
+    en: 'Beloved, let us love one another, because love is from God, and everyone who loves has been born from God and knows God. The one who does not love did not know God, because God is love.',
+    words: [
+      ['Ἀγαπητοί,', 'beloved', 'voc pl masc', 'ἀγαπητός, -ή, -όν'],
+      ['ἀγαπῶμεν', 'let us love', 'pres act subj 1pl', 'ἀγαπάω'],
+      ['ἀλλήλους,', 'one another', 'acc pl masc', 'ἀλλήλων'],
+      ['ὅτι', 'because', 'conj', 'ὅτι'],
+      ['ἡ', 'the', 'nom sg fem', 'ὁ'],
+      ['ἀγάπη', 'love', 'nom sg fem', 'ἀγάπη, -ης, ἡ'],
+      ['ἐκ', 'from', 'prep +gen', 'ἐκ'],
+      ['τοῦ', 'the', 'gen sg masc', 'ὁ'],
+      ['θεοῦ', 'God', 'gen sg masc', 'θεός, -οῦ, ὁ'],
+      ['ἐστιν,', 'is', 'pres act ind 3sg', 'εἰμί'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['πᾶς', 'everyone', 'nom sg masc', 'πᾶς, πᾶσα, πᾶν'],
+      ['ὁ', 'the one', 'nom sg masc', 'ὁ'],
+      ['ἀγαπῶν', 'loving', 'pres act ptc nom sg masc', 'ἀγαπάω'],
+      ['ἐκ', 'from', 'prep +gen', 'ἐκ'],
+      ['τοῦ', 'the', 'gen sg masc', 'ὁ'],
+      ['θεοῦ', 'God', 'gen sg masc', 'θεός, -οῦ, ὁ'],
+      ['γεγέννηται', 'has been born', 'perf pass ind 3sg', 'γεννάω'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['γινώσκει', 'knows', 'pres act ind 3sg', 'γινώσκω'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['θεόν.', 'God', 'acc sg masc', 'θεός, -οῦ, ὁ'],
+      ['ὁ', 'the one', 'nom sg masc', 'ὁ'],
+      ['μὴ', 'not', 'particle', 'μή'],
+      ['ἀγαπῶν', 'loving', 'pres act ptc nom sg masc', 'ἀγαπάω'],
+      ['οὐκ', 'not', 'adv', 'οὐ'],
+      ['ἔγνω', 'knew', 'aor act ind 3sg', 'γινώσκω'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['θεόν,', 'God', 'acc sg masc', 'θεός, -οῦ, ὁ'],
+      ['ὅτι', 'because', 'conj', 'ὅτι'],
+      ['ὁ', 'the', 'nom sg masc', 'ὁ'],
+      ['θεὸς', 'God', 'nom sg masc', 'θεός, -οῦ, ὁ'],
+      ['ἀγάπη', 'love', 'nom sg fem', 'ἀγάπη, -ης, ἡ'],
+      ['ἐστίν.', 'is', 'pres act ind 3sg', 'εἰμί']
+    ],
+    note: 'ἀγαπῶμεν is ambiguous in form — present indicative "we love" or present subjunctive "let us love". Only the context decides, and here the hortatory reading fits.'
+  },
+  {
+    id: 'heb11-1', ref: 'Hebrews 11:1', level: 3, title: 'Now faith is',
+    en: 'Now faith is the substance of things hoped for, the proof of things not seen.',
+    words: [
+      ['Ἔστιν', 'is', 'pres act ind 3sg', 'εἰμί'],
+      ['δὲ', 'now', 'conj', 'δέ'],
+      ['πίστις', 'faith', 'nom sg fem', 'πίστις, -εως, ἡ'],
+      ['ἐλπιζομένων', 'of things being hoped for', 'pres pass ptc gen pl neut', 'ἐλπίζω'],
+      ['ὑπόστασις,', 'substance, assurance', 'nom sg fem', 'ὑπόστασις, -εως, ἡ'],
+      ['πραγμάτων', 'of things', 'gen pl neut', 'πρᾶγμα, -ατος, τό'],
+      ['ἔλεγχος', 'proof, conviction', 'nom sg masc', 'ἔλεγχος, -ου, ὁ'],
+      ['οὐ', 'not', 'adv', 'οὐ'],
+      ['βλεπομένων.', 'being seen', 'pres pass ptc gen pl neut', 'βλέπω']
+    ],
+    note: 'Both participles are genitive plural neuter with no noun — the article-less participle simply means "things that are ...".'
+  },
+  {
+    id: 'jn14-6', ref: 'John 14:6', level: 1, title: 'I am the way',
+    en: 'Jesus says to him: I am the way and the truth and the life; no one comes to the Father except through me.',
+    words: [
+      ['λέγει', 'says', 'pres act ind 3sg', 'λέγω'],
+      ['αὐτῷ', 'to him', 'dat sg masc', 'αὐτός'],
+      ['ὁ', 'the', 'nom sg masc', 'ὁ'],
+      ['Ἰησοῦς·', 'Jesus', 'nom sg masc', 'Ἰησοῦς, -οῦ, ὁ'],
+      ['Ἐγώ', 'I', 'nom sg', 'ἐγώ'],
+      ['εἰμι', 'am', 'pres act ind 1sg', 'εἰμί'],
+      ['ἡ', 'the', 'nom sg fem', 'ὁ'],
+      ['ὁδὸς', 'way', 'nom sg fem', 'ὁδός, -οῦ, ἡ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἡ', 'the', 'nom sg fem', 'ὁ'],
+      ['ἀλήθεια', 'truth', 'nom sg fem', 'ἀλήθεια, -ας, ἡ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἡ', 'the', 'nom sg fem', 'ὁ'],
+      ['ζωή·', 'life', 'nom sg fem', 'ζωή, -ῆς, ἡ'],
+      ['οὐδεὶς', 'no one', 'nom sg masc', 'οὐδείς, οὐδεμία, οὐδέν'],
+      ['ἔρχεται', 'comes', 'pres mid ind 3sg', 'ἔρχομαι'],
+      ['πρὸς', 'to', 'prep +acc', 'πρός'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['πατέρα', 'Father', 'acc sg masc', 'πατήρ, πατρός, ὁ'],
+      ['εἰ', 'if', 'conj', 'εἰ'],
+      ['μὴ', 'not', 'particle', 'μή'],
+      ["δι'", 'through', 'prep +gen', 'διά'],
+      ['ἐμοῦ.', 'me', 'gen sg', 'ἐγώ']
+    ],
+    note: 'εἰ μή together simply means "except". ὁδός is one of those second-declension nouns that is feminine — the article ἡ tells you so.'
+  },
+  {
+    id: 'jn15-5', ref: 'John 15:5', level: 3, title: 'I am the vine',
+    en: 'I am the vine, you are the branches. The one who abides in me and I in him, this one bears much fruit, because apart from me you can do nothing.',
+    words: [
+      ['ἐγώ', 'I', 'nom sg', 'ἐγώ'],
+      ['εἰμι', 'am', 'pres act ind 1sg', 'εἰμί'],
+      ['ἡ', 'the', 'nom sg fem', 'ὁ'],
+      ['ἄμπελος,', 'vine', 'nom sg fem', 'ἄμπελος, -ου, ἡ'],
+      ['ὑμεῖς', 'you', 'nom pl', 'σύ'],
+      ['τὰ', 'the', 'nom pl neut', 'ὁ'],
+      ['κλήματα.', 'branches', 'nom pl neut', 'κλῆμα, -ατος, τό'],
+      ['ὁ', 'the one', 'nom sg masc', 'ὁ'],
+      ['μένων', 'abiding', 'pres act ptc nom sg masc', 'μένω'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['ἐμοὶ', 'me', 'dat sg', 'ἐγώ'],
+      ['κἀγὼ', 'and I', 'nom sg (crasis καί + ἐγώ)', 'ἐγώ'],
+      ['ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['αὐτῷ', 'him', 'dat sg masc', 'αὐτός'],
+      ['οὗτος', 'this one', 'nom sg masc', 'οὗτος'],
+      ['φέρει', 'bears', 'pres act ind 3sg', 'φέρω'],
+      ['καρπὸν', 'fruit', 'acc sg masc', 'καρπός, -οῦ, ὁ'],
+      ['πολύν,', 'much', 'acc sg masc', 'πολύς, πολλή, πολύ'],
+      ['ὅτι', 'because', 'conj', 'ὅτι'],
+      ['χωρὶς', 'apart from', 'prep +gen', 'χωρίς'],
+      ['ἐμοῦ', 'me', 'gen sg', 'ἐγώ'],
+      ['οὐ', 'not', 'adv', 'οὐ'],
+      ['δύνασθε', 'you are able', 'pres mid ind 2pl', 'δύναμαι'],
+      ['ποιεῖν', 'to do', 'pres act inf', 'ποιέω'],
+      ['οὐδέν.', 'nothing', 'acc sg neut', 'οὐδείς, οὐδεμία, οὐδέν']
+    ],
+    note: 'οὐ ... οὐδέν is a double negative that strengthens rather than cancels: "you can do nothing at all".'
+  },
+  {
+    id: 'mt22-37', ref: 'Matthew 22:37', level: 2, title: 'The great commandment',
+    en: 'You shall love the Lord your God with your whole heart and with your whole soul and with your whole mind.',
+    words: [
+      ['ἀγαπήσεις', 'you shall love', 'fut act ind 2sg', 'ἀγαπάω'],
+      ['κύριον', 'Lord', 'acc sg masc', 'κύριος, -ου, ὁ'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['θεόν', 'God', 'acc sg masc', 'θεός, -οῦ, ὁ'],
+      ['σου', 'your', 'gen sg', 'σύ'],
+      ['ἐν', 'with', 'prep +dat', 'ἐν'],
+      ['ὅλῃ', 'whole', 'dat sg fem', 'ὅλος, -η, -ον'],
+      ['τῇ', 'the', 'dat sg fem', 'ὁ'],
+      ['καρδίᾳ', 'heart', 'dat sg fem', 'καρδία, -ας, ἡ'],
+      ['σου', 'your', 'gen sg', 'σύ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἐν', 'with', 'prep +dat', 'ἐν'],
+      ['ὅλῃ', 'whole', 'dat sg fem', 'ὅλος, -η, -ον'],
+      ['τῇ', 'the', 'dat sg fem', 'ὁ'],
+      ['ψυχῇ', 'soul', 'dat sg fem', 'ψυχή, -ῆς, ἡ'],
+      ['σου', 'your', 'gen sg', 'σύ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἐν', 'with', 'prep +dat', 'ἐν'],
+      ['ὅλῃ', 'whole', 'dat sg fem', 'ὅλος, -η, -ον'],
+      ['τῇ', 'the', 'dat sg fem', 'ὁ'],
+      ['διανοίᾳ', 'mind', 'dat sg fem', 'διάνοια, -ας, ἡ'],
+      ['σου.', 'your', 'gen sg', 'σύ']
+    ],
+    note: 'A future indicative used as a command — Greek borrows this straight from the Hebrew of the Old Testament.'
+  },
+  {
+    id: '1tim2-5', ref: '1 Timothy 2:5', level: 1, title: 'One God, one mediator',
+    en: 'For God is one, and one is the mediator between God and men, a man, Christ Jesus.',
+    words: [
+      ['εἷς', 'one', 'nom sg masc', 'εἷς, μία, ἕν'],
+      ['γὰρ', 'for', 'conj', 'γάρ'],
+      ['θεός,', 'God', 'nom sg masc', 'θεός, -οῦ, ὁ'],
+      ['εἷς', 'one', 'nom sg masc', 'εἷς, μία, ἕν'],
+      ['καὶ', 'also', 'conj', 'καί'],
+      ['μεσίτης', 'mediator', 'nom sg masc', 'μεσίτης, -ου, ὁ'],
+      ['θεοῦ', 'of God', 'gen sg masc', 'θεός, -οῦ, ὁ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['ἀνθρώπων,', 'of men', 'gen pl masc', 'ἄνθρωπος, -ου, ὁ'],
+      ['ἄνθρωπος', 'a man', 'nom sg masc', 'ἄνθρωπος, -ου, ὁ'],
+      ['Χριστὸς', 'Christ', 'nom sg masc', 'Χριστός, -οῦ, ὁ'],
+      ['Ἰησοῦς', 'Jesus', 'nom sg masc', 'Ἰησοῦς, -οῦ, ὁ']
+    ]
+  },
+  {
+    id: 'gen1-1', ref: 'Genesis 1:1 (LXX)', level: 1, title: 'In the beginning God made',
+    en: 'In the beginning God made the heaven and the earth.',
+    words: [
+      ['Ἐν', 'in', 'prep +dat', 'ἐν'],
+      ['ἀρχῇ', 'beginning', 'dat sg fem', 'ἀρχή, -ῆς, ἡ'],
+      ['ἐποίησεν', 'made', 'aor act ind 3sg', 'ποιέω'],
+      ['ὁ', 'the', 'nom sg masc', 'ὁ'],
+      ['θεὸς', 'God', 'nom sg masc', 'θεός, -οῦ, ὁ'],
+      ['τὸν', 'the', 'acc sg masc', 'ὁ'],
+      ['οὐρανὸν', 'heaven', 'acc sg masc', 'οὐρανός, -οῦ, ὁ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['τὴν', 'the', 'acc sg fem', 'ὁ'],
+      ['γῆν.', 'earth', 'acc sg fem', 'γῆ, γῆς, ἡ']
+    ],
+    note: 'The Septuagint opens with the same three words as John 1:1 — Ἐν ἀρχῇ. John is quoting Genesis on purpose.'
+  },
+  {
+    id: 'ps22-1', ref: 'Psalm 22:1 LXX (23:1)', level: 1, title: 'The Lord shepherds me',
+    en: 'The Lord shepherds me, and I will lack nothing.',
+    words: [
+      ['Κύριος', 'the Lord', 'nom sg masc', 'κύριος, -ου, ὁ'],
+      ['ποιμαίνει', 'shepherds', 'pres act ind 3sg', 'ποιμαίνω'],
+      ['με,', 'me', 'acc sg', 'ἐγώ'],
+      ['καὶ', 'and', 'conj', 'καί'],
+      ['οὐδέν', 'nothing', 'nom sg neut', 'οὐδείς, οὐδεμία, οὐδέν'],
+      ['με', 'me', 'acc sg', 'ἐγώ'],
+      ['ὑστερήσει.', 'will be lacking to', 'fut act ind 3sg', 'ὑστερέω']
+    ],
+    note: 'Literally "nothing will be lacking to me" — the Greek makes οὐδέν the subject, not the object.'
+  }
+];
+
+/* ===== js/srs.js ===== */
+/* srs.js — Leitner-box scheduling. Items you miss come back tomorrow;
+   items you know drift out to a month. Nothing here talks to the DOM. */
+var GK = window.GK || {}; window.GK = GK;
+
+GK.srs = (function () {
+  'use strict';
+
+  var INTERVALS = [0, 1, 2, 4, 8, 16, 32]; // days per box
+  var state = null;
+
+  function ensure() {
+    if (!state) state = GK.util.load('srs', { items: {} });
+    if (!state.items) state.items = {};
+    return state;
+  }
+
+  function persist() { GK.util.save('srs', ensure()); }
+
+  function rec(id) {
+    var s = ensure();
+    if (!s.items[id]) {
+      s.items[id] = { box: 0, due: null, seen: 0, right: 0, wrong: 0 };
+    }
+    return s.items[id];
+  }
+
+  function addDays(iso, n) {
+    var d = new Date(iso + 'T00:00:00');
+    d.setDate(d.getDate() + n);
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+
+  function grade(id, correct) {
+    var r = rec(id);
+    var today = GK.util.today();
+    r.seen++;
+    if (correct) {
+      r.right++;
+      r.box = Math.min(r.box + 1, INTERVALS.length - 1);
+    } else {
+      r.wrong++;
+      r.box = 0;
+    }
+    r.due = addDays(today, INTERVALS[r.box]);
+    persist();
+    return r;
+  }
+
+  // Lower score = more urgent. Never-seen items sort just behind overdue ones.
+  function urgency(id) {
+    var s = ensure();
+    var r = s.items[id];
+    if (!r || r.seen === 0) return 1;          // fresh material
+    var overdue = r.due ? GK.util.daysBetween(r.due, GK.util.today()) : 99;
+    if (overdue < 0) return 100 + r.box;       // not due yet
+    return -overdue + r.box;                   // most overdue, weakest first
+  }
+
+  function isDue(id) {
+    var s = ensure();
+    var r = s.items[id];
+    if (!r || r.seen === 0) return true;
+    if (!r.due) return true;
+    return GK.util.daysBetween(r.due, GK.util.today()) >= 0;
+  }
+
+  // Order a pool for study: urgent first, with a little jitter so the same
+  // handful of items don't appear in the same order every session.
+  function order(ids) {
+    return ids.slice().sort(function (a, b) {
+      return (urgency(a) + Math.random() * 0.9) - (urgency(b) + Math.random() * 0.9);
+    });
+  }
+
+  function stats(ids) {
+    var s = ensure();
+    var out = { total: ids.length, seen: 0, due: 0, learned: 0, right: 0, wrong: 0 };
+    ids.forEach(function (id) {
+      var r = s.items[id];
+      if (!r || !r.seen) { out.due++; return; }
+      out.seen++;
+      out.right += r.right;
+      out.wrong += r.wrong;
+      if (r.box >= 4) out.learned++;
+      if (isDue(id)) out.due++;
+    });
+    return out;
+  }
+
+  function record(id) { return ensure().items[id] || null; }
+
+  function reset() { state = { items: {} }; persist(); }
+
+  return {
+    grade: grade, order: order, isDue: isDue, urgency: urgency,
+    stats: stats, record: record, reset: reset, INTERVALS: INTERVALS
+  };
+})();
+
+/* ===== js/drills.js ===== */
+/* drills.js — turns the paradigm data into drillable questions.
+   Ambiguous forms are grouped: τῶν is one question with several right answers,
+   not three questions you can only get one-third right. */
+var GK = window.GK || {}; window.GK = GK;
+
+GK.drills = (function () {
+  'use strict';
+
+  var U = GK.util;
+
+  var FIELD_DEFS = {
+    tense: { label: 'tense', opts: ['present', 'imperfect', 'future', 'aorist', 'perfect', 'pluperfect'], labels: GK.TENSE_LABEL },
+    voice: { label: 'voice', opts: ['active', 'middle', 'passive', 'mp'], labels: GK.VOICE_LABEL },
+    mood: { label: 'mood', opts: ['indicative', 'subjunctive', 'imperative', 'infinitive', 'participle'],
+      labels: { indicative: 'indicative', subjunctive: 'subjunctive', imperative: 'imperative', infinitive: 'infinitive', participle: 'participle' } },
+    person: { label: 'person', opts: ['1', '2', '3'], labels: { '1': '1st', '2': '2nd', '3': '3rd' } },
+    number: { label: 'number', opts: ['sg', 'pl'], labels: GK.NUMBER_LABEL },
+    'case': { label: 'case', opts: ['nom', 'gen', 'dat', 'acc', 'voc'], labels: GK.CASE_LABEL },
+    gender: { label: 'gender', opts: ['m', 'f', 'n'], labels: GK.GENDER_LABEL }
+  };
+
+  var FIELD_ORDER = ['tense', 'voice', 'mood', 'person', 'case', 'number', 'gender'];
+
+  /* ---------- parse-string reader (used for reading passages) ---------- */
+
+  var TOKENS = {
+    nom: ['case', 'nom'], gen: ['case', 'gen'], dat: ['case', 'dat'],
+    acc: ['case', 'acc'], voc: ['case', 'voc'],
+    sg: ['number', 'sg'], pl: ['number', 'pl'],
+    masc: ['gender', 'm'], fem: ['gender', 'f'], neut: ['gender', 'n'],
+    pres: ['tense', 'present'], impf: ['tense', 'imperfect'], fut: ['tense', 'future'],
+    aor: ['tense', 'aorist'], perf: ['tense', 'perfect'], plupf: ['tense', 'pluperfect'],
+    act: ['voice', 'active'], mid: ['voice', 'middle'], pass: ['voice', 'passive'], mp: ['voice', 'mp'],
+    ind: ['mood', 'indicative'], subj: ['mood', 'subjunctive'], impv: ['mood', 'imperative'],
+    inf: ['mood', 'infinitive'], ptc: ['mood', 'participle']
+  };
+
+  function readParse(str) {
+    var out = {};
+    String(str).split(/\s+/).forEach(function (tok) {
+      var t = tok.replace(/[(),]/g, '');
+      if (TOKENS[t]) { out[TOKENS[t][0]] = TOKENS[t][1]; return; }
+      var m = /^([123])(sg|pl)$/.exec(t);
+      if (m) { out.person = m[1]; out.number = m[2]; }
+    });
+    return out;
+  }
+
+  /* ---------- answer checking ---------- */
+
+  function voiceOk(given, want) {
+    if (given === want) return true;
+    // The middle and passive are identical in form outside the aorist and
+    // future, so accept either where the chart says "middle/passive".
+    if (want === 'mp') return given === 'middle' || given === 'passive';
+    if (given === 'mp') return want === 'middle' || want === 'passive';
+    return false;
+  }
+
+  function combosMatch(given, want, fields) {
+    for (var i = 0; i < fields.length; i++) {
+      var f = fields[i];
+      if (f === 'voice') { if (!voiceOk(given.voice, want.voice)) return false; }
+      else if (given[f] !== want[f]) return false;
+    }
+    return true;
+  }
+
+  function checkParse(item, given) {
+    for (var i = 0; i < item.answers.length; i++) {
+      if (combosMatch(given, item.answers[i], item.fields)) return true;
+    }
+    return false;
+  }
+
+  function checkTyped(item, typed) {
+    return U.answerMatches(typed, item.accepted);
+  }
+
+  function describe(combo, fields) {
+    return fields.map(function (f) {
+      var v = combo[f];
+      if (v === undefined || v === null) return null;
+      return FIELD_DEFS[f].labels[v] || v;
+    }).filter(Boolean).join(' · ');
+  }
+
+  /* ---------- generators ---------- */
+
+  function nominalItems() {
+    var parseItems = [], produceItems = [];
+    GK.nominals.forEach(function (entry) {
+      var byForm = {};
+      var genders = Object.keys(entry.forms);
+      genders.forEach(function (g) {
+        ['sg', 'pl'].forEach(function (n) {
+          var row = entry.forms[g][n];
+          if (!row) return;
+          GK.CASES.forEach(function (c, ci) {
+            var form = row[ci];
+            if (!form) return;
+            var combo = { 'case': c, number: n };
+            if (!entry.genderless) combo.gender = g;
+            var k = U.key(form);
+            if (!byForm[k]) byForm[k] = { form: form, combos: [] };
+            byForm[k].combos.push(combo);
+
+            if (c !== 'voc') {
+              var fields = entry.genderless ? ['case', 'number'] : ['case', 'number', 'gender'];
+              produceItems.push({
+                id: 'nq:' + entry.id + ':' + g + ':' + n + ':' + c,
+                deck: deckOf(entry), mode: 'produce',
+                question: {
+                  instruction: describe(combo, fields) + ' of',
+                  lemma: entry.lemma, gloss: entry.gloss, form: null,
+                  source: categoryOf(entry)
+                },
+                accepted: U.variants(form),
+                reveal: form + '  —  ' + describe(combo, fields),
+                note: entry.note
+              });
+            }
+          });
+        });
+      });
+
+      Object.keys(byForm).forEach(function (k) {
+        var b = byForm[k];
+        var fields = entry.genderless ? ['case', 'number'] : ['case', 'number', 'gender'];
+        parseItems.push({
+          id: 'np:' + entry.id + ':' + k,
+          deck: deckOf(entry), mode: 'parse',
+          question: {
+            instruction: 'Parse this form', form: b.form,
+            lemma: entry.lemma, gloss: entry.gloss, source: categoryOf(entry)
+          },
+          fields: fields,
+          answers: b.combos,
+          reveal: b.combos.map(function (c) { return describe(c, fields); }).join('   or   '),
+          note: entry.note
+        });
+      });
+    });
+    return parseItems.concat(produceItems);
+  }
+
+  // A label for the prompt that says what kind of word this is without
+  // handing over the lexical form the learner is meant to work out.
+  function categoryOf(entry) {
+    if (entry.kind === 'article') return 'the article';
+    if (entry.kind === 'adj') return entry.decl + ' adjective';
+    if (entry.kind === 'pronoun') {
+      return entry.decl === 'personal' ? 'personal pronoun' : 'pronoun · ' + entry.decl;
+    }
+    return entry.decl + ' declension noun';
+  }
+
+  function deckOf(entry) {
+    if (entry.kind === 'article') return 'article';
+    if (entry.kind === 'pronoun') return 'pronouns';
+    if (entry.kind === 'adj') return 'adjectives';
+    return 'nouns';
+  }
+
+  function verbItems() {
+    var parseItems = [], produceItems = [];
+    var SLOTS = ['1s', '2s', '3s', '1p', '2p', '3p'];
+
+    GK.verbs.forEach(function (verb) {
+      var byForm = {};
+
+      verb.paradigms.forEach(function (par) {
+        SLOTS.forEach(function (slot) {
+          var form = par.forms[slot];
+          if (!form) return;
+          var combo = {
+            tense: par.tense, voice: par.voice, mood: par.mood,
+            person: slot[0], number: slot[1] === 's' ? 'sg' : 'pl'
+          };
+          var k = U.key(form);
+          if (!byForm[k]) byForm[k] = { form: form, combos: [] };
+          byForm[k].combos.push(combo);
+
+          produceItems.push({
+            id: 'vq:' + verb.id + ':' + par.tense + ':' + par.voice + ':' + par.mood + ':' + slot,
+            deck: 'verbs', mode: 'produce',
+            question: {
+              instruction: describe(combo, ['person', 'number', 'tense', 'voice', 'mood']) + ' of',
+              lemma: verb.lemma, gloss: verb.gloss, form: null,
+              source: verb.klass
+            },
+            accepted: U.variants(form),
+            reveal: form + '  —  ' + describe(combo, ['person', 'number', 'tense', 'voice', 'mood']),
+            note: par.note || verb.note
+          });
+        });
+      });
+
+      (verb.infinitives || []).forEach(function (inf) {
+        var combo = { tense: inf.tense, voice: inf.voice, mood: 'infinitive' };
+        var k = U.key(inf.form);
+        if (!byForm[k]) byForm[k] = { form: inf.form, combos: [] };
+        byForm[k].combos.push(combo);
+      });
+
+      (verb.participles || []).forEach(function (p) {
+        var combo = { tense: p.tense, voice: p.voice, mood: 'participle' };
+        var k = U.key(p.forms[0]);
+        if (!byForm[k]) byForm[k] = { form: p.forms[0], combos: [] };
+        byForm[k].combos.push(combo);
+      });
+
+      Object.keys(byForm).forEach(function (k) {
+        var b = byForm[k];
+        // Every combo for one surface shares the same shape of answer, so use
+        // the widest set of fields any of them needs.
+        var needsPerson = b.combos.some(function (c) { return c.person; });
+        var fields = needsPerson
+          ? ['tense', 'voice', 'mood', 'person', 'number']
+          : ['tense', 'voice', 'mood'];
+        parseItems.push({
+          id: 'vp:' + verb.id + ':' + k,
+          deck: 'verbs', mode: 'parse',
+          question: {
+            instruction: 'Parse this verb', form: b.form,
+            lemma: verb.lemma, gloss: verb.gloss, source: verb.klass
+          },
+          fields: fields,
+          // A surface shared by a finite form and a participle keeps only the
+          // combos that can actually answer the fields being asked.
+          answers: b.combos.filter(function (c) {
+            return fields.every(function (f) { return c[f] !== undefined; });
+          }).map(function (c) {
+            var out = {};
+            fields.forEach(function (f) { out[f] = c[f]; });
+            return out;
+          }),
+          reveal: b.combos.map(function (c) { return describe(c, fields); }).join('   or   '),
+          note: verb.note
+        });
+      });
+    });
+    return parseItems.concat(produceItems);
+  }
+
+  function principalPartItems() {
+    var items = [];
+    GK.principalParts.forEach(function (pp) {
+      pp.parts.forEach(function (part, i) {
+        if (!part || part === '—' || i === 0) return;
+        items.push({
+          id: 'pp:' + pp.lemma + ':' + i,
+          deck: 'principalparts', mode: 'produce',
+          question: {
+            instruction: GK.PP_LABELS[i] + ' of',
+            lemma: pp.lemma, gloss: pp.gloss, form: null,
+            source: 'principal part ' + (i + 1)
+          },
+          accepted: U.variants(part),
+          reveal: pp.parts.join('  ·  ')
+        });
+      });
+    });
+    return items;
+  }
+
+  function vocabItems() {
+    var items = [];
+    GK.vocab.forEach(function (v) {
+      var head = v.g.split(',')[0].trim();
+      items.push({
+        id: 'vg:' + head,
+        deck: 'vocab', mode: 'recall',
+        question: { instruction: 'What does this mean?', form: v.g, source: v.pos },
+        reveal: v.e,
+        meta: 'about ' + v.freq + '× in the NT'
+      });
+      items.push({
+        id: 've:' + head,
+        deck: 'vocab', mode: 'produce',
+        question: { instruction: 'Give the Greek for', lemma: v.e, gloss: null, form: null, source: v.pos },
+        accepted: [head],
+        reveal: v.g + '  —  ' + v.e
+      });
+    });
+    return items;
+  }
+
+  function readingItems() {
+    var items = [];
+    GK.passages.forEach(function (p) {
+      p.words.forEach(function (w, i) {
+        var combo = readParse(w[2]);
+        var fields = [];
+        if (combo.mood === 'participle') fields = ['tense', 'voice', 'case', 'number', 'gender'];
+        else if (combo.mood === 'infinitive') fields = ['tense', 'voice'];
+        else if (combo.tense) fields = ['tense', 'voice', 'mood', 'person', 'number'];
+        else if (combo['case']) fields = combo.gender ? ['case', 'number', 'gender'] : ['case', 'number'];
+        if (!fields.length) return;
+        if (fields.some(function (f) { return !combo[f]; })) return;
+
+        var answer = {};
+        fields.forEach(function (f) { answer[f] = combo[f]; });
+        items.push({
+          id: 'rp:' + p.id + ':' + i,
+          deck: 'reading', mode: 'parse',
+          question: {
+            instruction: combo.mood === 'participle' ? 'Parse this participle'
+              : combo.mood === 'infinitive' ? 'Parse this infinitive'
+              : 'Parse this word',
+            form: w[0].replace(/[.,;·:!?]+$/, ''),
+            lemma: w[3], gloss: w[1], source: p.ref
+          },
+          fields: fields,
+          answers: [answer],
+          reveal: combo.mood === 'participle'
+            ? describe(answer, ['tense', 'voice']) + ' participle  ·  ' + describe(answer, ['case', 'number', 'gender'])
+            : combo.mood === 'infinitive'
+              ? describe(answer, ['tense', 'voice']) + ' infinitive'
+              : describe(answer, fields),
+          note: p.note
+        });
+      });
+    });
+    return items;
+  }
+
+  /* ---------- pool assembly ---------- */
+
+  var cache = null;
+
+  function all() {
+    if (cache) return cache;
+    cache = []
+      .concat(nominalItems())
+      .concat(verbItems())
+      .concat(principalPartItems())
+      .concat(vocabItems())
+      .concat(readingItems());
+    return cache;
+  }
+
+  GK.DECKS = [
+    { id: 'article', name: 'The article', blurb: 'ὁ ἡ τό — every case, gender and number' },
+    { id: 'nouns', name: 'Nouns', blurb: '1st, 2nd and 3rd declension' },
+    { id: 'adjectives', name: 'Adjectives', blurb: 'ἀγαθός and πᾶς' },
+    { id: 'pronouns', name: 'Pronouns', blurb: 'αὐτός, οὗτος, ὅς, ἐγώ, σύ, τίς' },
+    { id: 'verbs', name: 'Verbs', blurb: 'all six tenses, three moods, three voices' },
+    { id: 'principalparts', name: 'Principal parts', blurb: 'the six forms behind every verb' },
+    { id: 'vocab', name: 'Vocabulary', blurb: '146 of the most common NT words' },
+    { id: 'reading', name: 'Words from your reading', blurb: 'parsed straight out of the passages' }
+  ];
+
+  function pool(opts) {
+    opts = opts || {};
+    var decks = opts.decks || GK.DECKS.map(function (d) { return d.id; });
+    var modes = opts.modes || ['parse', 'produce', 'recall'];
+    return all().filter(function (it) {
+      return decks.indexOf(it.deck) !== -1 && modes.indexOf(it.mode) !== -1;
+    });
+  }
+
+  function byId(id) {
+    var list = all();
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+
+  return {
+    pool: pool, all: all, byId: byId,
+    checkParse: checkParse, checkTyped: checkTyped,
+    describe: describe, readParse: readParse,
+    FIELD_DEFS: FIELD_DEFS, FIELD_ORDER: FIELD_ORDER
+  };
+})();
+
+/* ===== js/app.js ===== */
+/* app.js — views, session runner, and all the DOM wiring. */
+var GK = window.GK || {}; window.GK = GK;
+
+GK.app = (function () {
+  'use strict';
+
+  var U = GK.util, D = GK.drills, S = GK.srs;
+  var el = U.el;
+
+  var VIEWS = [
+    { id: 'today', label: 'Today', ic: '☀' },
+    { id: 'drill', label: 'Drill', ic: '✎' },
+    { id: 'read', label: 'Read', ic: '📖' },
+    { id: 'charts', label: 'Charts', ic: '▦' },
+    { id: 'progress', label: 'Progress', ic: '◔' }
+  ];
+
+  var prefs = U.load('prefs', {
+    decks: ['article', 'nouns', 'adjectives', 'pronouns', 'verbs', 'principalparts', 'reading'],
+    modes: ['parse'],
+    length: 20,
+    theme: 'auto'
+  });
+
+  var progress = U.load('progress', { days: {}, readingIndex: 0, todayPassage: null });
+
+  var state = { view: 'today', session: null, passageId: null, wordIndex: null, readMode: 'plain' };
+
+  function savePrefs() { U.save('prefs', prefs); }
+  function saveProgress() { U.save('progress', progress); }
+
+  function dayRec(iso) {
+    if (!progress.days[iso]) progress.days[iso] = { answered: 0, right: 0, read: [] };
+    return progress.days[iso];
+  }
+
+  function streak() {
+    var n = 0, d = U.today();
+    // Today doesn't break the streak until it's over, so start from yesterday
+    // if nothing has been done yet today.
+    if (!progress.days[d]) {
+      d = shift(d, -1);
+      if (!progress.days[d]) return 0;
+    }
+    while (progress.days[d]) { n++; d = shift(d, -1); }
+    return n;
+  }
+
+  function shift(iso, n) {
+    var dt = new Date(iso + 'T00:00:00');
+    dt.setDate(dt.getDate() + n);
+    return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
+  }
+
+  /* ---------- shell ---------- */
+
+  var viewEl, tabsEl;
+
+  function go(view) {
+    state.view = view;
+    if (view !== 'drill') state.session = null;
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function render() {
+    Array.prototype.forEach.call(tabsEl.children, function (b) {
+      b.setAttribute('aria-selected', b.dataset.view === state.view ? 'true' : 'false');
+    });
+    viewEl.innerHTML = '';
+    ({
+      today: renderToday, drill: renderDrill, read: renderRead,
+      charts: renderCharts, progress: renderProgress
+    })[state.view](viewEl);
+  }
+
+  /* ---------- today ---------- */
+
+  function todaysPassage() {
+    var t = U.today();
+    if (progress.todayPassage && progress.todayPassage.date === t) {
+      var found = GK.passages.filter(function (p) { return p.id === progress.todayPassage.id; })[0];
+      if (found) return found;
+    }
+    var p = GK.passages[progress.readingIndex % GK.passages.length];
+    progress.todayPassage = { date: t, id: p.id };
+    saveProgress();
+    return p;
+  }
+
+  // Only material you have already met counts as "due" — otherwise day one
+  // reports two thousand items due, which tells you nothing.
+  function reviewDue() {
+    return D.pool({ decks: prefs.decks, modes: prefs.modes }).filter(function (i) {
+      var r = S.record(i.id);
+      return r && r.seen > 0 && S.isDue(i.id);
+    }).length;
+  }
+
+  function renderToday(root) {
+    var p = todaysPassage();
+    var t = U.today();
+    var rec = progress.days[t];
+    var readToday = rec && rec.read.indexOf(p.id) !== -1;
+
+    root.appendChild(el('h1', { text: 'Καλημέρα' }));
+    root.appendChild(el('p', { class: 'sub', text: new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }) }));
+
+    var stats = el('div', { class: 'card' }, [
+      el('div', { class: 'streak' }, [
+        el('div', { class: 'stat' }, [el('b', { text: String(streak()) }), el('span', { text: 'day streak' })]),
+        el('div', { class: 'stat' }, [el('b', { text: String(rec ? rec.answered : 0) }), el('span', { text: 'today' })]),
+        el('div', { class: 'stat' }, [el('b', { text: String(reviewDue()) }), el('span', { text: 'to review' })]),
+        el('div', { class: 'stat' }, [el('b', { text: String(S.stats(D.all().map(function (i) { return i.id; })).learned) }), el('span', { text: 'learned' })])
+      ])
+    ]);
+    root.appendChild(stats);
+
+    /* reading */
+    var preview = p.words.slice(0, 9).map(function (w) { return w[0]; }).join(' ') + (p.words.length > 9 ? ' …' : '');
+    root.appendChild(el('div', { class: 'card' }, [
+      el('div', { class: 'spread' }, [
+        el('h3', { text: 'Today’s reading' }),
+        el('span', { class: 'pill' + (readToday ? ' accent' : ''), text: readToday ? 'read ✓' : 'passage ' + ((progress.readingIndex % GK.passages.length) + 1) + ' of ' + GK.passages.length })
+      ]),
+      el('div', { class: 'spread' }, [
+        el('div', {}, [
+          el('div', { style: 'font-weight:650', text: p.ref }),
+          el('div', { class: 'sub', text: p.title })
+        ])
+      ]),
+      el('p', { class: 'gk', style: 'font-size:21px;line-height:1.7;margin:10px 0', text: preview }),
+      el('div', { class: 'row' }, [
+        el('button', { class: 'primary', text: 'Read it', onclick: function () { state.passageId = p.id; state.wordIndex = null; go('read'); } }),
+        el('button', {
+          text: 'Drill these words',
+          onclick: function () { startSession(passageItems(p.id), 'Words from ' + p.ref); }
+        })
+      ])
+    ]));
+
+    /* warm-up */
+    root.appendChild(el('div', { class: 'card' }, [
+      el('h3', { text: 'Warm-up' }),
+      el('p', { class: 'sub', text: 'A short run through whatever is weakest and due — parsing forms, naming the case, calling the tense.' }),
+      el('p', { class: 'small faint', text: D.pool({ decks: prefs.decks, modes: prefs.modes }).length + ' questions in the decks you have chosen' }),
+      el('div', { class: 'row', style: 'margin-top:10px' }, [
+        el('button', {
+          class: 'primary', text: 'Start 15 questions',
+          onclick: function () {
+            var items = D.pool({ decks: prefs.decks, modes: prefs.modes });
+            startSession(items, 'Warm-up', 15);
+          }
+        }),
+        el('button', { text: 'Choose decks', onclick: function () { go('drill'); } })
+      ])
+    ]));
+
+    if (p.note) {
+      root.appendChild(el('div', { class: 'card tight' }, [
+        el('h3', { text: 'Worth noticing' }),
+        el('p', { class: 'small', text: p.note })
+      ]));
+    }
+  }
+
+  function passageItems(pid) {
+    return D.all().filter(function (i) { return i.id.indexOf('rp:' + pid + ':') === 0; });
+  }
+
+  /* ---------- drill setup ---------- */
+
+  function renderDrill(root) {
+    if (state.session) return renderSession(root);
+
+    root.appendChild(el('h1', { text: 'Drill' }));
+    root.appendChild(el('p', { class: 'sub', text: 'Pick what to work on. Questions are chosen by what you have got wrong and what is due for review.' }));
+
+    var deckCard = el('div', { class: 'card' }, [el('h3', { text: 'Decks' })]);
+    GK.DECKS.forEach(function (d) {
+      var ids = D.pool({ decks: [d.id] }).map(function (i) { return i.id; });
+      var st = S.stats(ids);
+      var cb = el('input', { type: 'checkbox' });
+      cb.checked = prefs.decks.indexOf(d.id) !== -1;
+      cb.addEventListener('change', function () {
+        prefs.decks = GK.DECKS.filter(function (x) {
+          return x.id === d.id ? cb.checked : prefs.decks.indexOf(x.id) !== -1;
+        }).map(function (x) { return x.id; });
+        savePrefs();
+      });
+      deckCard.appendChild(el('label', { class: 'check' }, [
+        cb,
+        el('div', {}, [
+          el('div', { class: 't', text: d.name + '  ' }),
+          el('div', { class: 'd', text: d.blurb + ' · ' + ids.length + ' items · ' + st.learned + ' learned' })
+        ])
+      ]));
+    });
+    root.appendChild(deckCard);
+
+    var modeCard = el('div', { class: 'card' }, [el('h3', { text: 'Question types' })]);
+    [
+      { id: 'parse', t: 'Parse a form', d: 'You see λύσωμεν — you name the tense, voice, mood, person and number.' },
+      { id: 'produce', t: 'Build a form', d: 'You see “1st plural aorist active subjunctive of λύω” — you type it.' },
+      { id: 'recall', t: 'Vocabulary recall', d: 'Greek word, you say the meaning, then grade yourself.' }
+    ].forEach(function (m) {
+      var cb = el('input', { type: 'checkbox' });
+      cb.checked = prefs.modes.indexOf(m.id) !== -1;
+      cb.addEventListener('change', function () {
+        if (cb.checked) { if (prefs.modes.indexOf(m.id) === -1) prefs.modes.push(m.id); }
+        else prefs.modes = prefs.modes.filter(function (x) { return x !== m.id; });
+        savePrefs();
+      });
+      modeCard.appendChild(el('label', { class: 'check' }, [
+        cb, el('div', {}, [el('div', { class: 't', text: m.t }), el('div', { class: 'd', text: m.d })])
+      ]));
+    });
+    root.appendChild(modeCard);
+
+    var lenRow = el('div', { class: 'row' });
+    [10, 20, 40, 0].forEach(function (n) {
+      var b = el('button', { text: n === 0 ? 'Everything due' : n + ' questions' });
+      if (prefs.length === n) b.className = 'primary';
+      b.addEventListener('click', function () { prefs.length = n; savePrefs(); render(); });
+      lenRow.appendChild(b);
+    });
+    root.appendChild(el('div', { class: 'card' }, [el('h3', { text: 'Session length' }), lenRow]));
+
+    var avail = D.pool({ decks: prefs.decks, modes: prefs.modes });
+    root.appendChild(el('button', {
+      class: 'primary wide', style: 'margin-top:6px',
+      text: avail.length ? 'Start drilling' : 'Choose at least one deck and question type',
+      disabled: avail.length ? null : 'disabled',
+      onclick: function () { startSession(avail, 'Drill', prefs.length || 0); }
+    }));
+  }
+
+  /* ---------- session ---------- */
+
+  function startSession(items, title, limit) {
+    if (!items.length) return;
+    limit = limit === undefined ? (prefs.length || 0) : limit;
+    var ids = S.order(items.map(function (i) { return i.id; }));
+    var order = ids.map(function (id) {
+      return items.filter(function (i) { return i.id === id; })[0];
+    }).filter(Boolean);
+    if (limit > 0) order = order.slice(0, limit);
+    state.session = {
+      title: title, items: order, i: 0, right: 0, wrong: 0,
+      answered: false, correct: false, picked: {}, missed: []
+    };
+    go('drill');
+  }
+
+  function renderSession(root) {
+    var s = state.session;
+    if (s.i >= s.items.length) return renderSessionEnd(root, s);
+    var item = s.items[s.i];
+
+    root.appendChild(el('div', { class: 'spread', style: 'margin-top:16px' }, [
+      el('div', {}, [
+        el('span', { style: 'font-weight:650', text: s.title }),
+        el('span', { class: 'faint small', text: '  ' + (s.i + 1) + ' / ' + s.items.length })
+      ]),
+      el('button', { class: 'ghost', text: 'End', onclick: function () { s.i = s.items.length; render(); } })
+    ]));
+    root.appendChild(el('div', { class: 'progressbar' }, [
+      el('i', { style: 'width:' + Math.round(100 * s.i / s.items.length) + '%' })
+    ]));
+
+    var card = el('div', { class: 'card' });
+    root.appendChild(card);
+
+    /* prompt */
+    var prompt = el('div', { class: 'prompt' });
+    prompt.appendChild(el('div', { class: 'instruction', text: item.question.instruction }));
+    if (item.question.form) prompt.appendChild(el('div', { class: 'form gk', text: item.question.form }));
+    if (item.mode !== 'parse' && item.question.lemma) {
+      prompt.appendChild(el('div', { class: item.deck === 'vocab' ? 'lemma' : 'lemma gk', text: item.question.lemma }));
+    }
+    if (item.mode !== 'parse' && item.question.gloss) {
+      prompt.appendChild(el('div', { class: 'gloss', text: item.question.gloss }));
+    }
+    if (item.question.source) prompt.appendChild(el('div', { class: 'src' }, [el('span', { class: 'pill', text: item.question.source })]));
+    card.appendChild(prompt);
+
+    if (item.mode === 'parse') renderParseInput(card, item, s);
+    else if (item.mode === 'produce') renderProduceInput(card, item, s);
+    else renderRecallInput(card, item, s);
+  }
+
+  function commit(item, correct, s) {
+    if (s.answered) return;
+    s.answered = true;
+    s.correct = correct;
+    if (correct) s.right++; else { s.wrong++; s.missed.push(item); }
+    S.grade(item.id, correct);
+    var d = dayRec(U.today());
+    d.answered++;
+    if (correct) d.right++;
+    saveProgress();
+    render();
+  }
+
+  function next(s) {
+    s.i++; s.answered = false; s.correct = false; s.picked = {};
+    render();
+  }
+
+  function verdictBlock(item, s, extra) {
+    var box = el('div', { class: 'verdict ' + (s.correct ? 'right' : 'wrong') }, [
+      el('div', { class: 'head', text: s.correct ? 'Right' : 'Not quite' })
+    ]);
+    if (extra) box.appendChild(extra);
+    box.appendChild(el('div', { class: 'gk', style: 'font-size:19px', text: item.reveal }));
+    if (item.question.lemma && item.mode === 'parse') {
+      box.appendChild(el('div', { class: 'small', style: 'margin-top:6px' }, [
+        el('span', { class: 'faint', text: 'from ' }),
+        el('span', { class: 'gk', style: 'font-size:16px', text: item.question.lemma }),
+        item.question.gloss ? el('span', { class: 'faint', text: ' — ' + item.question.gloss }) : null
+      ]));
+    }
+    if (item.note) box.appendChild(el('div', { class: 'note', text: item.note }));
+    return box;
+  }
+
+  function nextButton(s, label) {
+    var b = el('button', { class: 'primary wide', text: label || 'Next', onclick: function () { next(s); } });
+    setTimeout(function () { b.focus(); }, 0);
+    return b;
+  }
+
+  function renderParseInput(card, item, s) {
+    var fields = item.fields;
+
+    function evaluate() {
+      if (fields.some(function (f) { return !s.picked[f]; })) return;
+      commit(item, D.checkParse(item, s.picked), s);
+    }
+
+    fields.forEach(function (f) {
+      var def = D.FIELD_DEFS[f];
+      var group = el('div', { class: 'fieldgroup' }, [el('label', { text: def.label })]);
+      var chips = el('div', { class: 'chips' });
+      def.opts.forEach(function (o) {
+        var b = el('button', {
+          type: 'button', text: def.labels[o] || o,
+          'aria-pressed': s.picked[f] === o ? 'true' : 'false'
+        });
+        b.addEventListener('click', function () {
+          if (s.answered) return;
+          s.picked[f] = o;
+          Array.prototype.forEach.call(chips.children, function (c) {
+            c.setAttribute('aria-pressed', c === b ? 'true' : 'false');
+          });
+          evaluate();
+        });
+        chips.appendChild(b);
+      });
+      group.appendChild(chips);
+      card.appendChild(group);
+    });
+
+    if (!s.answered) {
+      card.appendChild(el('button', {
+        class: 'ghost', text: 'Show the lexical form',
+        onclick: function (e) {
+          e.target.replaceWith(el('div', { class: 'small faint' }, [
+            el('span', { class: 'gk', style: 'font-size:17px', text: item.question.lemma || '—' }),
+            el('span', { text: item.question.gloss ? '  ' + item.question.gloss : '' })
+          ]));
+        }
+      }));
+    } else {
+      card.appendChild(verdictBlock(item, s, s.correct ? null :
+        el('div', { class: 'small', style: 'margin-bottom:6px' , text: 'You said: ' + D.describe(s.picked, item.fields) })));
+      card.appendChild(nextButton(s));
+    }
+  }
+
+  function renderProduceInput(card, item, s) {
+    if (s.answered) {
+      card.appendChild(verdictBlock(item, s,
+        s.correct ? null : el('div', { class: 'small', style: 'margin-bottom:6px', text: 'You typed: ' + (s.typed || '—') })));
+      card.appendChild(nextButton(s));
+      return;
+    }
+
+    var input = el('input', { type: 'text', class: 'answer gk', autocomplete: 'off',
+      autocapitalize: 'off', autocorrect: 'off', spellcheck: 'false',
+      placeholder: item.deck === 'vocab' ? 'Greek word' : 'type the form' });
+    var preview = el('div', { class: 'small faint', style: 'text-align:center;min-height:22px;margin-top:6px' });
+
+    function submit() {
+      s.typed = input.value;
+      commit(item, D.checkTyped(item, input.value), s);
+    }
+
+    input.addEventListener('input', function () {
+      var v = input.value;
+      preview.textContent = /[A-Za-z]/.test(v) ? '→ ' + U.translit(v) : '';
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); submit(); }
+    });
+
+    card.appendChild(input);
+    card.appendChild(preview);
+    card.appendChild(el('p', { class: 'small faint', style: 'text-align:center',
+      text: 'Accents are ignored. You can type Latin letters — “luomen” counts as λύομεν.' }));
+    card.appendChild(greekKeypad(input));
+    card.appendChild(el('button', { class: 'primary wide', style: 'margin-top:12px', text: 'Check', onclick: submit }));
+    setTimeout(function () { input.focus(); }, 0);
+  }
+
+  function greekKeypad(input) {
+    var pad = el('div', { class: 'keypad' });
+    'αβγδεζηθικλμνξοπρστυφχψω'.split('').forEach(function (ch) {
+      pad.appendChild(el('button', {
+        type: 'button', class: 'gk', text: ch,
+        onclick: function () { input.value += ch; input.focus(); input.dispatchEvent(new Event('input')); }
+      }));
+    });
+    pad.appendChild(el('button', { type: 'button', class: 'gk', text: 'ς',
+      onclick: function () { input.value += 'ς'; input.focus(); } }));
+    pad.appendChild(el('button', { type: 'button', class: 'wide2', text: '⌫ delete',
+      onclick: function () { input.value = input.value.slice(0, -1); input.focus(); input.dispatchEvent(new Event('input')); } }));
+    return pad;
+  }
+
+  function renderRecallInput(card, item, s) {
+    if (!s.answered && !s.shown) {
+      card.appendChild(el('button', {
+        class: 'primary wide', text: 'Show the meaning',
+        onclick: function () { s.shown = true; render(); }
+      }));
+      if (item.meta) card.appendChild(el('p', { class: 'small faint', style: 'text-align:center', text: item.meta }));
+      return;
+    }
+    if (!s.answered) {
+      card.appendChild(el('div', { class: 'card tight', style: 'text-align:center;font-size:18px' }, [
+        el('div', { text: item.reveal })
+      ]));
+      card.appendChild(el('div', { class: 'row', style: 'margin-top:10px' }, [
+        el('button', { class: 'primary', style: 'flex:1', text: 'I knew it',
+          onclick: function () { s.shown = false; commit(item, true, s); } }),
+        el('button', { style: 'flex:1', text: 'Missed it',
+          onclick: function () { s.shown = false; commit(item, false, s); } })
+      ]));
+      return;
+    }
+    card.appendChild(verdictBlock(item, s));
+    card.appendChild(nextButton(s));
+  }
+
+  function renderSessionEnd(root, s) {
+    var total = s.right + s.wrong;
+    root.appendChild(el('h1', { text: total ? 'Session done' : 'Nothing answered' }));
+    root.appendChild(el('div', { class: 'card' }, [
+      el('div', { class: 'streak' }, [
+        el('div', { class: 'stat' }, [el('b', { text: String(s.right) }), el('span', { text: 'right' })]),
+        el('div', { class: 'stat' }, [el('b', { text: String(s.wrong) }), el('span', { text: 'missed' })]),
+        el('div', { class: 'stat' }, [
+          el('b', { text: total ? Math.round(100 * s.right / total) + '%' : '—' }),
+          el('span', { text: 'accuracy' })
+        ])
+      ])
+    ]));
+
+    if (s.missed.length) {
+      var list = el('div', { class: 'card' }, [el('h3', { text: 'Worth another look' })]);
+      s.missed.slice(0, 15).forEach(function (it) {
+        list.appendChild(el('div', { style: 'padding:6px 0;border-bottom:1px solid var(--line)' }, [
+          el('div', { class: 'gk', style: 'font-size:20px', text: it.question.form || it.question.lemma || '' }),
+          el('div', { class: 'small faint', text: it.reveal })
+        ]));
+      });
+      root.appendChild(list);
+    }
+
+    root.appendChild(el('div', { class: 'row' }, [
+      s.missed.length ? el('button', {
+        class: 'primary', text: 'Redo the missed ones',
+        onclick: function () { startSession(s.missed.slice(), 'Second pass', 0); }
+      }) : null,
+      el('button', { text: 'Back to today', onclick: function () { go('today'); } }),
+      el('button', { text: 'New session', onclick: function () { state.session = null; render(); } })
+    ]));
+  }
+
+  /* ---------- reading ---------- */
+
+  function renderRead(root) {
+    if (!state.passageId) return renderPassageList(root);
+    var p = GK.passages.filter(function (x) { return x.id === state.passageId; })[0];
+    if (!p) { state.passageId = null; return renderPassageList(root); }
+
+    root.appendChild(el('button', { class: 'ghost', style: 'margin-top:12px', text: '‹ All passages',
+      onclick: function () { state.passageId = null; state.wordIndex = null; render(); } }));
+    root.appendChild(el('h1', { text: p.ref }));
+    root.appendChild(el('p', { class: 'sub', text: p.title }));
+
+    var modes = el('div', { class: 'row', style: 'margin:12px 0' });
+    [['plain', 'Greek only'], ['inter', 'With glosses'], ['en', 'With English']].forEach(function (m) {
+      var b = el('button', { text: m[1] });
+      if (state.readMode === m[0]) b.className = 'primary';
+      b.addEventListener('click', function () { state.readMode = m[0]; render(); });
+      modes.appendChild(b);
+    });
+    root.appendChild(modes);
+
+    var card = el('div', { class: 'card' });
+    var passage = el('div', { class: 'passage gk' + (state.readMode === 'inter' ? ' interlinear' : '') });
+    p.words.forEach(function (w, i) {
+      var node = el('span', { class: 'w' + (state.wordIndex === i ? ' on' : ''), tabindex: '0' }, [
+        document.createTextNode(w[0])
+      ]);
+      if (state.readMode === 'inter') {
+        node.appendChild(el('em', { text: w[1] }));
+        node.appendChild(el('em', { class: 'p', text: w[2] }));
+      }
+      function open() { state.wordIndex = state.wordIndex === i ? null : i; render(); }
+      node.addEventListener('click', open);
+      node.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+      passage.appendChild(node);
+      passage.appendChild(document.createTextNode(' '));
+    });
+    card.appendChild(passage);
+
+    if (state.wordIndex !== null && p.words[state.wordIndex]) {
+      var w = p.words[state.wordIndex];
+      card.appendChild(el('div', { class: 'worddetail' }, [
+        el('div', { class: 'g gk', text: w[0].replace(/[.,;·:!?]+$/, '') }),
+        el('div', { style: 'font-weight:600', text: w[1] }),
+        el('div', { class: 'small', style: 'color:var(--accent)', text: w[2] }),
+        el('div', { class: 'small faint' }, [
+          el('span', { text: 'lexical form: ' }),
+          el('span', { class: 'gk', style: 'font-size:16px', text: w[3] })
+        ])
+      ]));
+    } else {
+      card.appendChild(el('p', { class: 'small faint', text: 'Tap any word for its meaning and parsing.' }));
+    }
+    root.appendChild(card);
+
+    if (state.readMode === 'en') {
+      root.appendChild(el('div', { class: 'card tight' }, [
+        el('h3', { text: 'Wooden English' }),
+        el('p', { text: p.en })
+      ]));
+    }
+
+    if (p.note) {
+      root.appendChild(el('div', { class: 'card tight' }, [
+        el('h3', { text: 'Worth noticing' }),
+        el('p', { class: 'small', text: p.note })
+      ]));
+    }
+
+    var t = U.today();
+    var already = progress.days[t] && progress.days[t].read.indexOf(p.id) !== -1;
+    root.appendChild(el('div', { class: 'row' }, [
+      el('button', {
+        class: already ? '' : 'primary',
+        text: already ? 'Marked as read ✓' : 'Mark as read',
+        disabled: already ? 'disabled' : null,
+        onclick: function () {
+          var d = dayRec(t);
+          if (d.read.indexOf(p.id) === -1) d.read.push(p.id);
+          if (progress.todayPassage && progress.todayPassage.id === p.id) progress.readingIndex++;
+          saveProgress();
+          render();
+        }
+      }),
+      el('button', {
+        text: 'Drill these words',
+        onclick: function () { startSession(passageItems(p.id), 'Words from ' + p.ref, 0); }
+      })
+    ]));
+
+    var idx = GK.passages.indexOf(p);
+    root.appendChild(el('div', { class: 'row', style: 'margin-top:16px' }, [
+      idx > 0 ? el('button', { class: 'ghost', text: '‹ ' + GK.passages[idx - 1].ref,
+        onclick: function () { state.passageId = GK.passages[idx - 1].id; state.wordIndex = null; render(); window.scrollTo(0, 0); } }) : null,
+      idx < GK.passages.length - 1 ? el('button', { class: 'ghost', style: 'margin-left:auto', text: GK.passages[idx + 1].ref + ' ›',
+        onclick: function () { state.passageId = GK.passages[idx + 1].id; state.wordIndex = null; render(); window.scrollTo(0, 0); } }) : null
+    ]));
+  }
+
+  function renderPassageList(root) {
+    root.appendChild(el('h1', { text: 'Read' }));
+    root.appendChild(el('p', { class: 'sub', text: GK.passages.length + ' passages, every word parsed. Start with level 1 and work up.' }));
+
+    var readIds = {};
+    Object.keys(progress.days).forEach(function (d) {
+      (progress.days[d].read || []).forEach(function (id) { readIds[id] = true; });
+    });
+
+    [1, 2, 3].forEach(function (lvl) {
+      var group = GK.passages.filter(function (p) { return p.level === lvl; });
+      if (!group.length) return;
+      root.appendChild(el('h2', { text: ['Level 1 — short and plain', 'Level 2 — longer sentences', 'Level 3 — participles and subordination'][lvl - 1] }));
+      var list = el('div', { class: 'passagelist' });
+      group.forEach(function (p) {
+        list.appendChild(el('button', {
+          onclick: function () { state.passageId = p.id; state.wordIndex = null; render(); window.scrollTo(0, 0); }
+        }, [
+          readIds[p.id] ? el('span', { class: 'dot' }) : el('span', { style: 'width:7px;flex:0 0 auto' }),
+          el('span', { class: 'ref', text: p.ref }),
+          el('span', { class: 'ti', text: p.title })
+        ]));
+      });
+      root.appendChild(list);
+    });
+  }
+
+  /* ---------- charts ---------- */
+
+  function table(rows, opts) {
+    opts = opts || {};
+    var t = el('table');
+    var head = el('thead'), body = el('tbody');
+    rows.forEach(function (r, i) {
+      var tr = el('tr');
+      r.forEach(function (cell, ci) {
+        var isHead = i === 0 || ci === 0;
+        var node = el(isHead ? 'th' : 'td', { text: cell === null ? '—' : String(cell) });
+        if (!isHead && opts.greek) node.className = 'gk';
+        if (i === 0) node.setAttribute('scope', 'col');
+        tr.appendChild(node);
+      });
+      (i === 0 ? head : body).appendChild(tr);
+    });
+    t.appendChild(head); t.appendChild(body);
+    if (opts.caption) t.appendChild(el('caption', { text: opts.caption }));
+    return el('div', { class: 'tablewrap' }, [t]);
+  }
+
+  function nominalTable(entry) {
+    var genders = Object.keys(entry.forms);
+    var head = [''].concat(genders.map(function (g) {
+      return entry.genderless ? 'form' : GK.GENDER_LABEL[g];
+    }));
+    var rows = [head];
+    ['sg', 'pl'].forEach(function (n) {
+      GK.CASES.forEach(function (c, ci) {
+        var cells = genders.map(function (g) {
+          return (entry.forms[g][n] || [])[ci] || null;
+        });
+        if (cells.every(function (x) { return !x; })) return;
+        rows.push([GK.CASE_LABEL[c] + ' ' + n].concat(cells));
+      });
+    });
+    return table(rows, { greek: true, caption: entry.note });
+  }
+
+  function verbTable(verb) {
+    var wrap = el('div');
+    var groups = {};
+    verb.paradigms.forEach(function (p) {
+      var k = p.mood;
+      (groups[k] = groups[k] || []).push(p);
+    });
+    Object.keys(groups).forEach(function (mood) {
+      wrap.appendChild(el('h3', { style: 'margin-top:14px', text: mood }));
+      var pars = groups[mood];
+      var slots = mood === 'imperative' ? ['2s', '3s', '2p', '3p'] : ['1s', '2s', '3s', '1p', '2p', '3p'];
+      var head = [''].concat(pars.map(function (p) {
+        return GK.TENSE_LABEL[p.tense] + ' ' + GK.VOICE_LABEL[p.voice];
+      }));
+      var rows = [head];
+      slots.forEach(function (sl) {
+        var label = { '1s': '1 sg', '2s': '2 sg', '3s': '3 sg', '1p': '1 pl', '2p': '2 pl', '3p': '3 pl' }[sl];
+        rows.push([label].concat(pars.map(function (p) { return p.forms[sl] || null; })));
+      });
+      wrap.appendChild(table(rows, { greek: true }));
+    });
+
+    if (verb.infinitives && verb.infinitives.length) {
+      wrap.appendChild(el('h3', { style: 'margin-top:14px', text: 'infinitives' }));
+      wrap.appendChild(table([['', 'form']].concat(verb.infinitives.map(function (i) {
+        return [GK.TENSE_LABEL[i.tense] + ' ' + GK.VOICE_LABEL[i.voice], i.form];
+      })), { greek: true }));
+    }
+    if (verb.participles && verb.participles.length) {
+      wrap.appendChild(el('h3', { style: 'margin-top:14px', text: 'participles' }));
+      wrap.appendChild(table([['', 'masc', 'fem', 'neut', 'genitive']].concat(verb.participles.map(function (p) {
+        return [GK.TENSE_LABEL[p.tense] + ' ' + GK.VOICE_LABEL[p.voice], p.forms[0], p.forms[1], p.forms[2], p.gen];
+      })), { greek: true }));
+    }
+    return wrap;
+  }
+
+  function renderCharts(root) {
+    root.appendChild(el('h1', { text: 'Charts' }));
+    root.appendChild(el('p', { class: 'sub', text: 'Every paradigm the drills draw from. Open one, stare at it, then go break it in the Drill tab.' }));
+
+    root.appendChild(el('h2', { text: 'Endings worth memorising' }));
+    GK.endingCharts.forEach(function (c) {
+      root.appendChild(el('details', {}, [
+        el('summary', { text: c.name }),
+        el('div', { class: 'body' }, [table(c.rows, { greek: true, caption: c.chapter })])
+      ]));
+    });
+    GK.verbCharts.forEach(function (c) {
+      root.appendChild(el('details', {}, [
+        el('summary', { text: c.name }),
+        el('div', { class: 'body' }, [table(c.rows, { caption: c.caption })])
+      ]));
+    });
+
+    root.appendChild(el('h2', { text: 'Article, nouns, adjectives, pronouns' }));
+    GK.nominals.forEach(function (n) {
+      root.appendChild(el('details', {}, [
+        el('summary', {}, [
+          el('span', { class: 'gk', text: n.lemma }),
+          el('span', { class: 'faint small', text: '  ' + n.gloss })
+        ]),
+        el('div', { class: 'body' }, [
+          el('p', { class: 'small faint', text: n.name + ' · ' + n.chapter }),
+          nominalTable(n),
+          el('button', {
+            class: 'ghost', text: 'Drill this paradigm',
+            onclick: function () {
+              startSession(D.all().filter(function (i) {
+                return i.id.indexOf('np:' + n.id + ':') === 0 || i.id.indexOf('nq:' + n.id + ':') === 0;
+              }), n.lemma, 0);
+            }
+          })
+        ])
+      ]));
+    });
+
+    root.appendChild(el('h2', { text: 'Verbs' }));
+    GK.verbs.forEach(function (v) {
+      root.appendChild(el('details', {}, [
+        el('summary', {}, [
+          el('span', { class: 'gk', text: v.lemma }),
+          el('span', { class: 'faint small', text: '  ' + v.gloss })
+        ]),
+        el('div', { class: 'body' }, [
+          el('p', { class: 'small faint', text: v.klass + ' · ' + v.chapter }),
+          el('p', { class: 'gk', style: 'font-size:18px', text: v.principalParts.join('  ·  ') }),
+          v.note ? el('p', { class: 'small faint', text: v.note }) : null,
+          verbTable(v),
+          el('button', {
+            class: 'ghost', style: 'margin-top:10px', text: 'Drill this verb',
+            onclick: function () {
+              startSession(D.all().filter(function (i) {
+                return i.id.indexOf('vp:' + v.id + ':') === 0 || i.id.indexOf('vq:' + v.id + ':') === 0;
+              }), v.lemma, 0);
+            }
+          })
+        ])
+      ]));
+    });
+
+    root.appendChild(el('h2', { text: 'Principal parts' }));
+    root.appendChild(el('div', { class: 'card' }, [
+      table([['', 'present', 'future', 'aorist', 'perfect act', 'perfect m/p', 'aorist pass']]
+        .concat(GK.principalParts.map(function (p) { return [p.lemma].concat(p.parts); })), { greek: true })
+    ]));
+  }
+
+  /* ---------- progress ---------- */
+
+  function renderProgress(root) {
+    root.appendChild(el('h1', { text: 'Progress' }));
+
+    var allIds = D.all().map(function (i) { return i.id; });
+    var st = S.stats(allIds);
+    root.appendChild(el('div', { class: 'card' }, [
+      el('div', { class: 'streak' }, [
+        el('div', { class: 'stat' }, [el('b', { text: String(streak()) }), el('span', { text: 'day streak' })]),
+        el('div', { class: 'stat' }, [el('b', { text: String(st.seen) }), el('span', { text: 'items seen' })]),
+        el('div', { class: 'stat' }, [el('b', { text: String(st.learned) }), el('span', { text: 'learned' })]),
+        el('div', { class: 'stat' }, [
+          el('b', { text: (st.right + st.wrong) ? Math.round(100 * st.right / (st.right + st.wrong)) + '%' : '—' }),
+          el('span', { text: 'lifetime' })
+        ])
+      ])
+    ]));
+
+    var deckCard = el('div', { class: 'card' }, [el('h3', { text: 'By deck' })]);
+    GK.DECKS.forEach(function (d) {
+      var ids = D.pool({ decks: [d.id] }).map(function (i) { return i.id; });
+      var s = S.stats(ids);
+      deckCard.appendChild(el('div', { style: 'margin:12px 0' }, [
+        el('div', { class: 'spread' }, [
+          el('span', { style: 'font-weight:600', text: d.name }),
+          el('span', { class: 'small faint', text: s.learned + ' learned · ' + s.seen + ' seen · ' + ids.length + ' total' })
+        ]),
+        el('div', { class: 'bar', style: 'margin-top:5px' }, [
+          el('i', { class: 'learned', style: 'width:' + (100 * s.learned / Math.max(1, ids.length)) + '%' }),
+          el('i', { class: 'seen', style: 'width:' + (100 * Math.max(0, s.seen - s.learned) / Math.max(1, ids.length)) + '%' })
+        ])
+      ]));
+    });
+    root.appendChild(deckCard);
+
+    var days = Object.keys(progress.days).sort().slice(-14);
+    if (days.length) {
+      var hist = el('div', { class: 'card' }, [el('h3', { text: 'Last two weeks' })]);
+      days.forEach(function (d) {
+        var r = progress.days[d];
+        hist.appendChild(el('div', { class: 'spread', style: 'padding:3px 0' }, [
+          el('span', { class: 'small', text: d }),
+          el('span', { class: 'small faint', text: r.answered + ' answered · ' + r.read.length + ' read' })
+        ]));
+      });
+      root.appendChild(hist);
+    }
+
+    var themeRow = el('div', { class: 'row' });
+    [['auto', 'Match system'], ['light', 'Light'], ['dark', 'Dark']].forEach(function (t) {
+      var b = el('button', { text: t[1] });
+      if (prefs.theme === t[0]) b.className = 'primary';
+      b.addEventListener('click', function () { prefs.theme = t[0]; savePrefs(); applyTheme(); render(); });
+      themeRow.appendChild(b);
+    });
+    root.appendChild(el('div', { class: 'card' }, [el('h3', { text: 'Appearance' }), themeRow]));
+
+    root.appendChild(el('div', { class: 'card' }, [
+      el('h3', { text: 'Start over' }),
+      el('p', { class: 'small faint', text: 'Everything is stored in this browser only. Nothing is uploaded anywhere.' }),
+      el('div', { class: 'row', style: 'margin-top:8px' }, [
+        el('button', {
+          text: 'Reset review schedule',
+          onclick: function () {
+            if (window.confirm('Forget every item’s review schedule? Your reading history stays.')) { S.reset(); render(); }
+          }
+        }),
+        el('button', {
+          text: 'Reset everything',
+          onclick: function () {
+            if (window.confirm('Erase all progress, streak and reading history?')) {
+              U.clearAll();
+              progress = { days: {}, readingIndex: 0, todayPassage: null };
+              prefs = { decks: ['article', 'nouns', 'adjectives', 'pronouns', 'verbs', 'principalparts', 'reading'], modes: ['parse'], length: 20, theme: 'auto' };
+              S.reset(); go('today');
+            }
+          }
+        })
+      ])
+    ]));
+  }
+
+  /* ---------- boot ---------- */
+
+  // The in-app toggle writes data-app-theme, never data-theme: a host page may
+  // own data-theme, and "match system" has to hand control straight back to it.
+  function applyTheme() {
+    var root = document.documentElement;
+    if (prefs.theme === 'auto') root.removeAttribute('data-app-theme');
+    else root.setAttribute('data-app-theme', prefs.theme);
+  }
+
+  function init() {
+    viewEl = document.getElementById('view');
+    tabsEl = document.getElementById('tabs');
+    VIEWS.forEach(function (v) {
+      var b = el('button', { type: 'button', 'aria-selected': 'false' }, [
+        el('span', { class: 'ic', text: v.ic }),
+        el('span', { text: v.label })
+      ]);
+      b.dataset.view = v.id;
+      b.addEventListener('click', function () { go(v.id); });
+      tabsEl.appendChild(b);
+    });
+    applyTheme();
+    render();
+  }
+
+  return { init: init, go: go };
+})();
+
+document.addEventListener('DOMContentLoaded', GK.app.init);
+</script>

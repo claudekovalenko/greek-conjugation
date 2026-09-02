@@ -67,6 +67,11 @@ open index.html
 Or serve the folder if you prefer (`npx http-server`), or push it to GitHub
 Pages — it is a static site with no dependencies.
 
+There is also a single-file build, `dist/koine-drill.html`, that contains the
+whole app — markup, styles, data and code — in one 157 KB file. Download that
+one file and open it: it works offline, with no server and nothing else
+alongside it. Regenerate it with `node build.js` after changing anything.
+
 ## Notes on the text
 
 The Greek follows public-domain critical editions of the Greek New Testament and
