@@ -11,7 +11,7 @@ GK.app = (function () {
     { id: 'today', label: 'Today', ic: '☀' },
     { id: 'drill', label: 'Drill', ic: '✎' },
     { id: 'read', label: 'Read', ic: '📖' },
-    { id: 'charts', label: 'Charts', ic: '▦' },
+    { id: 'learn', label: 'Learn', ic: '💡' },
     { id: 'progress', label: 'Progress', ic: '◔' }
   ];
 
@@ -70,7 +70,7 @@ GK.app = (function () {
     viewEl.innerHTML = '';
     ({
       today: renderToday, drill: renderDrill, read: renderRead,
-      charts: renderCharts, progress: renderProgress
+      learn: renderLearn, progress: renderProgress
     })[state.view](viewEl);
   }
 
@@ -162,6 +162,25 @@ GK.app = (function () {
         el('p', { class: 'small', text: p.note })
       ]));
     }
+
+    var m = hookOfTheDay();
+    if (m) {
+      root.appendChild(el('div', { class: 'card' }, [
+        el('div', { class: 'spread' }, [
+          el('h3', { text: 'Hook of the day' }),
+          el('button', { class: 'ghost small', text: 'all hooks ›', onclick: function () { go('learn'); } })
+        ]),
+        hookCard(m)
+      ]));
+    }
+  }
+
+  // Same hook all day, a different one tomorrow, and it walks the whole list
+  // before repeating.
+  function hookOfTheDay() {
+    if (!GK.mnemonics || !GK.mnemonics.length) return null;
+    var days = Math.floor(new Date(U.today() + 'T00:00:00').getTime() / 86400000);
+    return GK.mnemonics[((days % GK.mnemonics.length) + GK.mnemonics.length) % GK.mnemonics.length];
   }
 
   function passageItems(pid) {
@@ -324,6 +343,24 @@ GK.app = (function () {
     return box;
   }
 
+  // A hook is worth showing when you just got it wrong, or when the item is
+  // still new to you. Once it is sticking, stop interrupting.
+  function hooksFor(item, wasRight, focus) {
+    var r = S.record(item.id);
+    if (wasRight && r && r.box > 1) return [];
+    return D.mnemonicsFor(item, wasRight ? 1 : 2, focus);
+  }
+
+  function hookBlock(item, wasRight, focus) {
+    var hooks = hooksFor(item, wasRight, focus);
+    if (!hooks.length) return null;
+    var wrap = el('div', { class: 'hooks' }, [
+      el('div', { class: 'hookslabel', text: hooks.length > 1 ? 'Memory hooks' : 'Memory hook' })
+    ]);
+    hooks.forEach(function (m) { wrap.appendChild(hookCard(m, !wasRight)); });
+    return wrap;
+  }
+
   function nextButton(s, label) {
     var b = el('button', { class: 'primary wide', text: label || 'Next', onclick: function () { next(s); } });
     setTimeout(function () { b.focus(); }, 0);
@@ -374,6 +411,8 @@ GK.app = (function () {
     } else {
       card.appendChild(verdictBlock(item, s, s.correct ? null :
         el('div', { class: 'small', style: 'margin-bottom:6px' , text: 'You said: ' + D.describe(s.picked, item.fields) })));
+      var hb = hookBlock(item, s.correct, s.correct ? [] : D.wrongFields(item, s.picked));
+      if (hb) card.appendChild(hb);
       card.appendChild(nextButton(s));
     }
   }
@@ -382,6 +421,8 @@ GK.app = (function () {
     if (s.answered) {
       card.appendChild(verdictBlock(item, s,
         s.correct ? null : el('div', { class: 'small', style: 'margin-bottom:6px', text: 'You typed: ' + (s.typed || '—') })));
+      var hb = hookBlock(item, s.correct);
+      if (hb) card.appendChild(hb);
       card.appendChild(nextButton(s));
       return;
     }
@@ -691,9 +732,42 @@ GK.app = (function () {
     return wrap;
   }
 
-  function renderCharts(root) {
-    root.appendChild(el('h1', { text: 'Charts' }));
-    root.appendChild(el('p', { class: 'sub', text: 'Every paradigm the drills draw from. Open one, stare at it, then go break it in the Drill tab.' }));
+  function hookCard(m, open) {
+    var body = el('div', { class: 'body' }, [el('p', { class: 'small', text: m.why })]);
+    if (m.examples) {
+      var ul = el('ul', { class: 'egs gk' });
+      m.examples.forEach(function (e) { ul.appendChild(el('li', { text: e })); });
+      body.appendChild(ul);
+    }
+    var det = el('details', { class: 'plain' }, [
+      el('summary', { text: 'Why, and examples' }), body
+    ]);
+    if (open) det.setAttribute('open', 'open');
+    return el('div', { class: 'hookcard' }, [
+      el('div', { class: 'hooktitle', text: m.title }),
+      el('p', { class: 'hookline', text: m.hook }),
+      m.ask ? el('p', { class: 'small faint', text: m.ask }) : null,
+      det
+    ]);
+  }
+
+  function renderLearn(root) {
+    root.appendChild(el('h1', { text: 'Learn' }));
+    root.appendChild(el('p', { class: 'sub', text: 'Memory hooks first, then every paradigm the drills draw from. The hooks also come back at you in the Drill tab whenever you miss something they cover.' }));
+
+    root.appendChild(el('h2', { text: 'Memory hooks' }));
+    GK.mnemonicSections.forEach(function (sec) {
+      var group = GK.mnemonics.filter(function (m) { return m.section === sec.id; });
+      if (!group.length) return;
+      root.appendChild(el('div', { class: 'seclead' }, [
+        el('h3', { text: sec.name }),
+        el('p', { class: 'small faint', text: sec.blurb })
+      ]));
+      group.forEach(function (m) { root.appendChild(hookCard(m)); });
+    });
+
+    root.appendChild(el('h2', { text: 'Charts' }));
+    root.appendChild(el('p', { class: 'sub', text: 'Open one, stare at it, then go break it in the Drill tab.' }));
 
     root.appendChild(el('h2', { text: 'Endings worth memorising' }));
     GK.endingCharts.forEach(function (c) {

@@ -1,0 +1,82 @@
+name: Checks and deploy
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Data checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # No dependencies to install — the whole app and its test suite are
+      # plain files. This runs in a couple of seconds.
+      - name: Run checks
+        run: node test.js
+
+      - name: dist/ is committed up to date
+        run: |
+          node build.js
+          if ! git diff --quiet -- dist/; then
+            echo "::error file=dist/koine-drill.html::dist/ is out of date. Run 'node build.js' and commit the result."
+            git diff --stat -- dist/
+            exit 1
+          fi
+
+  deploy:
+    name: Publish to GitHub Pages
+    needs: test
+    # Only the default branch is published, whatever it happens to be called.
+    if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build
+        run: node build.js
+
+      - name: Stage the site
+        run: |
+          mkdir -p _site/offline
+          cp index.html styles.css _site/
+          cp -r js _site/js
+          # The single-file build, served as its own page, so it can be saved
+          # for offline use straight from the browser.
+          cp dist/koine-drill.html _site/offline/index.html
+
+      # enablement turns Pages on the first time this runs, so there is no
+      # setting to flip by hand.
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

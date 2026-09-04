@@ -110,6 +110,7 @@ GK.drills = (function () {
               produceItems.push({
                 id: 'nq:' + entry.id + ':' + g + ':' + n + ':' + c,
                 deck: deckOf(entry), mode: 'produce',
+                tags: nominalTags(entry), combo: combo,
                 question: {
                   instruction: describe(combo, fields) + ' of',
                   lemma: entry.lemma, gloss: entry.gloss, form: null,
@@ -130,6 +131,7 @@ GK.drills = (function () {
         parseItems.push({
           id: 'np:' + entry.id + ':' + k,
           deck: deckOf(entry), mode: 'parse',
+          tags: nominalTags(entry),
           question: {
             instruction: 'Parse this form', form: b.form,
             lemma: entry.lemma, gloss: entry.gloss, source: categoryOf(entry)
@@ -142,6 +144,95 @@ GK.drills = (function () {
       });
     });
     return parseItems.concat(produceItems);
+  }
+
+  function nominalTags(entry) {
+    return ['kind:' + entry.kind, 'decl:' + entry.decl];
+  }
+
+  function verbTags(verb) {
+    var k = verb.klass;
+    if (k.indexOf('contract') !== -1) return ['klass:contract'];
+    if (k.indexOf('second aorist') !== -1) return ['klass:2aor'];
+    if (k.indexOf('μι-verb') !== -1) return ['klass:mi'];
+    return [];
+  }
+
+  /* ---------- memory hooks ---------- */
+
+  // Everything true about one correct answer, as flat tags. A hook fires only
+  // when every tag it asks for is in here.
+  function tagsFor(item, answer) {
+    var t = (item.tags || []).slice();
+    ['case', 'number', 'gender', 'tense', 'voice', 'mood'].forEach(function (f) {
+      if (answer[f]) t.push(f + ':' + answer[f]);
+    });
+    // The augment marks past time in the indicative only — an aorist
+    // subjunctive or participle carries no augment at all.
+    if (answer.mood === 'indicative' &&
+        ['imperfect', 'aorist', 'pluperfect'].indexOf(answer.tense) !== -1) t.push('time:past');
+    if (answer.mood === 'indicative' && answer.tense) {
+      // The aorist passive is the odd one out: θη carries the voice, and the
+      // endings that follow are the secondary *active* set.
+      var mp = ['middle', 'passive', 'mp'].indexOf(answer.voice) !== -1 &&
+        !(answer.tense === 'aorist' && answer.voice === 'passive');
+      var primary = ['present', 'future', 'perfect'].indexOf(answer.tense) !== -1;
+      t.push('endings:' + (primary ? 'primary' : 'secondary') + '-' + (mp ? 'mp' : 'active'));
+    }
+    return t;
+  }
+
+  function rank(a, b) {
+    return (b.score - a.score) ||
+      (b.tags.length - a.tags.length) || ((b.prio || 1) - (a.prio || 1));
+  }
+
+  // Which fields the learner actually got wrong, measured against whichever
+  // accepted answer they came closest to.
+  function wrongFields(item, picked) {
+    if (!item.answers || !item.fields) return [];
+    var best = null, bestScore = -1;
+    item.answers.forEach(function (a) {
+      var n = item.fields.filter(function (f) {
+        return f === 'voice' ? voiceOk(picked.voice, a.voice) : picked[f] === a[f];
+      }).length;
+      if (n > bestScore) { bestScore = n; best = a; }
+    });
+    if (!best) return [];
+    return item.fields.filter(function (f) {
+      return f === 'voice' ? !voiceOk(picked[f], best[f]) : picked[f] !== best[f];
+    });
+  }
+
+  // Each reading of the form is matched on its own, then the results merged.
+  // Pooling the tags first would invent parses that do not exist: λύσω would
+  // come out as an aorist that somehow also has no augment.
+  // `focus` is the list of fields the learner just got wrong; hooks that speak
+  // to one of those come first, so missing the gender gets you a hook about
+  // gender rather than a general note on the case.
+  function mnemonicsFor(item, limit, focus) {
+    var answers = item.answers || (item.combo ? [item.combo] : []);
+    if (!answers.length) return [];
+    var ambiguous = answers.length > 1;
+    var seen = {}, out = [];
+    answers.forEach(function (a) {
+      var have = { 'form:ambiguous': ambiguous };
+      tagsFor(item, a).forEach(function (t) { have[t] = true; });
+      (GK.mnemonics || []).forEach(function (m) {
+        if (seen[m.id] || !m.tags.length) return;
+        if (m.not && m.not.some(function (t) { return have[t]; })) return;
+        if (!m.tags.every(function (t) { return have[t]; })) return;
+        seen[m.id] = true;
+        out.push({
+          id: m.id, section: m.section, tags: m.tags, prio: m.prio,
+          title: m.title, hook: m.hook, why: m.why, ask: m.ask, examples: m.examples,
+          score: (focus || []).some(function (f) {
+            return m.tags.some(function (t) { return t.indexOf(f + ':') === 0; });
+          }) ? 1 : 0
+        });
+      });
+    });
+    return out.sort(rank).slice(0, limit || 2);
   }
 
   // A label for the prompt that says what kind of word this is without
@@ -184,6 +275,7 @@ GK.drills = (function () {
           produceItems.push({
             id: 'vq:' + verb.id + ':' + par.tense + ':' + par.voice + ':' + par.mood + ':' + slot,
             deck: 'verbs', mode: 'produce',
+            tags: verbTags(verb), combo: combo,
             question: {
               instruction: describe(combo, ['person', 'number', 'tense', 'voice', 'mood']) + ' of',
               lemma: verb.lemma, gloss: verb.gloss, form: null,
@@ -221,6 +313,7 @@ GK.drills = (function () {
         parseItems.push({
           id: 'vp:' + verb.id + ':' + k,
           deck: 'verbs', mode: 'parse',
+          tags: verbTags(verb),
           question: {
             instruction: 'Parse this verb', form: b.form,
             lemma: verb.lemma, gloss: verb.gloss, source: verb.klass
@@ -367,7 +460,7 @@ GK.drills = (function () {
   }
 
   return {
-    pool: pool, all: all, byId: byId,
+    pool: pool, all: all, byId: byId, mnemonicsFor: mnemonicsFor, tagsFor: tagsFor, wrongFields: wrongFields,
     checkParse: checkParse, checkTyped: checkTyped,
     describe: describe, readParse: readParse,
     FIELD_DEFS: FIELD_DEFS, FIELD_ORDER: FIELD_ORDER
