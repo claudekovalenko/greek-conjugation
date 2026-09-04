@@ -96,17 +96,18 @@ that would fire on a form it is not true of, and whether `dist/` still matches
 the source.
 
 `.github/workflows/build.yml` runs those checks on every push and pull request,
-and on the default branch it then builds the site and deploys it to GitHub
-Pages. The workflow enables Pages itself the first time it runs, so there is no
-setting to switch on by hand. Two URLs come out of it:
+and on the default branch it then builds the site and publishes it to GitHub
+Pages. Two URLs come out of it:
 
 - `/` — the app
 - `/offline/` — the same app as one self-contained file, so you can save the
   page from your browser and use it with no connection at all
 
-If the deploy step ever reports that it cannot enable Pages, the repository's
-**Settings → Pages → Build and deployment → Source** needs to be set to
-**GitHub Actions** once, by hand.
+**Pages has to be switched on once, by hand.** Settings → Pages → Build and
+deployment → Source → **GitHub Actions**. A workflow token is not permitted to
+create the Pages site itself, so this cannot be automated. Until it is done the
+workflow still runs every check and builds the site; it just says in the run
+summary that it could not publish, rather than failing.
 
 ## Notes on the text
 

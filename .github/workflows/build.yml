@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       # No dependencies to install — the whole app and its test suite are
       # plain files. This runs in a couple of seconds.
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Build
         run: node build.js
@@ -68,15 +68,40 @@ jobs:
           # for offline use straight from the browser.
           cp dist/koine-drill.html _site/offline/index.html
 
-      # enablement turns Pages on the first time this runs, so there is no
-      # setting to flip by hand.
+      # A workflow token is not allowed to create the Pages site, so Pages has
+      # to be switched on once by hand. Rather than failing red on every push
+      # until someone does, say plainly what to do and stop here.
+      - name: Is Pages switched on?
+        id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/$GITHUB_REPOSITORY/pages" >/dev/null 2>&1; then
+            echo "on=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "on=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::GitHub Pages is not switched on. Settings → Pages → Build and deployment → Source → GitHub Actions, then re-run this workflow."
+            {
+              echo "## The site was built but not published"
+              echo
+              echo "GitHub Pages is not switched on for this repository yet, and a workflow"
+              echo "token is not permitted to switch it on."
+              echo
+              echo "**One manual step, once:** Settings → Pages → Build and deployment →"
+              echo "Source → **GitHub Actions**."
+              echo
+              echo "Then re-run this workflow. Every push after that publishes automatically."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
+        if: steps.pages.outputs.on == 'true'
 
       - uses: actions/upload-pages-artifact@v3
+        if: steps.pages.outputs.on == 'true'
         with:
           path: _site
 
       - id: deployment
+        if: steps.pages.outputs.on == 'true'
         uses: actions/deploy-pages@v4
